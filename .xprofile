@@ -1,0 +1,9 @@
+## set resolution
+xrandr --output eDP1 --mode 1920x1080
+
+## run keyboard setup
+## xkbcomp /home/johannes/Dropbox/technical_stuff_general/dotfiles/output2.xkb $DISPLAY
+
+## start clouds
+## dropbox
+## owncloud

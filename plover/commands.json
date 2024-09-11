@@ -1,0 +1,17 @@
+{
+"PHRO*F": "{PLOVER:SUSPEND}",
+"PHROLG": "{PLOVER:TOGGLE}",
+"PHROPB": "{PLOVER:RESUME}",
+"PW*FP": "{#BackSpace}",
+"PW-FP": "{#BackSpace}",
+"R*R": "{#Return}{^}",
+"R-R": "{^}{#Return}{^}{-|}",
+"SH-FT": "{#Control_L(Home)}{^}",
+"SKW-BGS": "{#Return}{^}",
+"SKWRAEURBGS": "{#Return}{#Return}{^}{-|}",
+"SKWRAURBGS": "{#Return}{#Return}{^}{-|}",
+"TA*B": "{#Tab}{^}",
+"TKUPT": "{PLOVER:ADD_TRANSLATION}",
+"TPEFBG": "{#Escape}",
+"TPHEPBT": "{#Return}"
+}

@@ -1,0 +1,92 @@
+
+# * outlook
+
+
+IMAPAccount outlook
+Host outlook.office365.com
+Port 993
+UserCmd "pass show outlook-email"
+PassCmd "cd /home/johannes/Dropbox/technical_stuff_general/dotfiles/.emacs.d/config && ./mutt_oauth2_outlook.py token_outlook1"
+AuthMechs XOAUTH2
+SSLType IMAPS
+
+IMAPStore outlook-remote
+Account outlook
+
+MaildirStore outlook-local
+Subfolders Legacy
+Path ~/mbsync/outlook/
+Inbox ~/mbsync/outlook/Inbox
+
+Channel outlook
+Far :outlook-remote:
+Near :outlook-local:
+# Patterns * !"Conversation History" !Calendar !Archive !Archives !Clutter !Drafts
+Patterns * 
+Create Both
+Expunge Both
+SyncState *
+
+
+
+# ================
+# * outlook2
+
+
+IMAPAccount outlook2
+Host outlook.office365.com
+Port 993
+UserCmd "pass show outlook2-email"
+PassCmd "cd /home/johannes/Dropbox/technical_stuff_general/dotfiles/.emacs.d/config && ./mutt_oauth2_outlook2.py token_outlook2"
+AuthMechs XOAUTH2
+SSLType IMAPS
+
+IMAPStore outlook2-remote
+Account outlook2
+
+MaildirStore outlook2-local
+Path /home/johannes/mbsync/outlook2/
+Inbox /home/johannes/mbsync/outlook2/Inbox/
+SubFolders Legacy
+
+Channel outlook2
+Far :outlook2-remote:
+Near :outlook2-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+
+# ===============
+# * uva staff mail
+
+
+IMAPAccount uva
+Host outlook.office365.com
+Port 993
+UserCmd "pass show uva-email"
+PassCmd "cd /home/johannes/Dropbox/technical_stuff_general/dotfiles/.emacs.d/config && ./mutt_oauth2.py token_uvamail"
+AuthMechs XOAUTH2
+SSLType IMAPS
+
+IMAPStore uva-remote
+Account uva
+
+MaildirStore uva-local
+Subfolders Verbatim
+Path ~/mbsync/uva/
+Inbox ~/mbsync/uva/Inbox
+
+Channel uva
+Far :uva-remote:
+Near :uva-local:
+# Patterns * !"Conversation History" !Calendar !Archive !Archives !Clutter !Drafts
+Patterns * 
+Create Both
+Expunge Both
+SyncState *
+
+
+
+

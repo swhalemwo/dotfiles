@@ -1,0 +1,13 @@
+#!/bin/bash
+
+v1=$1
+v2=10
+
+# echo $((v1/v2))
+# echo "scale=2 ; $v1 / $v2" | gc
+
+v3=$(bc <<< "scale=2; $v1 / 10")
+# echo this is $v3
+
+
+xrandr --output DP-1 --brightness $v3

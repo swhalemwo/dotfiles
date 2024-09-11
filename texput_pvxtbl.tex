@@ -1,0 +1,20 @@
+
+\documentclass{article}
+\pagestyle{empty}
+
+\usepackage{crimson}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{longtable}
+\makeatletter
+\newcolumntype{D}[3]{>{\textfont0=\the\font\DC@{#1}{#2}{#3}}c<{\DC@end}}
+\makeatother
+
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+
+
+\begin{document}
+\input{pvlt_input.tex}
+\end{document}
+

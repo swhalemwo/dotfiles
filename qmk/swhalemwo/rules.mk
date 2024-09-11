@@ -1,0 +1,4 @@
+SRC += muse.c
+# AUDIO_ENABLE = no
+# UNICODE_ENABLE = yes
+QUICK_TAP_TERM = 0

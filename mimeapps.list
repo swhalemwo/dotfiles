@@ -1,0 +1,72 @@
+[Default Applications]
+application/octet-stream=mousepad.desktop
+application/pdf=org.pwmt.zathura.desktop
+application/x-gettext-translation=mousepad.desktop
+application/xml=userapp-emacsclient -c-FRJOW0.desktop
+application/x-wine-extension-ini=mousepad.desktop
+image/gif=viewnior.desktop;gimp.desktop
+image/jpeg=viewnior.desktop;gimp.desktop
+image/png=feh.desktop
+text/plain=userapp-emacsclient -c-FRJOW0.desktop
+video/mp4=mpv.desktop
+video/ogg=vlc.desktop
+video/x-flv=vlc.desktop
+video/x-ms-wmv=vlc.desktop
+video/x-ogm+ogg=vlc.desktop
+video/x-theora+ogg=vlc.desktop
+# x-scheme-handler/http=brave-browser.desktop
+# x-scheme-handler/https=brave-browser.desktop
+# text/html=brave-browser.desktop
+# x-scheme-handler/about=brave-browser.desktop
+# x-scheme-handler/unknown=brave-browser.desktop
+# application/xhtml+xml=brave-browser.desktop
+x-scheme-handler/http=qutebrowser.desktop
+x-scheme-handler/https=qutebrowser.desktop
+text/html=qutebrowser.desktop
+x-scheme-handler/about=qutebrowser
+x-scheme-handler/unknown=qutebrowser
+application/xhtml+xml=qutebrowser
+
+audio/mpeg=vlc.desktop
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
+text/x-csrc=userapp-emacsclient -c-FRJOW0.desktop
+text/x-makefile=userapp-emacsclient -c-FRJOW0.desktop
+image/svg+xml=org.gnome.eog.desktop
+application/epub+zip=org.pwmt.zathura-pdf-mupdf.desktop
+application/vnd.oasis.opendocument.text=libreoffice-writer.desktop
+text/x-tex=userapp-emacsclient -c-FRJOW0.desktop
+application/json=userapp-emacsclient -c-FRJOW0.desktop
+x-scheme-handler/msteams=team.desktop
+text/x-r-source=userapp-emacsclient -c-FRJOW0.desktop
+text/csv=userapp-emacsclient -c-FRJOW0.desktop
+application/x-shellscript=emacsclient.desktop
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop
+x-scheme-handler/nc=com.nextcloud.desktopclient.nextcloud.desktop
+
+[Added Associations]
+text/plain=userapp-emacsclient -c-FRJOW0.desktop;
+video/mp4=mpv.desktop;
+x-scheme-handler/http=xfce4-web-browser.desktop;
+x-scheme-handler/https=xfce4-web-browser.desktop;
+audio/mpeg=vlc.desktop;
+# application/xhtml+xml=brave-browser.desktop;
+application/xhtml+xml=qutebrowser.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop;
+text/x-csrc=userapp-emacsclient -c-FRJOW0.desktop;
+text/x-makefile=userapp-emacsclient -c-FRJOW0.desktop;
+image/svg+xml=org.gnome.eog.desktop;userapp-inkview-59IBW1.desktop;userapp-display-ATOF30.desktop;userapp-display-REY320.desktop;viewnior.desktop;
+application/epub+zip=org.pwmt.zathura-pdf-mupdf.desktop;
+application/xml=userapp-emacsclient -c-FRJOW0.desktop;userapp-emacsclient-H1H330.desktop;userapp-emacsclient --nw-SHRD40.desktop;emacs.desktop;
+application/vnd.oasis.opendocument.text=libreoffice-writer.desktop;
+text/x-tex=userapp-emacsclient -c-FRJOW0.desktop;
+application/json=userapp-emacsclient -c-FRJOW0.desktop;
+text/x-r-source=userapp-emacsclient -c-FRJOW0.desktop;
+image/png=feh.desktop;
+text/csv=userapp-emacsclient -c-FRJOW0.desktop;
+text/html=brave-browser.desktop;userapp-surf-5208P1.desktop;
+application/x-shellscript=emacsclient.desktop;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop;
+
+[Removed Associations]
+text/vnd.graphviz=userapp-ec-N07YX0.desktop;
+application/xml=userapp-ec-B27F40.desktop;
