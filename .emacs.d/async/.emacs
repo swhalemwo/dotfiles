@@ -92,6 +92,8 @@
 (load-file "/home/johannes/.emacs.d/config/tex.el")
 (load-file "/home/johannes/.emacs.d/config/custom_funcs.el")
 
+(add-to-list 'org-export-filter-headline-functions 'sa-ignore-headline)
+
 
 (setq org-export-before-processing-hook '(delete-org-comments))
 (setq org-latex-prefer-user-labels t)
