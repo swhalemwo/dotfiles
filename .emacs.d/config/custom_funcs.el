@@ -30,7 +30,7 @@
 (defun open-pdf-of-notes-or-buffer ()
   "open pdf of an org-file, if the org-file is in /nootes (i.e. is notes of a paper), open the corresponding reader, else (if the org-file is a paper I write) open the exported pdf of the file"
   (interactive)
-  (let* ((buf-name (buffer-name))
+  (let* ((buf-name (file-name-nondirectory (buffer-file-name)))
 	  (pdf-name (concat (substring buf-name 0 (- (length buf-name) 4)) ".pdf"))
 	  ;; if pdf-file exists in current directory, open that, else open file in readings
 	  (file-dir (if (file-exists-p (concat (file-name-directory (buffer-file-name)) pdf-name))
