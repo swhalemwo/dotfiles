@@ -249,7 +249,7 @@
        ("i" "influence" alltodo ""
 	 ((org-agenda-files
 	    ;; '("/home/johannes/Dropbox/agenda/infl.org"))))
-	    '("/home/johannes/Dropbox/phd/papers/infl/infl.org"))))
+	    '("/home/johannes/Dropbox/phd/papers/infl/tasks_infl.org"))))
        ("r" "reading list" alltodo ""
 	 ((org-agenda-files
 	    '("/home/johannes/Dropbox/sync/org/reading_list.org"))))))
@@ -258,7 +258,7 @@
        ;; "/home/johannes/Dropbox/agenda/cit_nw_tasks.org"
        "/home/johannes/Dropbox/sync/org/general.org"
        "/home/johannes/Dropbox/phd/papers/closing/tasks_closing.org"
-       "/home/johannes/Dropbox/phd/papers/infl/infl.org"
+       "/home/johannes/Dropbox/phd/papers/infl/tasks_infl.org"
        "/home/johannes/Dropbox/sync/org/phd_orga.org"
        "/home/johannes/Dropbox/sync/org/schedule.org"
        "/home/johannes/Dropbox/sync/org/schedule_uva.org"
