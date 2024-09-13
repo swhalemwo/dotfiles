@@ -952,12 +952,21 @@
 
 (use-package vterm
   :ensure t
+
   :config
+
+  (defun vterm-curdir ()
+    (interactive)
+    (let ((current-prefix-arg '(4))) (call-interactively 'vterm)))
+
+  
   (setq vterm-timer-delay 0.01)
   :bind (:map vterm-mode-map
-	  ("C-l" . recenter-top-bottom))
-  
-  )
+	  ("C-l" . recenter-top-bottom)
+	  :map global-map 
+	  ("C-c v" . vterm-curdir)))
+	  
+
 
 ;; ** dired settings
 

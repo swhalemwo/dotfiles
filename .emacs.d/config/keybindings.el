@@ -122,11 +122,11 @@
 (global-set-key (kbd "C-c d") 'cfw-open)
 (global-set-key (kbd "C-c u") 'mu4e)
 
-(global-set-key (kbd "C-c h") 'insert-hat)
-(global-set-key (kbd "C-c b") 'insert-bar)
+;; (global-set-key (kbd "C-c h") 'insert-hat)
+;; (global-set-key (kbd "C-c b") 'insert-bar)
 
 
-(define-key org-mode-map (kbd "C-c v") 'org-brain-visualize)
+(define-key org-mode-map (kbd "C-c b") 'org-brain-visualize)
 (define-key org-mode-map (kbd "C-c o")  'consult-org-heading)
 (define-key org-mode-map (kbd "C-,")  'consult-line)
 
