@@ -3,7 +3,7 @@
 
 
 # ln -s Dropbox/technical_stuff_general/dotfiles/.emacs ~/.emacs
-ln -s Dropbox/technical_stuff_general/dotfiles/e_tidy/.emacs ~/.emacs
+ln -s Dropbox/technical_stuff_general/dotfiles/e_dell/.emacs ~/.emacs
 ln -s Dropbox/technical_stuff_general/dotfiles/.emacs.d ~/.emacs.d
 
 
