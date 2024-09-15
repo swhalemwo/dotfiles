@@ -187,3 +187,12 @@ alias sus="systemctl suspend"
 
 # export PASSWORD_STORE_DIR=/home/johannes/Dropbox/technical_stuff_general/password-store
 # export PASSWORD_STORE_DIR="/home/johannes/Dropbox/technical_stuff_general/password-store"
+
+
+if [ "$TERM" = "xterm-256color" ]; then
+    # Code to run if xterm is the terminal emulator
+    # echo "Running code for xterm"
+
+    export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS' --color=bg+:#2CCFBF,fg+:#0a0a0a,hl+:#8B008B,hl:#7a167a'
+
+fi

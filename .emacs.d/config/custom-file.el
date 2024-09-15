@@ -110,7 +110,7 @@
  '(table-cell ((t (:background "cyan" :foreground "black" :inverse-video nil))))
  '(term-color-cyan ((t (:background "cyan3" :foreground "orange"))))
  '(vterm-color-cyan ((t (:foreground "blue"))))
- '(vterm-color-green ((t (:foreground "Magenta3"))))
+ '(vterm-color-green ((t (:foreground "Magenta4"))))
  '(vterm-color-white ((t (:foreground "blue"))))
  '(vterm-color-yellow ((t (:foreground "ForestGreen")))))
 
