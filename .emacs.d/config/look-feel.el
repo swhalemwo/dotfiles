@@ -117,3 +117,6 @@
 
 ;; don't make stupid backup files
 (setq make-backup-files nil)
+
+
+(put 'list-timers 'disabled nil) ;; don't give list-timers warning
