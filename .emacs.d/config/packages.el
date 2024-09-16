@@ -857,9 +857,7 @@
 	  ("C-," . consult-line)
 	  ("C-." . consult-ripgrep-curdir)
 
-	  )
-
-  )
+	  ))
 
 
 
