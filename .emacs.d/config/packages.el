@@ -745,6 +745,9 @@
   )
 
 
+(use-package excorporate-org)
+
+
 
 ;; ** orderless
 (use-package orderless
