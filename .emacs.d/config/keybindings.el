@@ -129,6 +129,8 @@
 (define-key org-mode-map (kbd "C-c b") 'org-brain-visualize)
 (define-key org-mode-map (kbd "C-c o")  'consult-org-heading)
 (define-key org-mode-map (kbd "C-,")  'consult-line)
+(define-key org-mode-map (kbd "C-#")  'consult-git-grep)
+
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-,")  'consult-line)
 ;; (global-set-key (kbd "C-,")  'consult-line)
@@ -143,6 +145,10 @@
 (define-key ess-mode-map (kbd "C-c p") 'ess-r-process-object)
 (define-key ess-mode-map (kbd "C-c s") 'r-str-at-point)
 (define-key ess-mode-map (kbd "C-c r") 'r-summary-at-point)
+(define-key ess-mode-map (kbd "C-.") 'consult-ripgrep-curdir)
+(define-key ess-mode-map (kbd "C-#") 'consult-git-grep)
+
+
 
 
 
