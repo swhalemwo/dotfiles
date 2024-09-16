@@ -139,10 +139,13 @@
 
 (define-key ess-mode-map (kbd "C-,") 'consult-line)
 (define-key ess-mode-map (kbd "C-c n") 'r-names-at-point)
-
 (define-key ess-mode-map (kbd "C-c z") 'r-last-trace)
-
 (define-key ess-mode-map (kbd "C-c p") 'ess-r-process-object)
+(define-key ess-mode-map (kbd "C-c s") 'r-str-at-point)
+(define-key ess-mode-map (kbd "C-c r") 'r-summary-at-point)
+
+
+
 
 (define-key inferior-ess-mode-map (kbd "M-r") 'consult-history)
 

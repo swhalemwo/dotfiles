@@ -73,9 +73,9 @@
      (message "%s: %.06f" xnamea (float-time (time-since time)))))
 
 
-;; ** all kinds of R-utils (and some python ones)
+;; ** all kinds of R-utils
 
-(defun r-summary-at-point ()
+(defun r-print-at-point ()
   ;; eval expression at point
   ;; if called with argument, pipe a print query with n=argument
   ;; (used to print more rows of data frames than default (10))
@@ -112,10 +112,6 @@
 
 
 
-
-
-
-
 (defun r-names-at-point ()
   ;; print names of object at point
   (interactive)
@@ -136,11 +132,6 @@
       trace-cmd
       t)
     ))
-
-
-
-
-
 
 
 
@@ -188,23 +179,44 @@
 
 
 
-
-
-(defun ess-insert-debug-snippet ()
-  (interactive)
-  (insert "if (as.character(match.call()[[1]]) %in% fstd){browser()}")
-  )
-
-(defun ess-insert-debug-numbers ()
-  (interactive)
-  (insert "1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;"))
-
-
 (defun ess-match-call ()
   (interactive)
   (ess-send-string
     (get-process ess-current-process-name)
     "match.call()" t))
+
+
+(defun r-str-at-point ()
+  ;; run str of object at point
+  (interactive)
+  
+    (let ((sym (ess-symbol-at-point)))
+
+    (if sym
+      (ess-send-string
+	(get-process ess-current-process-name)
+	(concat "str(" (symbol-name sym) ")\n") t)
+      (message "no valid r symbol at point"))))
+
+
+(defun r-summary-at-point ()
+  ;; print summary at pointn
+  (interactive)
+  (let ((sym (ess-symbol-at-point)))
+
+    (if sym
+      (ess-send-string
+	(get-process ess-current-process-name)
+	(concat "summary(" (symbol-name sym) ")\n") t)
+      (message "no valid r symbol at point"))))
+
+
+
+
+
+
+;; ** elpy utils
+
 
 
 (defun elpy-summary-at-point ()

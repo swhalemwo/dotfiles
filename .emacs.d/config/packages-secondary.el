@@ -191,7 +191,7 @@
 (define-key ess-roxy-mode-map (kbd "C-a") 'back-to-indentation)
 ;; (define-key visual-line-mode-map (kbd "C-a") 'back-to-indentation)
 
-(define-key ess-r-mode-map (kbd "C-c C-k") 'r-summary-at-point)
+(define-key ess-r-mode-map (kbd "C-c C-k") 'r-print-at-point)
 (define-key ess-r-mode-map (kbd "C-c C-u") 'ess-eval-paragraph)
 (define-key ess-r-mode-map (kbd "C-x C-e") 'ess-eval-paragraph)
 (define-key ess-r-mode-map (kbd "C-c j") 'r-add-symbol-to-fstd)
@@ -200,7 +200,7 @@
 (define-key ess-doc-map (kbd "s") 'ess-print-docstring)
 
 ;; overwrite "C-c C-k" in source code blocks (previously org-edit-src-abort)
-(define-key org-src-mode-map (kbd "C-c C-k") 'r-summary-at-point)
+(define-key org-src-mode-map (kbd "C-c C-k") 'r-print-at-point)
 
 (define-key ess-r-mode-map (kbd "C-c C-i") 'ess-interrupt)
 (define-key ess-r-mode-map (kbd "C-c M") 'ess-match-call)
