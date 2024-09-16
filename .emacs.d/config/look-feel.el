@@ -7,6 +7,7 @@
 (setq debug-on-error t)
 
 (setq case-fold-search t) ;; searches ignore case
+(setq-default case-fold-search t) ;; searches ignore case
 
 (setq column-number-mode t)
 (setq csv-separators '("," "	"))
