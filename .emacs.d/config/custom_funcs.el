@@ -630,15 +630,20 @@ point reaches the beginning or end of the buffer, stop there."
   ;; set PROCESS-CURRENTLY-RUNNING-UPRADE to read it back in in ess-reload-package after compilation
   ;; (can't pass variables to set-process-sentinel)
   (setq ESS-PROCESS-CURRENTLY-RUNNING-UPRADE ess-current-process-name)
+
+  
   (setq PKG-NAME (completing-read "package to update" '(pmdata jtls)))
   ;; https://emacs.stackexchange.com/questions/42172/run-elisp-when-async-shell-command-is-done
   (let* (
 	  (inital-buffer (buffer-name))
 	  (output-buffer (generate-new-buffer "async compile output buffer"))
 	  (proc (progn
-    		  (async-shell-command (concat "cd /home/johannes/Dropbox/phd/" PKG-NAME 
-					 "&& Rscript -e \"library(devtools); document(); "
-					 "install(upgrade='never')\"")
+    		  (async-shell-command
+		    (concat "cd /home/johannes/Dropbox/phd/" PKG-NAME " && "
+		      "Rscript -e \"library(devtools); document(); "
+		      "install(upgrade='never')\" && "
+		      ;; run tinytest (after installing)
+		      (format "Rscript -e  \"library(tinytest); test_package('%s')\";" PKG-NAME)) 
 		    output-buffer)
 		  (get-buffer-process output-buffer))))
     
