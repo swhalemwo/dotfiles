@@ -189,3 +189,4 @@
 
 (define-key emacs-lisp-mode-map (kbd "C-c C-e") 'eval-last-sexp-in-ielm)
 (define-key emacs-lisp-mode-map (kbd "C-.") 'consult-ripgrep-curdir)
+(define-key emacs-lisp-mode-map (kbd "C-#")  'consult-git-grep)
