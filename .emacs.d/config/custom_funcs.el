@@ -641,7 +641,7 @@ point reaches the beginning or end of the buffer, stop there."
     		  (async-shell-command
 		    (concat "cd /home/johannes/Dropbox/phd/" PKG-NAME " && "
 		      "Rscript -e \"library(devtools); document(); "
-		      "install(upgrade='never')\" && "
+		      "install(upgrade='never', build_vignettes = F)\" && "
 		      ;; run tinytest (after installing)
 		      (format "Rscript -e  \"library(tinytest); test_package('%s')\";" PKG-NAME)) 
 		    output-buffer)
