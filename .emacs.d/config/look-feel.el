@@ -10,7 +10,7 @@
 (setq-default case-fold-search t) ;; searches ignore case
 
 (setq column-number-mode t)
-(setq csv-separators '("," "	"))
+(setq csv-separators '(","))
 
 
 (setq custom-theme-directory "~/Dropbox/technical_stuff_general/dotfiles/.emacs.d/config/my-themes/")
