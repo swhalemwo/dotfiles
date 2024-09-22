@@ -350,16 +350,12 @@ arguments, IDENTIFIER and the server's response."
     (goto-char cur-point)))
 
 
-  
-
-
 
 (advice-add 'exco-org-insert-meeting :around #'my/exco-org-insert-meeting-advice)
 ;; (advice-remove 'exco-org-insert-meeting  #'my/exco-org-insert-meeting-advice)
 
 (advice-add 'exco-org-insert-meeting-headline :after #'my/exco-lowercase-state)
 ;; (advice-remove 'exco-org-insert-meeting-heading #'my/exco-lowercase-state)
-
 
 
 ;; (exco-org-show-year 8 7 2024)
