@@ -217,11 +217,14 @@
 	 ((org-agenda-files
 	    '("/home/johannes/Dropbox/sync/org/tec.org"))))
 
-       ("n" "donesies"
+       ("d" "donesies"
 	 ;; ((tags "CLOSED<=\"<now>\""))
 	 ((tags "CLOSED>=\"<-30d>\""))
 	 ((org-agenda-cmp-user-defined 'org-cmp-closed)
 	   (org-agenda-sorting-strategy '(user-defined-down))))
+
+       ("n" "new_tasks"
+	 ((tags "CREATED>=\"<-14d>\"")))
 
 
        ;; ("j" "stats" alltodo ""
