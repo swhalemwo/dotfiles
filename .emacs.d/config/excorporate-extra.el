@@ -28,7 +28,9 @@
 
 (defun excorporate-create-meeting ()
   (interactive)
-  (org-capture nil "e")) 
+  (org-capture nil "e"))
+
+
 
 
 (defun org-timestamp-type (timestamp)
@@ -234,6 +236,28 @@ arguments, IDENTIFIER and the server's response."
 
 ;; (exco-org-parse-meeting-file)
 
+(defun exco-org-dispatch-meeting-at-point (existing-meetings ids-existing-meetings)
+  "handle with meeting at point: copy if new, update if existing"
+  (let* ((identifier (org-entry-get (point) "IDENTIFIER"))
+	  (subject (org-entry-get (point) "ITEM"))
+	  (scheduled (org-entry-get (point) "SCHEDULED"))
+	  (location (org-entry-get (point) "LOCATION"))
+	  (hash-exco (secure-hash 'sha256 (format "%s%s%s%s" identifier subject scheduled location)))
+	  (hash-exco-org (assoc-default 'hash-exco-org (assoc identifier existing-meetings)))
+	  )
+
+    ;; handle them on different cases
+    ;; if not there at all: copy them over
+    (cond
+      ((not (member identifier ids-existing-meetings)) (exco-org-refile-new-meeting))
+      ;; if already there, but changed: update them 
+      ((and (member identifier ids-existing-meetings)
+	 (not (equal hash-exco hash-exco-org)))
+	(exco-org-update-changed-meeting))
+
+      )))
+
+
 (defun exco-org-dispatch-meetings ()
   "refile new meetings (meetings which are not yet in the
   excorporate-org-schedule-file) to the
@@ -252,29 +276,20 @@ arguments, IDENTIFIER and the server's response."
 
       ;; iterate over all meetings
       (while (not (eobp))
-	(let* ((identifier (org-entry-get (point) "IDENTIFIER"))
-		(subject (org-entry-get (point) "ITEM"))
-		(scheduled (org-entry-get (point) "SCHEDULED"))
-		(location (org-entry-get (point) "LOCATION"))
-		(hash-exco (secure-hash 'sha256 (format "%s%s%s%s" identifier subject scheduled location)))
-		(hash-exco-org (assoc-default 'hash-exco-org (assoc identifier existing-meetings)))
-		)
 
-	  ;; handle them on different cases
-	  ;; if not there at all: copy them over
-	  (cond
-	    ((not (member identifier ids-existing-meetings)) (exco-org-refile-new-meeting))
-	    ;; if already there, but changed: update them 
-	    ((and (member identifier ids-existing-meetings)
-	       (not (equal hash-exco hash-exco-org)))
-	      (exco-org-update-changed-meeting))
+	(exco-org-dispatch-meeting-at-point existing-meetings ids-existing-meetings)
 
-	    )
+	;; go to next meeting
+	(org-next-visible-heading 1))))
+  
+  ;; remove the advice for dispatch after finalize
+  ;; it removes itself in a way
+  ;; necessary to do it here because if i run it in exco-update it seems the advice is removed before running
+  ;; because the excorporate code is async
+  ;; so I first run the dispatch, and then remove the advice
+  (advice-remove 'exco-org-finalize-buffer 'exco-org-dispatch-meetings)
 
-	    ;; refile if not
-
-	  ;; go to next meeting
-	  (org-next-visible-heading 1))))))
+  )
 
 
 (defun exco-org-refile-new-meeting ()
@@ -361,6 +376,18 @@ arguments, IDENTIFIER and the server's response."
 	  (current-day (nth 3 current-date))
 	  )
 
-    (exco-org-show-year current-month current-day current-year)
-    (exco-org-dispatch-meetings)))
+    ;; (exco-org-show-year current-month current-day current-year)
 
+    ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
+    (advice-add 'exco-org-finalize-buffer :after 'exco-org-dispatch-meetings)
+    
+    (exco-org-show-month current-month current-day current-year)
+
+    ;; remove the advice in case somebody doesn't want to use dispatch
+    ;; this is super spaghetti-cody, super hard to backtrace.. 
+    ;; (advice-remove 'exco-org-finalize-buffer 'exco-org-dispatch-meetings)
+
+
+    ))
+
+(add-hook 'org-capture-after-finalize-hook 'exco-post-meeting)

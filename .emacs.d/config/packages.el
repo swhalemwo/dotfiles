@@ -742,7 +742,6 @@
        ("" . "")))
   
   (setq excorporate-org-schedule-file "/home/johannes/Dropbox/sync/org/schedule_uva.org")
-  (add-hook 'org-capture-after-finalize-hook 'exco-post-meeting)
   (define-key cfw:org-custom-map (kbd "e") 'excorporate-create-meeting)
 
   )
