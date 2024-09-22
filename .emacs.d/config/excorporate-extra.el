@@ -102,7 +102,25 @@
       (cdr (assoc 'time-start time-info))
       (cdr (assoc 'time-end time-info))
       (lambda (identifier response)
-	(message "%S: %S" identifier response)))))
+	;; (message "%S: %S" identifier response)
+	;; (setq exco-upload-response response)
+	(exco-add-identifier-to-meeting-property response)
+
+	))))
+
+
+(defun exco-add-identifier-to-meeting-property (exco-upload-response)
+  (let ((response-class (assoc-default 'ResponseClass (cdr (cadaar exco-upload-response))))
+	 (identifier-cons (cadadr (nth 2 (cdr (cadaar exco-upload-response)))))
+	 (cur-buf (current-buffer)))
+
+    ;; go to schedule buffer
+    (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
+      (goto-char (point-max)) ;; go to end (this is where capture should place the meeting)
+      
+      (org-set-property "Identifier" (format "%S" identifier-cons))
+      )
+    ))
 
 
 
