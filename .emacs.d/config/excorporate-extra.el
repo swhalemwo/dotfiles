@@ -390,12 +390,13 @@ arguments, IDENTIFIER and the server's response."
 	  (current-day (nth 3 current-date))
 	  )
 
-    ;; (exco-org-show-year current-month current-day current-year)
+
 
     ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
     (advice-add 'exco-org-finalize-buffer :after 'exco-org-dispatch-meetings)
     
-    (exco-org-show-month current-month current-day current-year)
+    ;; (exco-org-show-month current-month current-day current-year)
+    (exco-org-show-year current-month current-day current-year)
 
     ;; remove the advice in case somebody doesn't want to use dispatch
     ;; this is super spaghetti-cody, super hard to backtrace.. 
