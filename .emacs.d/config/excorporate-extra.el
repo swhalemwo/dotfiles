@@ -104,12 +104,14 @@
       (lambda (identifier response)
 	;; (message "%S: %S" identifier response)
 	;; (setq exco-upload-response response)
-	(exco-add-identifier-to-meeting-property response)
+	(exco-add-identifiers-to-meeting-property response)
 
 	))))
 
 
-(defun exco-add-identifier-to-meeting-property (exco-upload-response)
+(defun exco-add-identifiers-to-meeting-property (exco-upload-response)
+  ;; navigate response down and add MEETINGID and ChangeKey to org-headline
+  
   (let ((response-class (assoc-default 'ResponseClass (cdr (cadaar exco-upload-response))))
 	 (identifier-cons (cadadr (nth 2 (cdr (cadaar exco-upload-response)))))
 	 (cur-buf (current-buffer)))
@@ -118,9 +120,12 @@
     (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
       (goto-char (point-max)) ;; go to end (this is where capture should place the meeting)
       
-      (org-set-property "Identifier" (format "%S" identifier-cons))
-      )
-    ))
+      ;; (org-set-property "Identifier" (format "%S" identifier-cons))
+      (org-set-property "MEETINGID" (assoc-default 'Id (cdr identifier-cons)))
+      (org-set-property "ChangeKey" (assoc-default 'ChangeKey (cdr identifier-cons)))
+      )))
+      
+
 
 
 
@@ -235,16 +240,20 @@ arguments, IDENTIFIER and the server's response."
       
       (org-element-map (org-element-parse-buffer) 'headline
 	(lambda (headline)
-	  ;; check if the headline has a "Identifier" property
-	  (let* ((identifier (org-element-property :IDENTIFIER headline))
+	  
+	  ;; extract basic information from org entry
+	  (let* (
+		  ;; (MEETINGID "jj")
+		  ;; (MEETINGID (org-element-property :LOCATION headline))
+		  (MEETINGID (org-element-property :MEETINGID headline))
 		  (subject (org-element-property :raw-value headline))
 		  (scheduled (cdar (org-entry-properties headline "SCHEDULED")))
 		  (location (org-element-property :LOCATION headline))
 		  (org-id (org-element-property :ID headline))
-		  (hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" identifier subject scheduled location))))
+		  (hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
 
 	    
-	      (push `(,identifier . 
+	      (push `(,MEETINGID . 
 			((subject . ,subject)
 			  (location . ,location)
 			  (org-id . ,org-id)
@@ -256,20 +265,20 @@ arguments, IDENTIFIER and the server's response."
 
 (defun exco-org-dispatch-meeting-at-point (existing-meetings ids-existing-meetings)
   "handle with meeting at point: copy if new, update if existing"
-  (let* ((identifier (org-entry-get (point) "IDENTIFIER"))
+  (let* ((MEETINGID (org-entry-get (point) "MEETINGID"))
 	  (subject (org-entry-get (point) "ITEM"))
 	  (scheduled (org-entry-get (point) "SCHEDULED"))
 	  (location (org-entry-get (point) "LOCATION"))
-	  (hash-exco (secure-hash 'sha256 (format "%s%s%s%s" identifier subject scheduled location)))
-	  (hash-exco-org (assoc-default 'hash-exco-org (assoc identifier existing-meetings)))
+	  (hash-exco (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location)))
+	  (hash-exco-org (assoc-default 'hash-exco-org (assoc MEETINGID existing-meetings)))
 	  )
 
     ;; handle them on different cases
     ;; if not there at all: copy them over
     (cond
-      ((not (member identifier ids-existing-meetings)) (exco-org-refile-new-meeting))
+      ((not (member MEETINGID ids-existing-meetings)) (exco-org-refile-new-meeting))
       ;; if already there, but changed: update them 
-      ((and (member identifier ids-existing-meetings)
+      ((and (member MEETINGID ids-existing-meetings)
 	 (not (equal hash-exco hash-exco-org)))
 	(exco-org-update-changed-meeting))
 
@@ -282,9 +291,7 @@ arguments, IDENTIFIER and the server's response."
   excorporate-org-schedule-file"
 
   (let* ((existing-meetings (exco-org-parse-meeting-file))
-	  (ids-existing-meetings (alist-keys existing-meetings))
-	  ;; (mapcar (lambda (meeting) (assoc-default 'identifier meeting)) existing-meetings))
-	  )
+	  (ids-existing-meetings (alist-keys existing-meetings)))
 
     (with-current-buffer "*Excorporate*"
       ;; set point to beginning
@@ -338,17 +345,22 @@ arguments, IDENTIFIER and the server's response."
   ))
 
 
-
 (defun my/exco-org-insert-meeting-advice (orig-fun &rest args)
-  "Insert a scheduled meeting, with location in org-property drawer"
+  "Insert a scheduled meeting, with MEETINGID, ChangeKey and location in org-property drawer"
 
   ;; insert the meeting normally 
   (apply orig-fun args)
 
+
   ;; get meeting value (4th argument) if it exists
-  (let ((location (if (> (length args) 3)
-		    (nth 3 args) nil)))
+  (let (
+	 (id-alist (read (org-entry-get (point) "Identifier")))
+	 (location (if (> (length args) 3) (nth 3 args) nil)))
     
+    ;; set meeting Id and changekey as org-properties
+    (org-set-property "MEETINGID" (assoc-default 'Id (cdr id-alist)))
+    (org-set-property "ChangeKey" (assoc-default 'ChangeKey (cdr id-alist)))
+
     ;; now set location also as property in drawer
     (when location
       (org-set-property "LOCATION" location))))
@@ -395,8 +407,8 @@ arguments, IDENTIFIER and the server's response."
     ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
     (advice-add 'exco-org-finalize-buffer :after 'exco-org-dispatch-meetings)
     
-    ;; (exco-org-show-month current-month current-day current-year)
-    (exco-org-show-year current-month current-day current-year)
+    (exco-org-show-month current-month current-day current-year)
+    ;; (exco-org-show-year current-month current-day current-year)
 
     ;; remove the advice in case somebody doesn't want to use dispatch
     ;; this is super spaghetti-cody, super hard to backtrace.. 
@@ -405,4 +417,6 @@ arguments, IDENTIFIER and the server's response."
 
     ))
 
+
+;; add hook to add ItemId to freshly posted meetings
 (add-hook 'org-capture-after-finalize-hook 'exco-post-meeting)
