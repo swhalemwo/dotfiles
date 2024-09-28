@@ -286,6 +286,7 @@ arguments, IDENTIFIER and the server's response."
 			((subject . ,subject)
 			  (location . ,location)
 			  (org-id . ,org-id)
+			  (scheduled . ,scheduled)
 			  (hash-exco-org . ,hash-exco-org)))
 		meetings))))
       meetings)))
