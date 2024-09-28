@@ -1,20 +1,5 @@
-;; MWE for posting meeting
-;; (exco-calendar-item-appointment-create
-;;   (exco-select-connection-identifier)
-;;   "Test meeting 1"
-;;   "Hi,\n\nThis is a test meeting 1.\n\nRegards.\n"
-;;   (encode-time 0 15 14 24 08 2024)
-;;   (encode-time 0 0  15 24 08 2024)
-;;   (lambda (identifier response)
-;;     (message "%S: %S" identifier response)))
 
-
-(defun hi-printer ()
-  (interactive)
-  (message "hi"))
-
-
-(defun excorporate-create-meeting-string ()
+(defun exco-org--create-meeting-string ()
   "generates string for an excorporte meeting"
 
   ;; read the time
@@ -22,18 +7,18 @@
 	  (time-of-date (if (equal time-of-date-input "") "12:00" time-of-date-input)))
 
     ;; get the date from calfw position
-    (concat "* krappa \n"
+    (concat "* todo krappa \n"
       "SCHEDULED: "
       (substring (cfw:org-capture-day) 0 (1- (length (cfw:org-capture-day)))) " " time-of-date ">" )))
 
-(defun excorporate-create-meeting ()
+(defun exco-org-create-meeting ()
   (interactive)
   (org-capture nil "e"))
 
 
 
 
-(defun org-timestamp-type (timestamp)
+(defun exco-org--timestamp-type (timestamp)
   "Determine if an org timestamp is a single timestamp or a time range."
   (let ((time-range-regex "<[0-9]+-[0-9]+-[0-9]+ \\w+ [0-9]+:[0-9]+-[0-9]+:[0-9]+>")
          (time-regex "<[0-9]+-[0-9]+-[0-9]+ \\w+ [0-9]+:[0-9]+>"))
@@ -43,7 +28,7 @@
       (t (error "Invalid timestamp format")))))
 
 
-(defun org-split-timerange (timestamp)
+(defun exco-org--split-timerange (timestamp)
   "Split an org time range timestamp into two single timestamps."
   (let ((time-range-regex "<\\([0-9]+\\)-\\([0-9]+\\)-\\([0-9]+\\) \\w+ \\([0-9]+\\):\\([0-9]+\\)-\\([0-9]+\\):\\([0-9]+\\)>"))
     (if (string-match time-range-regex timestamp)
@@ -59,7 +44,7 @@
       (error "Invalid time range timestamp format"))))
 
 
-(defun add-hour-to-time (time)
+(defun exco-org--add-hour-to-time (time)
   "Add an hour to an Emacs internal time object."
   (let* ((days (car time))
           (seconds (cadr time))
@@ -70,29 +55,29 @@
 
 
 
-(defun exco-parse-time (string-timestamp)
+(defun exco-org--parse-time (string-timestamp)
   "generate the time objects: alist with time-start and time-end"
   ;; (let ((time-start nil)
   ;; 	(time-end nil))
   (cond
     ;; if we have a single time-stamp, add one hour by default
-    ((equal (org-timestamp-type string-timestamp) 'single-timestamp)
+    ((equal (exco-org--timestamp-type string-timestamp) 'single-timestamp)
       `((time-start . ,(org-read-date nil t string-timestamp))
-	 (time-end . ,(add-hour-to-time (org-read-date nil t string-timestamp)))))
+	 (time-end . ,(exco-org--add-hour-to-time (org-read-date nil t string-timestamp)))))
     ;; if range is given, use that
 
-    ((equal (org-timestamp-type string-timestamp) 'time-range)
-      `((time-start . ,(org-read-date nil t (car (org-split-timerange string-timestamp))))
-	 (time-end . ,(org-read-date nil t (cadr (org-split-timerange string-timestamp))))))
+    ((equal (exco-org--timestamp-type string-timestamp) 'time-range)
+      `((time-start . ,(org-read-date nil t (car (exco-org--split-timerange string-timestamp))))
+	 (time-end . ,(org-read-date nil t (cadr (exco-org--split-timerange string-timestamp))))))
     
     (t (error "error in time parsing"))))
 
 
 
-(defun exco-upload-meeting ()
+(defun exco-org--upload-meeting ()
   "upload the meeting online"
 
-  (let ((time-info (exco-parse-time (cdar (org-entry-properties (point) "SCHEDULED"))))
+  (let ((time-info (exco-org--parse-time (cdar (org-entry-properties (point) "SCHEDULED"))))
 	 (meeting-title (cdar (org-entry-properties (point) "ITEM"))))
 
     (exco-calendar-item-appointment-create
@@ -104,14 +89,15 @@
       (lambda (identifier response)
 	;; (message "%S: %S" identifier response)
 	;; (setq exco-upload-response response)
-	(exco-add-identifiers-to-meeting-property response)
+	(exco-org--add-identifiers-to-meeting-property response)
 
 	))))
 
 
-(defun exco-add-identifiers-to-meeting-property (exco-upload-response)
+(defun exco-org--add-identifiers-to-meeting-property (exco-upload-response)
   ;; navigate response down and add MEETINGID and ChangeKey to org-headline
   
+  ;; clumsy way of retrieving the meeting ID and Change key part of the response
   (let ((response-class (assoc-default 'ResponseClass (cdr (cadaar exco-upload-response))))
 	 (identifier-cons (cadadr (nth 2 (cdr (cadaar exco-upload-response)))))
 	 (cur-buf (current-buffer)))
@@ -129,7 +115,7 @@
 
 
 
-(defun exco-post-meeting ()
+(defun exco-org--post-meeting ()
   "go to exco schedule file, and then upload meeting"
 
   (when (not org-note-abort)
@@ -138,9 +124,9 @@
         (let ((inhibit-message t))
 	  (org-capture-goto-last-stored))
 	(when (string= (buffer-file-name) excorporate-org-schedule-file)
-	  (exco-upload-meeting))))))
+	  (exco-org--upload-meeting))))))
 
-(defun exco-operate-daterange (identifier date-start date-end callback)
+(defun exco-org--operate-daterange (identifier date-start date-end callback)
   "Return the meetings for the specified date range."
 
   (exco-operate
@@ -157,7 +143,7 @@
 	   (BaseShape . "AllProperties"))
 	 ;; To aid productivity, excorporate-calfw automatically prunes your
 	 ;; meetings to a maximum of 100 per day.
-	 (CalendarView (MaxEntriesReturned . "100")
+	 (CalendarView (MaxEntriesReturned . "300")
 	   (StartDate . ,date-start)
 	   (EndDate . ,date-end))
 	 (ParentFolderIds
@@ -168,7 +154,7 @@
   )
 
 
-(defun exco-get-meetings-for-year (identifier month day year callback)
+(defun exco-org--get-meetings-for-year (identifier month day year callback)
   "Return the meetings for the specified day.
 IDENTIFIER is the connection identifier.  MONTH, DAY and YEAR are
 the meeting month, day and year.  Call CALLBACK with two
@@ -178,11 +164,11 @@ arguments, IDENTIFIER and the server's response."
 	  (date-end (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,month ,(+ year 1))))))
 	  ;; (date-end (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,(+ month 1) ,year)))))
 
-    (exco-operate-daterange identifier date-start date-end callback)
+    (exco-org--operate-daterange identifier date-start date-end callback)
         
     ))
 
-(defun exco-get-meetings-for-month (identifier month day year callback)
+(defun exco-org--get-meetings-for-month (identifier month day year callback)
   "Return the meetings for the specified month."
 
   (let* (
@@ -190,7 +176,7 @@ arguments, IDENTIFIER and the server's response."
 	  (date-end (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,(+ month 1) ,year)))))
 	  
 
-    (exco-operate-daterange identifier date-start date-end callback)
+    (exco-org--operate-daterange identifier date-start date-end callback)
         
     ))
 
@@ -200,27 +186,27 @@ arguments, IDENTIFIER and the server's response."
 ;; (exco-connection-iterate
 ;;   (lambda () (exco-calfw-initialize-buffer 8 7 2024))
 ;;   (lambda (identifier-callback)
-;;     (exco-get-meetings-for-year identifier 8 7 2024 callback)) nil nil)
+;;     (exco-org--get-meetings-for-year identifier 8 7 2024 callback)) nil nil)
 
-(defun exco-org-show-year (month day year)
+(defun exco-org--show-year (month day year)
   "Show meetings for the date specified by MONTH DAY YEAR."
   (exco-connection-iterate #'exco-org-initialize-buffer
     (lambda (identifier callback)
       (exco-org-insert-headline identifier
 	month day year)
-      (exco-get-meetings-for-year identifier
+      (exco-org--get-meetings-for-year identifier
 	month day year
 	callback)) 
     #'exco-org-insert-meetings
     #'exco-org-finalize-buffer))
 
-(defun exco-org-show-month (month day year)
+(defun exco-org--show-month (month day year)
   "Show meetings for the date specified by MONTH DAY YEAR."
   (exco-connection-iterate #'exco-org-initialize-buffer
     (lambda (identifier callback)
       (exco-org-insert-headline identifier
 	month day year)
-      (exco-get-meetings-for-month identifier
+      (exco-org--get-meetings-for-month identifier
 	month day year
 	callback)) 
     #'exco-org-insert-meetings
@@ -230,7 +216,7 @@ arguments, IDENTIFIER and the server's response."
 
 
 
-(defun exco-org-parse-meeting-file ()
+(defun exco-org--parse-meeting-file ()
   "see which meetings are in the org-file via org-element-map in the background; returns a list of meetings
   with the following structure: (Identifier, Subject)"
   (let ((meetings nil))
@@ -243,8 +229,6 @@ arguments, IDENTIFIER and the server's response."
 	  
 	  ;; extract basic information from org entry
 	  (let* (
-		  ;; (MEETINGID "jj")
-		  ;; (MEETINGID (org-element-property :LOCATION headline))
 		  (MEETINGID (org-element-property :MEETINGID headline))
 		  (subject (org-element-property :raw-value headline))
 		  (scheduled (cdar (org-entry-properties headline "SCHEDULED")))
@@ -261,9 +245,9 @@ arguments, IDENTIFIER and the server's response."
 		meetings))))
       meetings)))
 
-;; (exco-org-parse-meeting-file)
+;; (exco-org--parse-meeting-file)
 
-(defun exco-org-dispatch-meeting-at-point (existing-meetings ids-existing-meetings)
+(defun exco-org--dispatch-meeting-at-point (existing-meetings ids-existing-meetings)
   "handle with meeting at point: copy if new, update if existing"
   (let* ((MEETINGID (org-entry-get (point) "MEETINGID"))
 	  (subject (org-entry-get (point) "ITEM"))
@@ -276,21 +260,21 @@ arguments, IDENTIFIER and the server's response."
     ;; handle them on different cases
     ;; if not there at all: copy them over
     (cond
-      ((not (member MEETINGID ids-existing-meetings)) (exco-org-refile-new-meeting))
+      ((not (member MEETINGID ids-existing-meetings)) (exco-org--refile-new-meeting))
       ;; if already there, but changed: update them 
       ((and (member MEETINGID ids-existing-meetings)
 	 (not (equal hash-exco hash-exco-org)))
-	(exco-org-update-changed-meeting))
+	(exco-org--update-changed-meeting subject scheduled location))
 
       )))
 
 
-(defun exco-org-dispatch-meetings ()
+(defun exco-org--dispatch-meetings ()
   "refile new meetings (meetings which are not yet in the
   excorporate-org-schedule-file) to the
   excorporate-org-schedule-file"
 
-  (let* ((existing-meetings (exco-org-parse-meeting-file))
+  (let* ((existing-meetings (exco-org--parse-meeting-file))
 	  (ids-existing-meetings (alist-keys existing-meetings)))
 
     (with-current-buffer "*Excorporate*"
@@ -302,7 +286,7 @@ arguments, IDENTIFIER and the server's response."
       ;; iterate over all meetings
       (while (not (eobp))
 
-	(exco-org-dispatch-meeting-at-point existing-meetings ids-existing-meetings)
+	(exco-org--dispatch-meeting-at-point existing-meetings ids-existing-meetings)
 
 	;; go to next meeting
 	(org-next-visible-heading 1))))
@@ -312,12 +296,12 @@ arguments, IDENTIFIER and the server's response."
   ;; necessary to do it here because if i run it in exco-update it seems the advice is removed before running
   ;; because the excorporate code is async
   ;; so I first run the dispatch, and then remove the advice
-  (advice-remove 'exco-org-finalize-buffer 'exco-org-dispatch-meetings)
+  (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
 
   )
 
 
-(defun exco-org-refile-new-meeting ()
+(defun exco-org--refile-new-meeting ()
   "new meetings: copy them, assign an org-id to them"
   
   (org-copy-subtree)
@@ -328,16 +312,12 @@ arguments, IDENTIFIER and the server's response."
     
 
 
-(defun exco-org-update-changed-meeting ()
+(defun exco-org--update-changed-meeting (subject scheduled location)
   "update a meeting that has changed on the server"
   
   ;; go to the meeting in the excorporate-org-schedule-file via the identifier
   (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
 
-    ;; (message "hi")
-    ;; (message "there")
-    ;; need org-ids
-    
     (org-schedule nil scheduled) ;; set new schedule
     (org-set-property "LOCATION" location) ;; set new location
     (org-edit-headline subject)  ;; set new subject
@@ -345,7 +325,7 @@ arguments, IDENTIFIER and the server's response."
   ))
 
 
-(defun my/exco-org-insert-meeting-advice (orig-fun &rest args)
+(defun exco-org--insert-meeting-advice (orig-fun &rest args)
   "Insert a scheduled meeting, with MEETINGID, ChangeKey and location in org-property drawer"
 
   ;; insert the meeting normally 
@@ -365,8 +345,8 @@ arguments, IDENTIFIER and the server's response."
     (when location
       (org-set-property "LOCATION" location))))
 
-(defun my/exco-lowercase-state (orig-fun &rest args)
-  "lowercase the state of the meeting"
+(defun exco-org--lowercase-state (orig-fun &rest args)
+  "lowercase the state of the meeting since I use lowercase todo state"
   ;; get the original point
   (let ((cur-point (point)))
 
@@ -381,18 +361,18 @@ arguments, IDENTIFIER and the server's response."
 
 
 
-(advice-add 'exco-org-insert-meeting :around #'my/exco-org-insert-meeting-advice)
-;; (advice-remove 'exco-org-insert-meeting  #'my/exco-org-insert-meeting-advice)
+(advice-add 'exco-org-insert-meeting :around #'exco-org--insert-meeting-advice)
+;; (advice-remove 'exco-org-insert-meeting  #'exco-org--insert-meeting-advice)
 
-(advice-add 'exco-org-insert-meeting-headline :after #'my/exco-lowercase-state)
-;; (advice-remove 'exco-org-insert-meeting-heading #'my/exco-lowercase-state)
+(advice-add 'exco-org-insert-meeting-headline :after #'exco-org--lowercase-state)
+;; (advice-remove 'exco-org-insert-meeting-heading #'exco-org--lowercase-state)
 
 
-;; (exco-org-show-year 8 7 2024)
-;; (exco-org-show-month 9 1 2024)
-;; (exco-org-dispatch-meetings)
+;; (exco-org--show-year 8 7 2024)
+;; (exco-org--show-month 9 1 2024)
+;; (exco-org--dispatch-meetings)
 
-(defun exco-update ()
+(defun exco-org-sync ()
   (interactive)
 
   ;; get current year
@@ -405,18 +385,19 @@ arguments, IDENTIFIER and the server's response."
 
 
     ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
-    (advice-add 'exco-org-finalize-buffer :after 'exco-org-dispatch-meetings)
+    (advice-add 'exco-org-finalize-buffer :after 'exco-org--dispatch-meetings)
     
-    (exco-org-show-month current-month current-day current-year)
-    ;; (exco-org-show-year current-month current-day current-year)
+    (exco-org--show-month current-month current-day current-year)
+    ;; (exco-org--show-year current-month current-day current-year)
+
 
     ;; remove the advice in case somebody doesn't want to use dispatch
     ;; this is super spaghetti-cody, super hard to backtrace.. 
-    ;; (advice-remove 'exco-org-finalize-buffer 'exco-org-dispatch-meetings)
+    ;; (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
 
 
     ))
 
 
 ;; add hook to add ItemId to freshly posted meetings
-(add-hook 'org-capture-after-finalize-hook 'exco-post-meeting)
+(add-hook 'org-capture-after-finalize-hook 'exco-org--post-meeting)

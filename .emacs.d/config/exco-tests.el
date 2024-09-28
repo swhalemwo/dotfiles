@@ -97,3 +97,14 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
 
 
 
+;; MWE for posting meeting
+;; (exco-calendar-item-appointment-create
+;;   (exco-select-connection-identifier)
+;;   "Test meeting 1"
+;;   "Hi,\n\nThis is a test meeting 1.\n\nRegards.\n"
+;;   (encode-time 0 15 14 24 08 2024)
+;;   (encode-time 0 0  15 24 08 2024)
+;;   (lambda (identifier response)
+;;     (message "%S: %S" identifier response)))
+
+

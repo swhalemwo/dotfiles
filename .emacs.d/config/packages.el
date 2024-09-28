@@ -325,7 +325,7 @@
 
        ("e" "excorporate" entry 
          (file "/home/johannes/Dropbox/sync/org/schedule_uva.org")
-	 #'excorporate-create-meeting-string)
+	 #'exco-org--create-meeting-string)
        
        ("s" "study" entry
 	 (file "/home/johannes/Dropbox/sync/org/gsss.org")
@@ -743,7 +743,7 @@
        ("" . "")))
   
   (setq excorporate-org-schedule-file "/home/johannes/Dropbox/sync/org/schedule_uva.org")
-  (define-key cfw:org-custom-map (kbd "e") 'excorporate-create-meeting)
+  (define-key cfw:org-custom-map (kbd "e") 'exco-org-create-meeting)
 
   )
 
