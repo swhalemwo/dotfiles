@@ -232,6 +232,33 @@ arguments, IDENTIFIER and the server's response."
 
 
 
+(defun exco-org--parse-excorporate-buffer ()
+  (let ((meetings nil))
+    (with-current-buffer "*Excorporate*"
+
+      (org-element-map (org-element-parse-buffer) 'headline
+	(lambda (headline)
+	  
+	  ;; extract basic information from org entry
+	  (let* (
+		  (MEETINGID (org-element-property :MEETINGID headline))
+		  (subject (org-element-property :raw-value headline))
+		  (scheduled (cdar (org-entry-properties headline "SCHEDULED")))
+		  (location (org-element-property :LOCATION headline))
+		  (org-id (org-element-property :ID headline))
+		  (hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
+
+	    
+	      (push `(,MEETINGID . 
+			((subject . ,subject)
+			  (location . ,location)
+			  (org-id . ,org-id)
+			  (scheduled . ,scheduled)
+			  (hash-exco-org . ,hash-exco-org)))
+		meetings))))
+      meetings)))
+      
+
 
 
 (defun exco-org--parse-meeting-file ()
