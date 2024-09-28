@@ -7,9 +7,9 @@
 	  (time-of-date (if (equal time-of-date-input "") "12:00" time-of-date-input)))
 
     ;; get the date from calfw position
-    (concat "* todo krappa \n"
+    (concat "* todo \n"
       "SCHEDULED: "
-      (substring (cfw:org-capture-day) 0 (1- (length (cfw:org-capture-day)))) " " time-of-date ">" 
+      (substring (cfw:org-capture-day) 0 (1- (length (cfw:org-capture-day)))) " " time-of-date ">\n" 
       ":PROPERTIES:\n"
       ":LOCATION: TBA\n"  ;; set some filler location property
       ":END:\n"
