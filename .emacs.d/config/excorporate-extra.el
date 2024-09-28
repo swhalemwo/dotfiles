@@ -310,7 +310,7 @@ arguments, IDENTIFIER and the server's response."
       ;; if already there, but changed: update them 
       ((and (member MEETINGID ids-existing-meetings)
 	 (not (equal hash-exco hash-exco-org)))
-	(exco-org--update-changed-meeting subject scheduled location))
+	(exco-org--update-changed-org-meeting subject scheduled location))
 
       )))
 
@@ -358,7 +358,7 @@ arguments, IDENTIFIER and the server's response."
     
 
 
-(defun exco-org--update-changed-meeting (subject scheduled location)
+(defun exco-org--update-changed-org-meeting (subject scheduled location)
   "update a meeting that has changed on the server"
   
   ;; go to the meeting in the excorporate-org-schedule-file via the identifier
