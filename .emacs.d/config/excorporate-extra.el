@@ -9,7 +9,11 @@
     ;; get the date from calfw position
     (concat "* todo krappa \n"
       "SCHEDULED: "
-      (substring (cfw:org-capture-day) 0 (1- (length (cfw:org-capture-day)))) " " time-of-date ">" )))
+      (substring (cfw:org-capture-day) 0 (1- (length (cfw:org-capture-day)))) " " time-of-date ">" 
+      ":PROPERTIES:\n"
+      ":LOCATION: TBA\n"  ;; set some filler location property
+      ":END:\n"
+)))
 
 (defun exco-org-create-meeting ()
   (interactive)
@@ -78,20 +82,34 @@
   "upload the meeting online"
 
   (let ((time-info (exco-org--parse-time (cdar (org-entry-properties (point) "SCHEDULED"))))
-	 (meeting-title (cdar (org-entry-properties (point) "ITEM"))))
+	 (meeting-title (cdar (org-entry-properties (point) "ITEM")))
+	 (location (org-entry-properties (point) "LOCATION")))
 
-    (exco-calendar-item-appointment-create
+    ;; (exco-calendar-item-appointment-create
+    ;;   (exco-select-connection-identifier)
+    ;;   meeting-title
+    ;;   "body text"
+    ;; (cdr (assoc 'time-start time-info))
+    ;; (cdr (assoc 'time-end time-info))
+    ;;   (lambda (identifier response)
+    ;; 	(exco-org--add-identifiers-to-meeting-property response)
+    ;;
+    
+    (exco-calendar-item-meeting-create
       (exco-select-connection-identifier)
       meeting-title
       "body text"
       (cdr (assoc 'time-start time-info))
       (cdr (assoc 'time-end time-info))
+      (cdar location)
+      nil ;; no invitees
+      nil ;; no optional invitees
       (lambda (identifier response)
-	;; (message "%S: %S" identifier response)
-	;; (setq exco-upload-response response)
-	(exco-org--add-identifiers-to-meeting-property response)
+	(exco-org--add-identifiers-to-meeting-property response)))
+    
+    )
+  )
 
-	))))
 
 
 (defun exco-org--add-identifiers-to-meeting-property (exco-upload-response)

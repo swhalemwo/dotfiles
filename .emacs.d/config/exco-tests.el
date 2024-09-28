@@ -108,3 +108,17 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
 ;;     (message "%S: %S" identifier response)))
 
 
+
+;;
+(exco-calendar-item-meeting-create
+  (exco-select-connection-identifier)
+  "lalala"
+  "body text"
+  (encode-time 0 15 14 29 09 2024)
+  (encode-time 0 30 14 29 09 2024)
+  "TBA"
+  nil
+  nil
+  (lambda (identifier response)
+     (message "%S: %S" identifier response)))
+  
