@@ -337,13 +337,18 @@ arguments, IDENTIFIER and the server's response."
 	;; go to next meeting
 	(org-next-visible-heading 1))))
   
+  ;; delete from org files meetings that don't exist on server  
+  (exco-org--delete-deleted-meetings-from-org exco-org--date-start exco-org--date-end)
+
   ;; remove the advice for dispatch after finalize
   ;; it removes itself in a way
   ;; necessary to do it here because if i run it in exco-update it seems the advice is removed before running
-  ;; because the excorporate code is async
+  ;; because the excorporate code is semi-async
   ;; so I first run the dispatch, and then remove the advice
-  (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
+    (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
 
+  
+  
   )
 
 
@@ -418,32 +423,98 @@ arguments, IDENTIFIER and the server's response."
 ;; (exco-org--show-month 9 1 2024)
 ;; (exco-org--dispatch-meetings)
 
+(defun value-between-p (value min max)
+  (and (> value min) (< value max)))
+
+
+(defun exco-org--delete-deleted-meetings-from-org (date-start date-end)
+  "delete meetings that are not on exco (i.e. server) anymore,
+i.e. have been deleted
+
+date-start: absolute day number
+date-end: absolute day number"  
+  (let* ((parsed-meetings-file (exco-org--parse-meeting-file))
+	  (parsed-exco-meetings (alist-keys (exco-org--parse-excorporate-buffer)))
+	  ;; filter only those that are in date range and not in exco
+	  (meetings-to-delete
+	    (mapcan (lambda (meeting)
+		      (and ;; mapcan requirement
+			(and
+			  ;; not in time range
+			  (value-between-p
+			    (org-time-string-to-absolute (assoc-default 'scheduled meeting))
+			    date-start date-end)
+			  ;; not in exco buffer
+			  (not (member (car meeting) parsed-exco-meetings)))
+			(list meeting)))
+	      parsed-meetings-file)))
+
+	  ;; ;; filter only those that are not in exco
+	  ;; (meetings-to-delete
+	  ;;   (mapcan (lambda (meeting)
+	  ;; 	      (and
+	  ;; 		(not (member (car meeting) parsed-exco-meetings))
+	  ;; 		(list meeting)))
+	  ;;     filtered-file-meetings)))
+
+    ;; delete them 
+    (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
+      (mapcar (lambda (meeting)
+		(progn 
+		  (goto-char (cdr (org-id-find (assoc-default 'org-id (cdr meeting)))))
+		  (org-cut-subtree)
+		  (save-buffer)
+		  ))
+	meetings-to-delete))
+
+    (message (format "deleted %s meetings" (length meetings-to-delete)))))
+    
+	
+
+
+
+
+
 (defun exco-org-sync ()
+  
+  ;; remove the advice in case somebody doesn't want to use dispatch
+  ;; this is super spaghetti-cody, super hard to backtrace.. 
+  ;; (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
+
   (interactive)
 
   ;; get current year
   (let* ((current-date (decode-time (current-time)))
 	  (current-year (nth 5 current-date))
 	  (current-month (nth 4 current-date))
-	  (current-day (nth 3 current-date))
-	  )
+	  (current-day (nth 3 current-date)))
 
-
-
-    ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
+        ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
     (advice-add 'exco-org-finalize-buffer :after 'exco-org--dispatch-meetings)
     
-    (exco-org--show-month current-month current-day current-year)
-    ;; (exco-org--show-year current-month current-day current-year)
+    ;; if C-u: only do for month for quick testing
+    (if current-prefix-arg
 
-
-    ;; remove the advice in case somebody doesn't want to use dispatch
-    ;; this is super spaghetti-cody, super hard to backtrace.. 
-    ;; (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
-
-
+      (progn
+	;; set date range for checking schedule file for meetings which were deleted on server to delete
+	;; have to cleaning dates globally since cleaning runs semi-async via advice
+	(setq exco-org--date-start (time-to-days (current-time)))
+	(setq exco-org--date-end
+	  (time-to-days (apply #'encode-time `(0 0 0 ,current-day ,(+ current-month 1) ,current-year))))
+	
+	(exco-org--show-month current-month current-day current-year))
+      (progn
+	(setq exco-org--date-start
+	  (time-to-days (apply #'encode-time `(0 0 0 ,current-day ,(- current-month 1) ,current-year))))
+	(setq exco-org--date-end
+	  (time-to-days (apply #'encode-time `(0 0 0 ,current-day ,current-month ,(+ current-year 1)))))
+	
+	(exco-org--show-year current-month current-day current-year)))
     ))
+
+
 
 
 ;; add hook to add ItemId to freshly posted meetings
 (add-hook 'org-capture-after-finalize-hook 'exco-org--post-meeting)
+
