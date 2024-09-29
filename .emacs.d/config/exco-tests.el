@@ -122,3 +122,20 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
   (lambda (identifier response)
      (message "%S: %S" identifier response)))
   
+
+(defun scope-test2 ()
+  (message arg1))
+
+
+
+(defun scope-test1 ()
+  (let ((arg1 "jjj"))
+    (scope-test2)))
+
+(scope-test1)
+
+
+(exco-org--delete-deleted-meetings-from-org
+	  (org-time-string-to-absolute "<2024-09-28 za>")
+	  (org-time-string-to-absolute "<2024-10-28 za>")
+	  )
