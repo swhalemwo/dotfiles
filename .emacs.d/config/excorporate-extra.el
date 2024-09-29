@@ -12,8 +12,7 @@
       (substring (cfw:org-capture-day) 0 (1- (length (cfw:org-capture-day)))) " " time-of-date ">\n" 
       ":PROPERTIES:\n"
       ":LOCATION: TBA\n"  ;; set some filler location property
-      ":END:\n"
-)))
+      ":END:\n")))
 
 (defun exco-org-create-meeting ()
   (interactive)
@@ -128,7 +127,7 @@
       (org-set-property "MEETINGID" (assoc-default 'Id (cdr identifier-cons)))
       (org-set-property "ChangeKey" (assoc-default 'ChangeKey (cdr identifier-cons)))
       )))
-      
+
 
 
 
@@ -180,10 +179,10 @@ arguments, IDENTIFIER and the server's response."
   (let* (
 	  (date-start (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,(- month 1) ,year))))
 	  (date-end (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,month ,(+ year 1))))))
-	  ;; (date-end (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,(+ month 1) ,year)))))
+    ;; (date-end (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,(+ month 1) ,year)))))
 
     (exco-org--operate-daterange identifier date-start date-end callback)
-        
+    
     ))
 
 (defun exco-org--get-meetings-for-month (identifier month day year callback)
@@ -192,10 +191,10 @@ arguments, IDENTIFIER and the server's response."
   (let* (
 	  (date-start (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,month  ,year))))
 	  (date-end (exco-format-date-time (apply #'encode-time `(0 0 0 ,day ,(+ month 1) ,year)))))
-	  
+    
 
     (exco-org--operate-daterange identifier date-start date-end callback)
-        
+    
     ))
 
 
@@ -249,15 +248,15 @@ arguments, IDENTIFIER and the server's response."
 		  (hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
 
 	    
-	      (push `(,MEETINGID . 
-			((subject . ,subject)
-			  (location . ,location)
-			  (org-id . ,org-id)
-			  (scheduled . ,scheduled)
-			  (hash-exco-org . ,hash-exco-org)))
-		meetings))))
+	    (push `(,MEETINGID . 
+		     ((subject . ,subject)
+		       (location . ,location)
+		       (org-id . ,org-id)
+		       (scheduled . ,scheduled)
+		       (hash-exco-org . ,hash-exco-org)))
+	      meetings))))
       meetings)))
-      
+
 
 
 
@@ -282,13 +281,13 @@ arguments, IDENTIFIER and the server's response."
 		  (hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
 
 	    
-	      (push `(,MEETINGID . 
-			((subject . ,subject)
-			  (location . ,location)
-			  (org-id . ,org-id)
-			  (scheduled . ,scheduled)
-			  (hash-exco-org . ,hash-exco-org)))
-		meetings))))
+	    (push `(,MEETINGID . 
+		     ((subject . ,subject)
+		       (location . ,location)
+		       (org-id . ,org-id)
+		       (scheduled . ,scheduled)
+		       (hash-exco-org . ,hash-exco-org)))
+	      meetings))))
       meetings)))
 
 ;; (exco-org--parse-meeting-file)
@@ -345,7 +344,7 @@ arguments, IDENTIFIER and the server's response."
   ;; necessary to do it here because if i run it in exco-update it seems the advice is removed before running
   ;; because the excorporate code is semi-async
   ;; so I first run the dispatch, and then remove the advice
-    (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
+  (advice-remove 'exco-org-finalize-buffer 'exco-org--dispatch-meetings)
 
   
   
@@ -360,7 +359,7 @@ arguments, IDENTIFIER and the server's response."
     (goto-char (point-max))
     (org-paste-subtree)
     (org-id-get-create)))
-    
+
 
 
 (defun exco-org--update-changed-org-meeting (subject scheduled location)
@@ -372,8 +371,8 @@ arguments, IDENTIFIER and the server's response."
     (org-schedule nil scheduled) ;; set new schedule
     (org-set-property "LOCATION" location) ;; set new location
     (org-edit-headline subject)  ;; set new subject
-  
-  ))
+    
+    ))
 
 
 (defun exco-org--insert-meeting-advice (orig-fun &rest args)
@@ -449,13 +448,13 @@ date-end: absolute day number"
 			(list meeting)))
 	      parsed-meetings-file)))
 
-	  ;; ;; filter only those that are not in exco
-	  ;; (meetings-to-delete
-	  ;;   (mapcan (lambda (meeting)
-	  ;; 	      (and
-	  ;; 		(not (member (car meeting) parsed-exco-meetings))
-	  ;; 		(list meeting)))
-	  ;;     filtered-file-meetings)))
+    ;; ;; filter only those that are not in exco
+    ;; (meetings-to-delete
+    ;;   (mapcan (lambda (meeting)
+    ;; 	      (and
+    ;; 		(not (member (car meeting) parsed-exco-meetings))
+    ;; 		(list meeting)))
+    ;;     filtered-file-meetings)))
 
     ;; delete them 
     (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
@@ -468,8 +467,8 @@ date-end: absolute day number"
 	meetings-to-delete))
 
     (message (format "deleted %s meetings" (length meetings-to-delete)))))
-    
-	
+
+
 
 
 
@@ -489,7 +488,7 @@ date-end: absolute day number"
 	  (current-month (nth 4 current-date))
 	  (current-day (nth 3 current-date)))
 
-        ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
+    ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
     (advice-add 'exco-org-finalize-buffer :after 'exco-org--dispatch-meetings)
     
     ;; if C-u: only do for month for quick testing
