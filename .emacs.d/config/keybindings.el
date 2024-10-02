@@ -192,3 +192,4 @@
 (define-key emacs-lisp-mode-map (kbd "C-#")  'consult-git-grep)
 
 (define-key emacs-lisp-mode-map (kbd "C-M-;") 'iedit-mode)
+(define-key org-mode-map (kbd "C-M-;") 'iedit-mode)
