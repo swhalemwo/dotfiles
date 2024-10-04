@@ -272,6 +272,21 @@ This holds the results of the last documentation request."
 
 
 
+;; ** langtool
+
+(use-package langtool
+  :init
+  (setq langtool-language-tool-server-jar "/home/johannes/tec/langtool/LanguageTool-6.5/languagetool-server.jar")
+  :bind (:map org-mode-map
+	  ("C-M-." . 'langtool-goto-next-error)
+	  ("C-M-," . 'langtool-goto-previous-error)
+	  ("C-M-k" . 'langtool-correct-at-point)
+	  ))
+
+
+
+
+
 ;; ** polymode
 
 
