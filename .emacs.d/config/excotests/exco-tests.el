@@ -139,3 +139,39 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
 	  (org-time-string-to-absolute "<2024-09-28 za>")
 	  (org-time-string-to-absolute "<2024-10-28 za>")
 	  )
+
+;; ** checking key consistency
+
+;; do it in R: so much easier than elisp
+
+
+(defun exco-org--meeting-to-csv (alist-meetings output-file)
+
+  (with-temp-file (concat EXCO-TEST-DIR output-file)
+    (insert "meeting_id,ChangeKey,subject,location,org_id,scheduled,hash_exco_org\n")
+    (dolist (entry alist-meetings)
+      ;; (debug)
+      (insert (format "%s,%s,%s,%s,%s,%s,%s\n"
+		(car entry)
+		(cdr (assoc 'ChangeKey entry))
+                (replace-regexp-in-string "," "" (cdr (assoc 'subject entry)))
+		(if (eq (cdr (assoc 'location entry)) nil) "no location" 
+                  (replace-regexp-in-string "," "" (cdr (assoc 'location entry))))
+                (cdr (assoc 'org-id entry))
+                (cdr (assoc 'scheduled entry))
+		(cdr (assoc 'hash-exco-org entry)))))))
+
+(setq EXCO-TEST-DIR "~/Dropbox/technical_stuff_general/dotfiles/.emacs.d/config/excotests/")
+
+(exco-org--meeting-to-csv (exco-org--parse-meeting-file) "meetingfile.csv")
+(exco-org--meeting-to-csv (exco-org--parse-excorporate-buffer) "exco-buffer.csv")
+
+(exco-org--meeting-to-csv (with-current-buffer "excorporate_buffer_oct2.org" (exco-org--parse-buffer))
+  "exco-buffer-oct2.csv")
+
+(exco-org--meeting-to-csv (with-current-buffer "excorporate_buffer_oct5.org" (exco-org--parse-buffer))
+  "exco-buffer-oct5.csv")
+  
+
+
+
