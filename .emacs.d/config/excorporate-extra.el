@@ -241,6 +241,7 @@ arguments, IDENTIFIER and the server's response."
 	;; extract basic information from org entry
 	(let* (
 		(MEETINGID (org-element-property :MEETINGID headline))
+		(ChangeKey (org-element-property :CHANGEKEY headline))
 		(subject (org-element-property :raw-value headline))
 		(scheduled (cdar (org-entry-properties headline "SCHEDULED")))
 		(location (org-element-property :LOCATION headline))
@@ -252,6 +253,7 @@ arguments, IDENTIFIER and the server's response."
 		   ((subject . ,subject)
 		     (location . ,location)
 		     (org-id . ,org-id)
+		     (ChangeKey . ,ChangeKey)
 		     (scheduled . ,scheduled)
 		     (hash-exco-org . ,hash-exco-org)))
 	    meetings))))
@@ -262,7 +264,8 @@ arguments, IDENTIFIER and the server's response."
 (defun exco-org--parse-excorporate-buffer ()
 
   (with-current-buffer "*Excorporate*"
-      (exco-org--parse-buffer)))
+    (exco-org--parse-buffer)))
+
 
 
 

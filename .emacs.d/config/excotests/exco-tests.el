@@ -173,5 +173,32 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
   "exco-buffer-oct5.csv")
   
 
+(apply #'encode-time `(0 0 0 ,7 ,10 ,2024))
 
 
+(exco-connection-iterate
+  #'exco-org-initialize-buffer
+    (lambda (identifier callback)
+
+      (exco-operate
+	identifier
+	"FindItem"
+	`(;; Main arguments.
+	   (;; RequestVersion is usually overridden by a fixed value in
+	     ;; the WSDL (the RequestServerVersion element); provide the
+	     ;; maximally-compatible Exchange2007 if the fixed value isn't
+	     ;; present.
+	     (RequestVersion (Version . "Exchange2007"))
+	     (Traversal . "Shallow")
+	     (ItemShape
+	       (BaseShape . "AllProperties"))
+	     ;; To aid productivity, excorporate-calfw automatically prunes your
+	     ;; meetings to a maximum of 100 per day.
+	     (CalendarView (MaxEntriesReturned . "300")
+	       (StartDate . (apply #'encode-time `(0 0 0 ,7 ,10 ,2024)))
+	       (EndDate . (apply #'encode-time `(0 0 0 ,7 ,10 ,2024))))
+	     (ParentFolderIds
+	       (DistinguishedFolderId (Id . "calendar"))))
+	   ;; Empty arguments.
+	   ,@(cdr (exco-operation-arity-nils identifier "FindItem")))
+	(lambda (x y) (message (format "%s%s" x y))))) nil nil)
