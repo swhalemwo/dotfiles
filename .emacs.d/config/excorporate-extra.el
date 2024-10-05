@@ -474,10 +474,16 @@ date-end: absolute day number"
   (let* ((current-date (decode-time (current-time)))
 	  (current-year (nth 5 current-date))
 	  (current-month (nth 4 current-date))
-	  (current-day (nth 3 current-date)))
+	  (current-day (nth 3 current-date))
+	  (exco-dispatch (if (equal (read-string "dispatch to file? ") "j") t nil)))
 
-    ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async 
-    (advice-add 'exco-org-finalize-buffer :after 'exco-org--dispatch-meetings)
+    ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async
+    
+    
+
+    
+    (when exco-dispatch 
+      (advice-add 'exco-org-finalize-buffer :after 'exco-org--dispatch-meetings))
     
     ;; if C-u: only do for month for quick testing
     (if current-prefix-arg
