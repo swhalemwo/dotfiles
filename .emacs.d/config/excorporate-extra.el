@@ -231,31 +231,38 @@ arguments, IDENTIFIER and the server's response."
 
 
 
-(defun exco-org--parse-excorporate-buffer ()
+(defun exco-org--parse-buffer ()
+  "general workhorse for parsing any buffer"
   (let ((meetings nil))
-    (with-current-buffer "*Excorporate*"
+  
+    (org-element-map (org-element-parse-buffer) 'headline
+      (lambda (headline)
+	
+	;; extract basic information from org entry
+	(let* (
+		(MEETINGID (org-element-property :MEETINGID headline))
+		(subject (org-element-property :raw-value headline))
+		(scheduled (cdar (org-entry-properties headline "SCHEDULED")))
+		(location (org-element-property :LOCATION headline))
+		(org-id (org-element-property :ID headline))
+		(hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
 
-      (org-element-map (org-element-parse-buffer) 'headline
-	(lambda (headline)
 	  
-	  ;; extract basic information from org entry
-	  (let* (
-		  (MEETINGID (org-element-property :MEETINGID headline))
-		  (subject (org-element-property :raw-value headline))
-		  (scheduled (cdar (org-entry-properties headline "SCHEDULED")))
-		  (location (org-element-property :LOCATION headline))
-		  (org-id (org-element-property :ID headline))
-		  (hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
+	  (push `(,MEETINGID . 
+		   ((subject . ,subject)
+		     (location . ,location)
+		     (org-id . ,org-id)
+		     (scheduled . ,scheduled)
+		     (hash-exco-org . ,hash-exco-org)))
+	    meetings))))
+    meetings))
 
-	    
-	    (push `(,MEETINGID . 
-		     ((subject . ,subject)
-		       (location . ,location)
-		       (org-id . ,org-id)
-		       (scheduled . ,scheduled)
-		       (hash-exco-org . ,hash-exco-org)))
-	      meetings))))
-      meetings)))
+
+
+(defun exco-org--parse-excorporate-buffer ()
+
+  (with-current-buffer "*Excorporate*"
+      (exco-org--parse-buffer)))
 
 
 
@@ -263,32 +270,13 @@ arguments, IDENTIFIER and the server's response."
 (defun exco-org--parse-meeting-file ()
   "see which meetings are in the org-file via org-element-map in the background; returns a list of meetings
   with the following structure: (Identifier, Subject)"
-  (let ((meetings nil))
-    
+     
     ;; org-element-map over excorporate-org-schedule-file and get the meetings
-    (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
-      
-      (org-element-map (org-element-parse-buffer) 'headline
-	(lambda (headline)
-	  
-	  ;; extract basic information from org entry
-	  (let* (
-		  (MEETINGID (org-element-property :MEETINGID headline))
-		  (subject (org-element-property :raw-value headline))
-		  (scheduled (cdar (org-entry-properties headline "SCHEDULED")))
-		  (location (org-element-property :LOCATION headline))
-		  (org-id (org-element-property :ID headline))
-		  (hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
+  (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
 
-	    
-	    (push `(,MEETINGID . 
-		     ((subject . ,subject)
-		       (location . ,location)
-		       (org-id . ,org-id)
-		       (scheduled . ,scheduled)
-		       (hash-exco-org . ,hash-exco-org)))
-	      meetings))))
-      meetings)))
+    (exco-org--parse-buffer)))
+      
+      
 
 ;; (exco-org--parse-meeting-file)
 
