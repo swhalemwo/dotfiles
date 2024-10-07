@@ -320,8 +320,22 @@
 	       (docx-file (replace-regexp-in-string "\.org$" "\.docx" (buffer-file-name)))
 	       (cmd-pandoc-html "")
 	       )
+
+	  ;; add all kinds of latex pre-processing functions
+	  ;; yeet headlines to be ignored (keep content)
+	  (add-to-list 'org-export-filter-headline-functions 'sa-ignore-headline)
+	  ;; replace tables with word-compatible ones
 	  (add-hook 'org-export-before-processing-hook 'ensure-word-compatibility)
+	  ;; replace pdf figures with png
 	  (add-hook 'org-export-before-parsing-functions 'ensure-pngs)
+
+	  ;; remove empty section labels: otherwise ignhead sections are still there?
+	  (add-to-list 'org-export-filter-final-output-functions
+	    'jackjackk/org-latex-remove-section-labels)
+
+	  ;; not sure why this is needed, but seems to be to have ignhead to work
+	  (add-to-list 'org-export-filter-headline-functions 'headline-numbering-filter)
+	  
 	  (org-latex-export-to-latex)
 	  (setq cmd-pandoc-html (concat "pandoc -F pandoc-crossref -C "
 				  (mapconcat (lambda (x) (concat "--bibliography=" x)) helm-bibtex-bibliography " ")
