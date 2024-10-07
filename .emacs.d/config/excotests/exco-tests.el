@@ -201,4 +201,5 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
 	       (DistinguishedFolderId (Id . "calendar"))))
 	   ;; Empty arguments.
 	   ,@(cdr (exco-operation-arity-nils identifier "FindItem")))
-	(lambda (x y) (message (format "%s%s" x y))))) nil nil)
+	(lambda (x y) (message (format "%s%s" x y)))))
+  nil nil)
