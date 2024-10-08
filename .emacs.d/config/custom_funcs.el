@@ -36,7 +36,8 @@
 	  (file-dir (if (file-exists-p (concat (file-name-directory (buffer-file-name)) pdf-name))
 		      (file-name-directory (buffer-file-name))
 		      "/home/johannes/Dropbox/readings/"))
-	  (cmd (concat "zathura " file-dir pdf-name " &")))
+	  (pdf-program (if current-prefix-arg "qpdfview " "zathura "))
+	  (cmd (concat pdf-program file-dir pdf-name " &")))
     (call-process-shell-command cmd)))
 
 (defun open-org-brain-of-notes ()
