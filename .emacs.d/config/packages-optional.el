@@ -258,13 +258,15 @@ This holds the results of the last documentation request."
     ;; 	   :default-chat-non-standard-params '(("num_ctx" . 8192))))
     (make-llm-openai
       :key llm-openai-key
-      :chat-model "gpt-3.5-turbo"))
+      ;; :chat-model "gpt-3.5-turbo"))
+      :chat-model "gpt-4o-mini"))
   ;; :embedding-model "nomic-embed-text"
   ;; :default-chat-non-standard-params '(("num_ctx" . 8192))
 
   (setopt ellama-naming-provider
     (make-llm-openai
-      :chat-model "gpt-3.5-turbo"
+      ;; :chat-model "gpt-3.5-turbo"
+      :chat-model "gpt-4o-mini"
       :key llm-openai-key
       :default-chat-non-standard-params '(("stop" . ("\n")))))
   (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
