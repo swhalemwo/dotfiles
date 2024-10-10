@@ -77,7 +77,8 @@
 	   ;; ("<C-return>" . 'elpy-shell-send-group) 
 	   ;; ("C-c C-o" . 'elpy-goto-definition)     
 	   ;; ("C-c C-j" . 'elpy-shell-send-statement)
-	   ;; ("C-c C-k" . 'elpy-summary-at-point)    
+	    ;; ("C-c C-k" . 'elpy-summary-at-point)
+	    ("C-a" . 'back-to-indentation)
 
 	   )
     ;; :hook outshine-mode
