@@ -78,6 +78,8 @@
 
 (setq enable-recursive-minibuffers t)
 
+(setq dired-listing-switches "-alh")
+
 
 
 ;; (setq ansi-color-map [default bold default italic underline success warning error nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
