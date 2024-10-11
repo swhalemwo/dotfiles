@@ -62,27 +62,28 @@
 
 ;; ** python
 (use-package elpy
-    ;; :defer t
-    :init
-    (elpy-enable) ;; maybe can be run as init? 
-    
-    :config
-    (setq python-shell-interpreter "python3")
-    (setq elpy-rpc-python-command "python3")
-    (add-hook 'elpy-mode-hook 'outshine-mode)
+  ;; :defer t
+  :init
+  (elpy-enable) ;; maybe can be run as init? 
+  
+  :config
+  (setq python-shell-interpreter "python3")
+  (setq elpy-rpc-python-command "python3")
+  (add-hook 'elpy-mode-hook 'outshine-mode)
+  
 
 
-    :bind (
-	   ;; ("C-c C-j" . 'elpy-shell-send-statement)
-	   ;; ("<C-return>" . 'elpy-shell-send-group) 
-	   ;; ("C-c C-o" . 'elpy-goto-definition)     
-	   ;; ("C-c C-j" . 'elpy-shell-send-statement)
-	    ;; ("C-c C-k" . 'elpy-summary-at-point)
-	    ("C-a" . 'back-to-indentation)
+  :bind (
+	  ;; ("C-c C-j" . 'elpy-shell-send-statement)
+	  ;; ("<C-return>" . 'elpy-shell-send-group) 
+	  ;; ("C-c C-o" . 'elpy-goto-definition)     
+	  ;; ("C-c C-j" . 'elpy-shell-send-statement)
+	  ;; ("C-c C-k" . 'elpy-summary-at-point)
+	  ("C-a" . 'back-to-indentation)
 
-	   )
-    ;; :hook outshine-mode
-    )
+	  )
+  ;; :hook outshine-mode
+  )
 
 
 
