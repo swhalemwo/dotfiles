@@ -317,3 +317,27 @@ This holds the results of the last documentation request."
 ;;   :config
 ;;     (zetteldeft-set-classic-keybindings))
 
+
+(use-package ejc-sql)
+
+(ejc-create-connection
+  "ch@180"
+  :dependencies [[com.clickhouse/clickhouse-jdbc "0.3.2"]]
+  :dbtype "clickhouse"
+  :classname "com.clickhouse.jdbc.ClickHouseDriver"
+  :connection-uri (concat "jdbc:clickhouse://127.0.0.1:8123/" "litanai"))
+
+(add-hook 'ejc-sql-connected-hook
+          (lambda ()
+            (ejc-set-fetch-size 50)
+            (ejc-set-max-rows 50)
+            (ejc-set-show-too-many-rows-message t)
+            (ejc-set-column-width-limit 40)
+            (ejc-set-use-unicode t)))
+
+;; don't think there's autocompletion for clickhouse
+;; (require 'ejc-autocomplete)
+;; (add-hook 'ejc-sql-minor-mode-hook
+;;           (lambda ()
+;;             (auto-complete-mode t)
+;;             (ejc-ac-setup)))
