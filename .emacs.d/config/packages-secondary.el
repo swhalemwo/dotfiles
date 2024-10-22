@@ -16,43 +16,43 @@
 			      :sqli-options sql-clickhouse-options
 			      :sqli-comint-func sql-clickhouse-comint))
 
-    (defun sql-send-string (str)
-	"Send the string STR to the SQL process."
-	(interactive "sSQL Text: ")
+    ;; (defun sql-send-string (str)
+    ;; 	"Send the string STR to the SQL process."
+    ;; 	(interactive "sSQL Text: ")
 
-	(let ((comint-input-sender-no-newline nil)
-              (s (replace-regexp-in-string "[[:space:]\n\r]+\\'" "" str)))
-	    (if (sql-buffer-live-p sql-buffer)
-		    (progn
-			;; Ignore the hoping around...
-			(save-excursion
-			    ;; Set product context
-			    (with-current-buffer sql-buffer
-				(when sql-debug-send
-				    (message ">>SQL> %S" s))
+    ;; 	(let ((comint-input-sender-no-newline nil)
+    ;;           (s (replace-regexp-in-string "[[:space:]\n\r]+\\'" "" str)))
+    ;; 	    (if (sql-buffer-live-p sql-buffer)
+    ;; 		    (progn
+    ;; 			;; Ignore the hoping around...
+    ;; 			(save-excursion
+    ;; 			    ;; Set product context
+    ;; 			    (with-current-buffer sql-buffer
+    ;; 				(when sql-debug-send
+    ;; 				    (message ">>SQL> %S" s))
 
-				;; Send the string (trim the trailing whitespace)
-				;; (message "buffer-process: %s" (get-buffer-process (get-buffer sql-buffer)))
-				;; (message "kappa")
+    ;; 				;; Send the string (trim the trailing whitespace)
+    ;; 				;; (message "buffer-process: %s" (get-buffer-process (get-buffer sql-buffer)))
+    ;; 				;; (message "kappa")
 				
-				(sql-input-sender (get-buffer-process (current-buffer)) s)
+    ;; 				(sql-input-sender (get-buffer-process (current-buffer)) s)
 
-				;; Send a command terminator if we must
-				(sql-send-magic-terminator sql-buffer s sql-send-terminator)
+    ;; 				;; Send a command terminator if we must
+    ;; 				(sql-send-magic-terminator sql-buffer s sql-send-terminator)
 
-				(when sql-pop-to-buffer-after-send-region
-				    (message "Sent string to buffer %s" sql-buffer))))
+    ;; 				(when sql-pop-to-buffer-after-send-region
+    ;; 				    (message "Sent string to buffer %s" sql-buffer))))
 
-			;; Display the sql buffer
-			;; (sql-display-buffer sql-buffer)
-			)
+    ;; 			;; Display the sql buffer
+    ;; 			;; (sql-display-buffer sql-buffer)
+    ;; 			)
 
-		;; We don't have no stinkin' sql
-		(user-error "No SQL process started"))))
+    ;; 		;; We don't have no stinkin' sql
+    ;; 		(user-error "No SQL process started"))))
   
     (add-hook 'sql-mode-hook 'sqlup-mode)
     (add-hook 'sql-mode-hook 'sqlind-minor-mode)
-    (load "/home/johannes/Dropbox/technical_stuff_general/sql/ch_debug.el")
+  ;; (load "/home/johannes/Dropbox/technical_stuff_general/sql/ch_debug.el")
     )
 
 ;; ** org-drill
@@ -61,6 +61,9 @@
 
 
 ;; ** python
+
+;; (use-package pyenv)
+
 (use-package elpy
   ;; :defer t
   :init
