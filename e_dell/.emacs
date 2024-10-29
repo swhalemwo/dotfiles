@@ -32,6 +32,7 @@
 			 "paths.el"
 			 "packages.el"
 			 "excorporate-extra.el"
+                         "jpdb.el"
 			 "packages-secondary.el"
 			 "packages-optional.el"
 			 ;; "packages-retired.el"

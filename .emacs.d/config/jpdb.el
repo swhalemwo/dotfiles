@@ -1,23 +1,24 @@
-(defun comint-nonewline-send (proc string)
+
+
+(defun jpdb-comint-nonewline-send (proc string)
   "Default function for sending to PROC input STRING.
 This just sends STRING plus a newline.  To override this,
 set the hook `comint-input-sender'."
-  (let ((send-string (concat (py-yeet-newlines string) "\n")))
-    (message send-string)
+  (let ((send-string (concat string "\n\n")))
+    ;; (message send-string)
     (comint-send-string proc send-string)))
   
 
-(defun py-send-reg (beg end blink)
-  ;; send region from beg to end to py-string-sender, which sends it to comint
+(defun jpdb-send-reg (beg end blink)
+  ;; send region from beg to end to jpdb-string-sender, which sends it to comint
   (when blink
     (ess-blink-region beg end))
-  (py-string-sender (buffer-substring-no-properties beg end)))
+  (jpdb-string-sender (buffer-substring-no-properties beg end)))
 
-(defun py-string-sender (string)
+(defun jpdb-string-sender (string)
   "Send the specified STRING to the Python process."
   (interactive "sEnter string to send: ")
   (let ((proc (get-buffer-process "*Python*")))  ;; Adjust the buffer name if different
-    (message (format "%s" comint-input-filter-functions))
     (if proc
         (progn
           (with-current-buffer "*Python*"
@@ -25,32 +26,32 @@ set the hook `comint-input-sender'."
 	    
 	    (let (
 		   ;; (comint-input-sender 'comint-simple-send))
-		   (comint-input-sender 'comint-nonewline-send))
-	      ;; (message (format "%s" comint-input-filter-functions))
-              (comint-send-input)
+		   (comint-input-sender 'jpdb-comint-nonewline-send))
+	      (comint-send-input)
 	      
-	      ))
-          (message "Sent: %s" string))
+	      )))
+          ;; (message "Sent: %s" string))
       (message "No Python process found."))))
 
-(defun py-send-line ()
+(defun jpdb-send-line ()
+  ;; send line to debugger
   (interactive)
   (let (
 	 ;; (beg (save-excursion (beginning-of-line) (point)))
 	 (beg (save-excursion (elpy-shell--nav-beginning-of-statement) (point)))
 	 (end (save-excursion (end-of-line) (point))))
-    (py-send-reg beg end t)))
+    (jpdb-send-reg beg end t)))
     
 
 
-(defun py-get-statement-top-reg ()
+(defun jpdb-get-statement-top-reg ()
   ;; get region for statement from top
   (let ((beg (save-excursion (elpy-shell--nav-beginning-of-statement) (point)))
 	 (end (save-excursion (elpy-shell--nav-end-of-statement) (point))))
     `((beg . ,beg) (end . ,end))))
 
 
-(defun py-blink-paragraph ()
+(defun jpdb-blink-paragraph ()
   ;; see which code will be evaluated for debugging 
   (interactive)
   (let ((beg (save-excursion
@@ -58,26 +59,23 @@ set the hook `comint-input-sender'."
 	       (elpy-shell--nav-beginning-of-statement)
 	       (point)))
 	 (end (save-excursion (forward-paragraph) (point))))
-    (message "%s-%s" beg end)
+    ;; (message "%s-%s" beg end)
     (ess-blink-region beg end)))
 
-(defun py-blink-statement-top ()
+(defun jpdb-blink-statement-top ()
   (interactive)
-  (let* ((reg (py-get-statement-top-reg))
+  (let* ((reg (jpdb-get-statement-top-reg))
     (beg (assoc-default 'beg reg))
     (end (assoc-default 'end reg)))
     (ess-blink-region beg end)))
 
-;; (define-key elpy-mode-map (kbd "C-c b") 'py-blink-paragraph)
-;; (define-key elpy-mode-map (kbd "C-c s") 'py-blink-statement-top)
+;; (define-key elpy-mode-map (kbd "C-c b") 'jpdb-blink-paragraph)
+;; (define-key elpy-mode-map (kbd "C-c s") 'jpdb-blink-statement-top)
 
-(define-key elpy-mode-map (kbd "C-c g") 'py-send-group)
-(define-key elpy-mode-map (kbd "C-c j") 'py-send-line)
-(define-key elpy-mode-map (kbd "C-c k") 'py-summary-at-point)
 	 
 
 
-(defun py-send-group ()
+(defun jpdb-send-group ()
   ;; in a group of statements, each statement has to be sent separately
     
   (interactive)
@@ -91,10 +89,9 @@ set the hook `comint-input-sender'."
 	 (statement-reg)
 	 (statement-beg)
 	 (statement-end)
-	 ;; (ess-blink-delay 1)
 	 )
 
-    (ess-blink-region group-beg group-end)
+    (ess-blink-region group-beg group-end) ;; blink entire region
 	 
     (save-excursion
       ;; goto beginning of paragraph
@@ -102,15 +99,12 @@ set the hook `comint-input-sender'."
       (elpy-shell--nav-beginning-of-statement)
 
       (while (< (point) group-end)
-	;; (py-blink-statement-top) ; blink first statement
-	;; (py-blink-statement-top) ; blink first statement
-	;; (py-blink-statement-top) ; blink first statement
 	;; (sleep-for 0.3)
-	(setq statement-reg (py-get-statement-top-reg))
+	(setq statement-reg (jpdb-get-statement-top-reg))
 	(setq statement-beg (assoc-default 'beg statement-reg))
 	(setq statement-end (assoc-default 'end statement-reg))
-	(message "%s-%s" statement-beg statement-end)
-	(py-send-reg statement-beg statement-end nil)
+	;; (message "%s-%s" statement-beg statement-end)
+	(jpdb-send-reg statement-beg statement-end nil)
         (goto-char statement-end)
         (forward-char) ; go to new line
         (elpy-shell--nav-beginning-of-statement) ;; adjust for indentation
@@ -119,8 +113,36 @@ set the hook `comint-input-sender'."
 	  
 	
 
-(defun py-summary-at-point ()
+(defun jpdb-summary-at-point ()
   (interactive)
   (let ((sym (symbol-at-point)))
     (if sym
-      (py-string-sender (symbol-name sym)))))
+      (jpdb-string-sender (symbol-name sym)))))
+
+
+;; (defun jpdb-yeet-newlines (string)
+;;   ;; process multi-line statemetn into single-line statement
+;;   ;; add semicolon when necessary
+    
+;;   ;; (let ((l-str-split (s-split "\n" string)))
+;;   ;; 	 (mapconcat 'proc-split-string l-str-split ""))
+
+;;   string
+;;   ;; replace newlines
+;;   ;; (replace-regexp-in-string "\n" "" string))
+;;   )
+
+;; (defun py-send-statement ()
+;;   (interactive)
+;;   (let* ((beg (save-excursion (elpy-shell--nav-beginning-of-statement) (point)))
+;; 	 (end (save-excursion
+;; 		(elpy-shell--nav-beginning-of-statement)
+;; 		(elpy-shell--nav-end-of-statement) ;; assumes point is at beg -> have to move there first
+;; 		(point))))
+;; 	 ;; (string-no-newlines (replace-regexp-in-string "\n" "" (buffer-substring-no-properties beg end))))
+    
+
+;;     (py-string-sender (buffer-substring beg end))
+;;     ;; (py-string-sender string-no-newlines)
+
+;;     ))
