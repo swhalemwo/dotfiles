@@ -222,13 +222,19 @@
 
 (defun elpy-summary-at-point ()
   (interactive)
+  (let* ((sym (symbol-at-point)))
+    (if sym
+      (python-shell-send-string (concat (symbol-name sym) "\n")))))
+
+(defun elpy-pretty-summary-at-point ()
+  (interactive)
   (let ((sym (symbol-at-point)))
-    ;; (message "%s" sym)
     (if sym
       (python-shell-send-string
+	(format "print(json.dumps(%s, indent =2))\n"  (symbol-name sym))))))
 
-	(concat (symbol-name sym) "\n") )
-      )))
+
+
 
 
 ;; ** all kinds of latex org export stuff 
