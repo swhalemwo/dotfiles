@@ -99,6 +99,7 @@
 (define-key elpy-mode-map (kbd "C-c g") 'jpdb-send-group)
 (define-key elpy-mode-map (kbd "C-c j") 'jpdb-send-line)
 (define-key elpy-mode-map (kbd "C-c k") 'jpdb-summary-at-point)
+(define-key elpy-mode-map (kbd "C-c r") 'jpdb-send-selection)
 
 
 

@@ -7,7 +7,15 @@ set the hook `comint-input-sender'."
   (let ((send-string (concat string "\n\n")))
     ;; (message send-string)
     (comint-send-string proc send-string)))
-  
+
+(defun jpdb-send-selection ()
+  (interactive)
+  (if (use-region-p)
+    (let ((beg (region-beginning))
+	   (end (region-end)))
+      (jpdb-send-reg beg end t))
+    (message "No active region. ")))
+
 
 (defun jpdb-send-reg (beg end blink)
   ;; send region from beg to end to jpdb-string-sender, which sends it to comint
