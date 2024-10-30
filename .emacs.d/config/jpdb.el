@@ -73,22 +73,39 @@ set the hook `comint-input-sender'."
 ;; (define-key elpy-mode-map (kbd "C-c s") 'jpdb-blink-statement-top)
 
 	 
+(defun jpdb-get-group-reg ()
+  ;; get region for group 
+  (let ((group-beg (save-excursion
+		     (backward-paragraph)
+		     (elpy-shell--nav-beginning-of-statement)
+		     (point)))
+	 (group-end (save-excursion (forward-paragraph) (point))))
+    `((beg . ,group-beg) (end . ,group-end))))
+	 
+
+
+(defun jpdb-blink-group ()
+  (interactive)
+  (let* ((group-reg (jpdb-get-group-reg))
+	  (beg (assoc-default 'beg group-reg))
+	  (end (assoc-default 'end group-reg)))
+
+    (ess-blink-region beg end)))
+	   
 
 
 (defun jpdb-send-group ()
   ;; in a group of statements, each statement has to be sent separately
     
   (interactive)
-  (let ((old-point (point))
-	 (group-beg (save-excursion
-	       (backward-paragraph)
-	       (elpy-shell--nav-beginning-of-statement)
-		      (point)))
-	 (group-end (save-excursion (forward-paragraph) (point)))
-	 ;; temporary variables for each statement
-	 (statement-reg)
-	 (statement-beg)
-	 (statement-end)
+  (let* ((old-point (point))
+	  (group-reg (jpdb-get-group-reg))
+	  (group-beg (assoc-default 'beg group-reg))
+	  (group-end (assoc-default 'end group-reg))
+	  ;; temporary variables for each statement
+	  (statement-reg)
+	  (statement-beg)
+	  (statement-end)
 	 )
 
     (ess-blink-region group-beg group-end) ;; blink entire region
