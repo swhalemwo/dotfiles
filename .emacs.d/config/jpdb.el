@@ -6,6 +6,7 @@ This just sends STRING plus a newline.  To override this,
 set the hook `comint-input-sender'."
   (let ((send-string (concat string "\n\n")))
     ;; (message send-string)
+    ;; send-string))
     (comint-send-string proc send-string)))
 
 (defun jpdb-send-selection ()
@@ -33,8 +34,8 @@ set the hook `comint-input-sender'."
             (insert string)
 	    
 	    (let (
-		   ;; (comint-input-sender 'comint-simple-send))
-		   (comint-input-sender 'jpdb-comint-nonewline-send))
+		   (comint-input-sender 'comint-simple-send))
+		   ;; (comint-input-sender 'jpdb-comint-nonewline-send))
 	      (comint-send-input)
 	      
 	      )))
