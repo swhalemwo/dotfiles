@@ -34,8 +34,8 @@ set the hook `comint-input-sender'."
             (insert string)
 	    
 	    (let (
-		   (comint-input-sender 'comint-simple-send))
-		   ;; (comint-input-sender 'jpdb-comint-nonewline-send))
+		   ;; (comint-input-sender 'comint-simple-send))
+		   (comint-input-sender 'jpdb-comint-nonewline-send))
 	      (comint-send-input)
 	      
 	      )))
