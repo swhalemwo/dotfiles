@@ -48,6 +48,7 @@
 			 "lilypond.el"
 			 "org-recoll.el"
 			 "org-clocktable-by-tag.el"
+                         "gcmh.el"
 			 ))
 
 
