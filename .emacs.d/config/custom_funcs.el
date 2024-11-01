@@ -234,6 +234,12 @@
 	(format "print(json.dumps(%s, indent =2))\n"  (symbol-name sym))))))
 
 
+(defun elpy-len-at-point ()
+  (interactive)
+  (let ((sym (symbol-at-point)))
+    (if sym
+      (python-shell-send-string
+	(format "len(%s)\n"  (symbol-name sym))))))
 
 
 
