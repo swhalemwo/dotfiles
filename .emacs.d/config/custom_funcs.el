@@ -219,27 +219,42 @@
 ;; ** elpy utils
 
 
+(defun jpdb-sendfun-dispatcher ()
+  ;; "determines which function to use to send output to python process
+;; if debugger is active (python function), then use jpdb-string-sender, else
+;; use default python-shell-send-string"
+  (if (jpdb-pdb-active-p) 'jpdb-string-sender 'python-shell-send-string))
+
 
 (defun elpy-summary-at-point ()
   (interactive)
-  (let* ((sym (symbol-at-point)))
+  (let* ((sym (symbol-at-point))
+	  (sendfun (jpdb-sendfun-dispatcher)))
     (if sym
-      (python-shell-send-string (concat (symbol-name sym) "\n")))))
+      (apply sendfun (list (concat (symbol-name sym) "\n"))))))
+	          
 
 (defun elpy-pretty-summary-at-point ()
   (interactive)
-  (let ((sym (symbol-at-point)))
+  (let ((sym (symbol-at-point))
+	 (sendfun (jpdb-sendfun-dispatcher)))
     (if sym
-      (python-shell-send-string
-	(format "print(json.dumps(%s, indent =2))\n"  (symbol-name sym))))))
-
-
+      (apply sendfun (list (format "print(json.dumps(%s, indent =2))\n"  (symbol-name sym)))))))
+      
+      
 (defun elpy-len-at-point ()
   (interactive)
-  (let ((sym (symbol-at-point)))
+  (let ((sym (symbol-at-point))
+	 (sendfun (jpdb-sendfun-dispatcher)))
+	 
     (if sym
-      (python-shell-send-string
-	(format "len(%s)\n"  (symbol-name sym))))))
+      (apply sendfun (list (format "len(%s)\n"  (symbol-name sym)))))))
+
+(defun elpy-send-line ()
+  (interactive)
+  (if (jpdb-pdb-active-p) (jpdb-send-line) (elpy-shell-send-statement)))
+  
+  
 
 
 

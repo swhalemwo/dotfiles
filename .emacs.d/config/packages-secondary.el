@@ -93,15 +93,16 @@
 
 (define-key elpy-mode-map (kbd "<C-return>") 'elpy-shell-send-group)
 (define-key elpy-mode-map (kbd "C-c C-o") 'elpy-goto-definition)
-(define-key elpy-mode-map (kbd "C-c C-j") 'elpy-shell-send-statement)
+;; (define-key elpy-mode-map (kbd "C-c C-j") 'elpy-shell-send-statement)
+(define-key elpy-mode-map (kbd "C-c C-j") 'elpy-send-line)
 (define-key elpy-mode-map (kbd "C-c o") 'helm-imenu)
 (define-key elpy-mode-map (kbd "C-c C-k") 'elpy-summary-at-point)
 (define-key elpy-mode-map (kbd "C-M-'") 'elpy-pretty-summary-at-point)
 (define-key elpy-mode-map (kbd "C-c n") 'elpy-len-at-point)
 
 (define-key elpy-mode-map (kbd "C-c g") 'jpdb-send-group)
-(define-key elpy-mode-map (kbd "C-c j") 'jpdb-send-line)
-(define-key elpy-mode-map (kbd "C-c k") 'jpdb-summary-at-point)
+;; (define-key elpy-mode-map (kbd "C-c j") 'jpdb-send-line)
+;; (define-key elpy-mode-map (kbd "C-c k") 'jpdb-summary-at-point)
 (define-key elpy-mode-map (kbd "C-c r") 'jpdb-send-selection)
 
 (use-package explain-pause-mode

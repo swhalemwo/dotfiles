@@ -1,3 +1,6 @@
+(defun jpdb-pdb-active-p ()
+  "checks whether pdb is active"
+  (equal (python-shell-send-string-no-output "debugger_is_active()") "True"))
 
 
 (defun jpdb-comint-nonewline-send (proc string)
