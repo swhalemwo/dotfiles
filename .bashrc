@@ -175,6 +175,7 @@ PROMPT_COMMAND=_bash_history_sync
 
 
 alias ec='emacsclient -c'
+export EDITOR='emacsclient -c'
 
 BROWSER=/usr/bin/chromium
 
