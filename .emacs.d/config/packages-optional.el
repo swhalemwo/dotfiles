@@ -183,12 +183,14 @@
 ;; (setq gc-cons-threshold 25600000)
   
 
-(setq gc-cons-threshold 8000000)
-(setq gc-cons-percentage 0.5)
+;; (setq gc-cons-threshold 8000000)
+;; (setq gc-cons-percentage 0.5)
 ;; (setq gc-cons-threshold (* 1024 1024 100))
   ;; (run-with-idle-timer 2 t (lambda () (garbage-collect)))
   
-(run-with-idle-timer 2 t 'garbage-collect)
+;; (run-with-idle-timer 2 t 'garbage-collect)
+
+
 
 
 (setq read-process-output-max (* 1024 1024))
