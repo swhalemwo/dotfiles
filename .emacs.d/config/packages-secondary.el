@@ -104,6 +104,9 @@
 ;; (define-key elpy-mode-map (kbd "C-c j") 'jpdb-send-line)
 ;; (define-key elpy-mode-map (kbd "C-c k") 'jpdb-summary-at-point)
 (define-key elpy-mode-map (kbd "C-c r") 'jpdb-send-selection)
+(define-key inferior-python-mode-map (kbd "M-r") 'consult-history)
+
+
 
 (use-package explain-pause-mode
   :straight (explain-pause-mode :type git :host github :repo "lastquestion/explain-pause-mode")
