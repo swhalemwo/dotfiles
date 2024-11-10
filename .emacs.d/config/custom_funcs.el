@@ -232,6 +232,13 @@
 	  (sendfun (jpdb-sendfun-dispatcher)))
     (if sym
       (apply sendfun (list (concat (symbol-name sym) "\n"))))))
+
+(defun elpy-short-summary-at-point()
+  (interactive)
+  (let* ((sym (symbol-at-point))
+	  (sendfun (jpdb-sendfun-dispatcher)))
+    (if sym
+      (apply sendfun (list (format "print_first_elements(%s)" (symbol-name sym)))))))
 	          
 
 (defun elpy-pretty-summary-at-point ()
