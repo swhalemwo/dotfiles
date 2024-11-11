@@ -72,6 +72,7 @@
   :config
   (setq python-shell-interpreter "python3")
   (setq elpy-rpc-python-command "python3")
+  (setq elpy-shell-echo-output nil)
   (add-hook 'elpy-mode-hook 'outshine-mode)
   (add-hook 'elpy-mode-hook (lambda ()(setq outline-heading-end-regexp "\n")))
 
