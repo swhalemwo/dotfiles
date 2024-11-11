@@ -1,4 +1,6 @@
 (setq history-delete-duplicates t)
+(setq history-length 500)
+
 
 (defvar outline-minor-mode-prefix "\M-#")
 
