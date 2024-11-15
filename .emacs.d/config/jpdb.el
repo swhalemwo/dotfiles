@@ -1,6 +1,20 @@
 (defun jpdb-pdb-active-p ()
   "checks whether pdb is active"
-  (equal (python-shell-send-string-no-output "debugger_is_active()") "True"))
+  ;; (+  1 2)
+  (let ((output (python-shell-send-string-no-output "debugger_is_active()")))
+    ;; (message (format "%s" output))
+    (or
+      (equal output "True")
+      (> (length output) 10) ; long message means some kind of error? 
+      ;; (if (> (length output) 13)
+      ;; 	(or 
+      ;; 	  (equal (substring output 1 13) "** NameError")
+      ;; 	  (equal (substring output 1 13) "Traceback (m"))
+      ;; 	nil)
+      )))
+
+
+
 
 
 (defun jpdb-comint-nonewline-send (proc string)
