@@ -53,6 +53,20 @@
     ))
 
 
+(defun my-org-brain-add-parents ()
+  (interactive)
+  (let* ((str-candidates (buffer-substring-no-properties 1 (point-max)))
+	  (l-candidates (split-string str-candidates "\n"))
+	  (l-additions (mapcar (lambda (x) (replace-regexp-in-string "[[:space:]]+" "" x)) l-candidates))
+	  (l-additions2 (-filter (lambda (x) (> (length x) 0)) l-additions)))
+
+    (org-brain-add-parent org-brain--vis-entry l-additions2)
+    (switch-to-buffer "*org-brain*")
+    (revert-buffer)
+    (delete-other-windows)
+    ))
+
+
 (defun insert-hat ()
   (interactive)
   (insert-char #x0302))
