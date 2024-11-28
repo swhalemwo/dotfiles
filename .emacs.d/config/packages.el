@@ -151,6 +151,13 @@
 	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
 	      ))))
 
+       ("pt" "bachelor thesis"
+	 ((alltodo ""
+	    ((org-agenda-files
+	       '("/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_bathesis.org"))
+	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
+	      ))))
+
 
        ;; try org-agenda-skip-function: doesn't work
        ;; ("X" "phd"
@@ -265,6 +272,7 @@
        "/home/johannes/Dropbox/phd/papers/closing/tasks_closing.org"
        "/home/johannes/Dropbox/phd/papers/infl/tasks_infl.org"
        "/home/johannes/Dropbox/sync/org/phd_orga.org"
+       "/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_bathesis.org"
        "/home/johannes/Dropbox/sync/org/schedule.org"
        "/home/johannes/Dropbox/sync/org/schedule_uva.org"
        "/home/johannes/Dropbox/sync/org/yinan.org"
