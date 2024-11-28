@@ -117,6 +117,11 @@
 
 
 
+;; ;; ** sqlite extras
+;; (use-package sqlite-mode-extras
+;;   :ensure t
+;;   :hook ((sqlite-mode . sqlite-extras-minor-mode)))
+
 
 
 ;; ** graphviz
