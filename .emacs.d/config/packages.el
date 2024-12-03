@@ -151,10 +151,10 @@
 	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
 	      ))))
 
-       ("pt" "bachelor thesis"
+       ("pt" "bachelor research project"
 	 ((alltodo ""
 	    ((org-agenda-files
-	       '("/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_bathesis.org"))
+	       '("/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_brp.org"))
 	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
 	      ))))
 
@@ -272,7 +272,7 @@
        "/home/johannes/Dropbox/phd/papers/closing/tasks_closing.org"
        "/home/johannes/Dropbox/phd/papers/infl/tasks_infl.org"
        "/home/johannes/Dropbox/sync/org/phd_orga.org"
-       "/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_bathesis.org"
+       "/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_brp.org"
        "/home/johannes/Dropbox/sync/org/schedule.org"
        "/home/johannes/Dropbox/sync/org/schedule_uva.org"
        "/home/johannes/Dropbox/sync/org/yinan.org"
