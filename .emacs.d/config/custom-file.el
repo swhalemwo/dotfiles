@@ -112,7 +112,8 @@
  '(vterm-color-cyan ((t (:foreground "blue"))))
  '(vterm-color-green ((t (:foreground "Magenta4"))))
  '(vterm-color-white ((t (:foreground "blue"))))
- '(vterm-color-yellow ((t (:foreground "ForestGreen")))))
+ '(vterm-color-yellow ((t (:foreground "ForestGreen"))))
+ '(warning ((t (:foreground "DarkOrange3" :weight bold)))))
 
 
 ;; https://notes.alexkehayias.com/emacs-inline-macro-in-the-buffer/
