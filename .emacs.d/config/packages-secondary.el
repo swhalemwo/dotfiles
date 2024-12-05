@@ -649,3 +649,18 @@ If run interactively, get ENTRY from context."
 
 ;; ** qrencode
 (use-package qrencode)
+
+
+;; ** midnight mode
+
+;; https://www.youtube.com/watch?v=YS66xerSWeA
+
+;; clean inactive buffer, just use default config for now
+(use-package midnight
+  :ensure nil
+  :hook (after-init . midnight-mode)
+  ;; :custom
+  ;; (clean-buffer-list-delay-general 2) ;; default is 3
+  ;; (clean-buffer-list-delay-special 3600) ;; default is 3600
+  ;; (clean-buffer-list-kill-regexps '("\\`\\*Man " "\\`\\*helpful"))
+  )
