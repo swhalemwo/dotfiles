@@ -50,7 +50,7 @@
  '(org-recoll-results-num 50)
  '(org-todo-keywords '((sequence "todo" "|" "done" "postponed")))
  '(package-selected-packages
-    '(quelpa wgrep mermaid-mode ob-mermaid websocket editorconfig all-the-icons which-key ledger-mode imenu-anywhere consult affe corfu embark marginalia tree-sitter markdown-mode eglot helm-rg ado-mode orgit with-editor diff-hl dash gnuplot emacsql-sqlite emacsql-sqlite3 company-jedi sql-indent sqlup-mode sql-mode solarized-theme ob-sql-mode color-theme-buffer-local vterm sql-clickhouse sqlite sqlite3 cypher-mode org-ql elpy helm-org-rifle org-gcal calfw-gcal calfw-cal calfw-org cc-cedict calfw git-timemachine helm-descbinds debbugs company org-wc fzf graphviz-dot-mode magit eval-in-repl auto-complete ob-async free-keys ess ob-cypher use-package outshine youdao-dictionary org-drill unicode-fonts pyim-wbdict gif-screencast org-brain org-contrib auctex helm-recoll org-babel-eval-in-repl async mu4e-maildirs-extension flyspell-correct f s switch-window mu4e-alert csv-mode helm-bibtex embark-consult counsel jedi))
+    '(quelpa wgrep mermaid-mode ob-mermaid websocket editorconfig all-the-icons which-key ledger-mode imenu-anywhere consult affe corfu embark marginalia tree-sitter markdown-mode eglot ado-mode orgit with-editor diff-hl dash gnuplot emacsql-sqlite emacsql-sqlite3 company-jedi sql-indent sqlup-mode sql-mode solarized-theme ob-sql-mode color-theme-buffer-local vterm sql-clickhouse sqlite sqlite3 cypher-mode org-ql elpy helm-org-rifle org-gcal calfw-gcal calfw-cal calfw-org cc-cedict calfw git-timemachine helm-descbinds debbugs company org-wc graphviz-dot-mode magit eval-in-repl auto-complete ob-async free-keys ess ob-cypher use-package outshine youdao-dictionary org-drill unicode-fonts pyim-wbdict gif-screencast org-brain org-contrib auctex helm-recoll org-babel-eval-in-repl async mu4e-maildirs-extension flyspell-correct f s switch-window mu4e-alert csv-mode helm-bibtex embark-consult jedi))
  '(sql-clickhouse-login-params '(database))
  '(table-cell-horizontal-chars "-=")
  '(warning-suppress-types '((emacs))))
@@ -60,6 +60,7 @@
 ;; org-roam-ui org-roam
 ;; helm-lsp lsp-python-ms lsp-ui lsp-mode
 ;; lispy worf comb ivy-searcher indium
+;; counsel fzf helm-rg
 
 
 ;; old packages uncommented/removed from package-selected-packages

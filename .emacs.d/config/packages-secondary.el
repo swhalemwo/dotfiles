@@ -4,7 +4,7 @@
 (use-package sql-clickhouse
 
     :config
-    (sql-del-product 'clickhouse)
+    ;; (sql-del-product 'clickhouse)
     (add-to-list 'sql-product-alist 
 		 '(clickhouse :name "ClickHouse"
 			      :font-lock sql-clickhouse-font-lock-keywords
