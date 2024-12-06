@@ -65,8 +65,6 @@
 (setq lisp-indent-offset 2) ;; e/lisp offset to 2 (less horizontal space wasted)
 
 
-(add-hook 'after-init-hook 'global-company-mode)
-
 (setq frame-title-format
       '("emacs " emacs-version " @ "
 	    (buffer-file-name

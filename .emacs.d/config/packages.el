@@ -572,8 +572,8 @@
 
 
 ;; ** company
-(use-package company)
-
+;; (use-package company)
+;; (add-hook 'after-init-hook 'global-company-mode)
 
 
 
@@ -991,53 +991,55 @@
 	  
 
 
-;; ** dired settings
+;; ** corfu
+
+(use-package corfu
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-separator ?\s)          ;; Orderless field separator
+  (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  (corfu-quit-no-match t)      ;; Never quit, even if there is no match
+  (corfu-preview-current nil)    ;; Disable current candidate preview
+  (corfu-preselect-first t)    ;; Disable candidate preselection
+  (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  (corfu-scroll-margin 5)        ;; Use scroll margin
+  (corfu-auto-delay 0.1)         ; probably delay
+  (completion-ignore-case t)     ;; ignore case when matching
+  (corfu-bar-width 0)
+  (corfu-left-margin-width 0)
+  (corfu-right-margin-width 0)
+  ;; (corfu-
+  ;; (corfu-
+  :init
+  (global-corfu-mode))
 
 
-;; http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html
-
-(defun xah-open-in-external-app (&optional Fname)
-  "Open the current file or dired marked files in external app.
-When called in emacs lisp, if Fname is given, open that.
-
-URL `http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html'
-Version: 2019-11-04 2023-04-05 2023-06-26"
-  (interactive)
-  (let (xfileList xdoIt)
-    (setq xfileList
-      (if Fname
-        (list Fname)
-        (if (eq major-mode 'dired-mode)
-          (dired-get-marked-files)
-          (list buffer-file-name))))
-    (setq xdoIt (if (<= (length xfileList) 10) t (y-or-n-p "Open more than 10 files? ")))
-    (when xdoIt
-      (cond
-	((eq system-type 'windows-nt)
-          (let ((xoutBuf (get-buffer-create "*xah open in external app*"))
-		 (xcmdlist (list "PowerShell" "-Command" "Invoke-Item" "-LiteralPath")))
-            (mapc
-              (lambda (x)
-		(message "%s" x)
-		(apply 'start-process (append (list "xah open in external app" xoutBuf) xcmdlist (list (format "'%s'" (if (string-match "'" x) (replace-match "`'" t t x) x))) nil)))
-              xfileList)
-            ;; (switch-to-buffer-other-window xoutBuf)
-            )
-          ;; old code. calling shell. also have a bug if filename contain apostrophe
-          ;; (mapc (lambda (xfpath) (shell-command (concat "PowerShell -Command \"Invoke-Item -LiteralPath\" " "'" (shell-quote-argument (expand-file-name xfpath)) "'"))) xfileList)
-          )
-	((eq system-type 'darwin)
-          (mapc (lambda (xfpath) (shell-command (concat "open " (shell-quote-argument xfpath)))) xfileList))
-	((eq system-type 'gnu/linux)
-          (mapc (lambda (xfpath)
-                  (call-process shell-file-name nil 0 nil
-                    shell-command-switch
-                    (format "%s %s"
-                      "xdg-open"
-                      (shell-quote-argument xfpath))))
-            xfileList))
-	((eq system-type 'berkeley-unix)
-          (mapc (lambda (xfpath) (let ((process-connection-type nil)) (start-process "" nil "xdg-open" xfpath))) xfileList))))))
+(use-package cape
+  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+  ;; Press C-c p ? to for help.
+  :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
+  ;; Alternatively bind Cape commands individually.
+  ;; :bind (("C-c p d" . cape-dabbrev)
+  ;;        ("C-c p h" . cape-history)
+  ;;        ("C-c p f" . cape-file)
+  ;;        ...)
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'.  The order of the functions matters, the
+  ;; first function returning a result wins.  Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  ;; (add-hook 'completion-at-point-functions #'cape-history)
+  )
 
 
-(define-key dired-mode-map (kbd "J") 'xah-open-in-external-app)
+
+
+
+
+
+
