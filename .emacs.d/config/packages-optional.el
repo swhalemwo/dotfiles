@@ -29,7 +29,7 @@
   )
   ;; (add-to-list 'org-babel-load-languages '(cypher-obvz . t))
 
-(use-package ob-async)
+;; (use-package ob-async)
 (use-package ob-java)
 
 ;; ;; *** ac
