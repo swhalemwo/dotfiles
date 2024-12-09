@@ -327,7 +327,24 @@ This holds the results of the last documentation request."
   :dependencies [[com.clickhouse/clickhouse-jdbc "0.3.2"]]
   :dbtype "clickhouse"
   :classname "com.clickhouse.jdbc.ClickHouseDriver"
+  :separator "/"
   :connection-uri (concat "jdbc:clickhouse://127.0.0.1:8123/" "litanai"))
+
+(ejc-create-connection
+  "pg@wrds"
+  :classpath (concat "~/.m2/repository/org.postgresql/postgresql/42.6.0/"
+                    "postgresql-42.6.0.jar")
+ :subprotocol "postgresql"
+  ;; :subname "//localhost:5432/my_db_name"
+  :host "
+wrds-pgdata.wharton.upenn.edu"
+  :port 9737
+  :sslmode "require"
+  :user (password-store-get "wrds-usr")
+  :dbname "wrds"
+ :password (password-store-get "wrds-pwd"))
+
+
 
 (add-hook 'ejc-sql-connected-hook
           (lambda ()
