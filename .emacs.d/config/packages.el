@@ -302,6 +302,7 @@
     '((R . t)
        (emacs-lisp . t)
        (awk . t)
+       (python . t)
        (shell . t)
        (sql . t)
        (mermaid . t)
