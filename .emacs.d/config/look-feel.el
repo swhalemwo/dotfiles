@@ -55,7 +55,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq browse-url-browser-function 'browse-url-generic)
-(setq browse-url-generic-program "/usr/bin/brave")
+(setq browse-url-generic-program "/usr/bin/firefox")
 
 (setq ns-use-srgb-colorspace nil) ;; ????
 
