@@ -1,7 +1,7 @@
 options("width" = 115)
 options(pillar.subtle = FALSE)
 options(rlang_backtrace_on_error = "none")
-options(browser = "brave")
+options(browser = "firefox")
 options(max.print = 1000)
 ## options(browser = "firefox")
 ## options(browser = "html_diverter.sh")

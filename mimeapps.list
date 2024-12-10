@@ -20,11 +20,11 @@ video/x-theora+ogg=vlc.desktop
 # x-scheme-handler/about=brave-browser.desktop
 # x-scheme-handler/unknown=brave-browser.desktop
 # application/xhtml+xml=brave-browser.desktop
-x-scheme-handler/http=qutebrowser.desktop
-x-scheme-handler/https=qutebrowser.desktop
-text/html=qutebrowser.desktop
-x-scheme-handler/about=qutebrowser
-x-scheme-handler/unknown=qutebrowser
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+text/html=firefox.desktop
+x-scheme-handler/about=firefox.desktop
+x-scheme-handler/unknown=firefox.desktop
 application/xhtml+xml=qutebrowser
 
 audio/mpeg=vlc.desktop
@@ -63,7 +63,8 @@ application/json=userapp-emacsclient -c-FRJOW0.desktop;
 text/x-r-source=userapp-emacsclient -c-FRJOW0.desktop;
 image/png=feh.desktop;
 text/csv=userapp-emacsclient -c-FRJOW0.desktop;
-text/html=brave-browser.desktop;userapp-surf-5208P1.desktop;
+# text/html=brave-browser.desktop;userapp-surf-5208P1.desktop;
+text/html=firefox-desktop;userapp-surf-5208P1.desktop;
 application/x-shellscript=emacsclient.desktop;
 application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop;
 
