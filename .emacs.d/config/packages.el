@@ -780,6 +780,7 @@
   )
 
 (defun update-vertico-count ()
+  ;; (message "setting vertico-count")
   (setq vertico-count (/ (frame-height) 2)))
 
 (add-hook 'minibuffer-setup-hook 'update-vertico-count)
