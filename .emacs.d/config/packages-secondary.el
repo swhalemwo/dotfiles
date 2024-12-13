@@ -345,7 +345,7 @@
   "Insert a source block for a plot generation (returns plot)")
 
 (tempo-define-template "src-block-table"
-  '("#+begin_src R :exports :exports results :results output\n" p "\n#+end_src")
+  '("#+begin_src R :exports results :results output\n" p "\n#+end_src")
   "<st"
   "Insert a source block for a table generation (returns table, R-formatted)")
 
