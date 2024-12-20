@@ -360,3 +360,7 @@ wrds-pgdata.wharton.upenn.edu"
 ;;           (lambda ()
 ;;             (auto-complete-mode t)
 ;;             (ejc-ac-setup)))
+
+
+;; ** dbd model
+(load-file "~/Dropbox/technical_stuff_general/dotfiles/.emacs.d/dbd-mode/dbdiagram-mode.el")

@@ -13,6 +13,9 @@
 
 (add-to-list 'load-path "/home/johannes/ess-stata-mode/")
 
+(add-to-list 'load-path "/home/johannes/Dropbox/technical_stuff_general/dotfiles/.emacs.d/dbd-mode/")
+
+
 ;; (add-to-list 'load-path "/home/johannes/ESS/lisp/")
 
 
