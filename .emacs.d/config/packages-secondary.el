@@ -645,7 +645,11 @@ If run interactively, get ENTRY from context."
        ("bal2" "%(binary) -f %(ledger-file) --price-db /home/johannes/Dropbox/sync/dabate/prices.db -V bal")
        ("reg" "%(binary) -f %(ledger-file) reg")
        ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
-       ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
+       ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+
+  :bind
+  (( "C-M-;" . 'iedit-mode))
+  )
 
 
 ;; ** qrencode
