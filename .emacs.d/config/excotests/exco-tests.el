@@ -253,72 +253,15 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
 
 (setq exco-org--parsed-meets (exco-org--parse-buffer))
 
-(defun exco-org--callback-uid (_identifier response)
-  ;; response is some encoded stuff, this seems all necessary to decode ?
-  (let* ((mime-path '(ResponseMessages
-		       GetItemResponseMessage
-		       Items
-		       CalendarItem
-		       MimeContent))
-	  (character-set-path (append mime-path '(CharacterSet)))
-	  (coding-system (intern (downcase (exco-extract-value
-					     character-set-path
-					     response)))))
-    ;; (message "mime-path: %s" mime-path) 
-    (unless (member coding-system coding-system-list)
-      (error "Unrecognized coding system: %s"
-	(exco-extract-value character-set-path response)))
-    ;; (funcall process-item
-    ;; (printer
-    (exco-org--set-uid-property
-      ;; org-id
-      (assoc-default 'org-id (assoc-default
-			       ;; get the ItemId
-			       (exco-extract-value '(ResponseMessages GetItemResponseMessage
-						      Items CalendarItem ItemId Id)
-				 response)
-			       ;; use the ItemId to get the corresponding org id
-			       exco-org--parsed-meets))
-      (exco-org--get-uid
-	(decode-coding-string
-	  (base64-decode-string
-	    (cdr (exco-extract-value
-		   mime-path response)))
-	  coding-system)))))
-      ;; (lambda (x y) (message (format "%s%s" x y )))
+
+
       
-
-
-
-(defun exco-org--dl-write-uid (item-identifier)
-  ;; slightly modify from excorporate.el
-  (let
-    ((identifier (car exco--connection-identifiers)))
-
-    (exco-operate identifier
-      "GetItem"
-      `(((ItemShape
-	   (BaseShape . "IdOnly")
-	   (IncludeMimeContent . t))
-	  (ItemIds ,item-identifier))
-	 nil nil nil nil nil nil)
-      'exco-org--callback-uid
-      )))
-
 
 ;; (kill-buffer "killme.org")
 ;; (kill-buffer "testmeets.org")
 
 
-(defun exco-org--add-uid ()
-  "add ical uid to entry at point"
-  (interactive)
-  (let ((identifier (read (org-entry-get (point) "Identifier"))))
-    ;; (message (format "%s" identifier)))
-    
-    (exco-org--dl-write-uid identifier)
-    )
-  )
+
 
 
 ;; (setq icalendar-import-format "%U")
