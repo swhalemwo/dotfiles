@@ -413,7 +413,7 @@ arguments, IDENTIFIER and the server's response."
 ;; (exco-org--show-month 9 1 2024)
 ;; (exco-org--dispatch-meetings)
 
-(defun value-between-p (value min max)
+(defun exco-org--value-between-p (value min max)
   (and (> value min) (< value max)))
 
 
@@ -431,7 +431,7 @@ date-end: absolute day number"
 		      (and ;; mapcan requirement
 			(and
 			  ;; not in time range
-			  (value-between-p
+			  (exco-org--value-between-p
 			    (org-time-string-to-absolute (assoc-default 'scheduled meeting))
 			    date-start date-end)
 			  ;; not in exco buffer
