@@ -347,7 +347,7 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
 
 
 
-  (defun exco-get-more-ids-old (item-identifier)
+(defun exco-get-more-ids-old (item-identifier)
   ;; slightly modify from excorporate.el
   (let
     ((identifier (car exco--connection-identifiers)))
@@ -384,3 +384,9 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
       ;; (lambda (x y) (message (format "%s%s" x y )))
       )
     ))
+
+(exco-get-more-ids-old 
+  `(ItemId (Id . "AAAWAGouYWVuZ2VuaGV5c3RlckB1dmEubmwARgAAAAAArimMe7pMzUqvUQ37mpRH5wcABiMBUm85r0Cl732oEQ7e5wAAAAABDQAAyHp62n+SaESahiQgaf09owADpJA3fAAA") (ChangeKey . "DwAAABYAAADIenraf5JoRJqGJCBp/T2jAAOjcOJ9")))
+
+
+
