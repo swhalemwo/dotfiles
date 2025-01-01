@@ -216,7 +216,8 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
        ;; maximally-compatible Exchange2007 if the fixed value isn't
        ;; present.
        (RequestVersion (Version . "Exchange2007"))
-       (Traversal . "Shallow")
+       ;; (Traversal . "Shallow")
+       (Traversal . "Deep")
        (ItemShape
 	 ;; (BaseShape . "AllProperties")
 	 (BaseShape . "AllProperties")
@@ -238,8 +239,6 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
 
 
 
-
-
 (defun printer (x)
   (message (format "%s" x)))
 
@@ -250,7 +249,105 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
   (funcall process-item 10))
 
 
-(defun exco-get-more-ids (item-identifier)
+
+
+(setq exco-org--parsed-meets (exco-org--parse-buffer))
+
+(defun exco-org--callback-uid (_identifier response)
+  ;; response is some encoded stuff, this seems all necessary to decode ?
+  (let* ((mime-path '(ResponseMessages
+		       GetItemResponseMessage
+		       Items
+		       CalendarItem
+		       MimeContent))
+	  (character-set-path (append mime-path '(CharacterSet)))
+	  (coding-system (intern (downcase (exco-extract-value
+					     character-set-path
+					     response)))))
+    ;; (message "mime-path: %s" mime-path) 
+    (unless (member coding-system coding-system-list)
+      (error "Unrecognized coding system: %s"
+	(exco-extract-value character-set-path response)))
+    ;; (funcall process-item
+    ;; (printer
+    (exco-org--set-uid-property
+      ;; org-id
+      (assoc-default 'org-id (assoc-default
+			       ;; get the ItemId
+			       (exco-extract-value '(ResponseMessages GetItemResponseMessage
+						      Items CalendarItem ItemId Id)
+				 response)
+			       ;; use the ItemId to get the corresponding org id
+			       exco-org--parsed-meets))
+      (exco-org--get-uid
+	(decode-coding-string
+	  (base64-decode-string
+	    (cdr (exco-extract-value
+		   mime-path response)))
+	  coding-system)))))
+      ;; (lambda (x y) (message (format "%s%s" x y )))
+      
+
+
+
+(defun exco-org--dl-write-uid (item-identifier)
+  ;; slightly modify from excorporate.el
+  (let
+    ((identifier (car exco--connection-identifiers)))
+
+    (exco-operate identifier
+      "GetItem"
+      `(((ItemShape
+	   (BaseShape . "IdOnly")
+	   (IncludeMimeContent . t))
+	  (ItemIds ,item-identifier))
+	 nil nil nil nil nil nil)
+      'exco-org--callback-uid
+      )))
+
+
+;; (kill-buffer "killme.org")
+;; (kill-buffer "testmeets.org")
+
+
+(defun exco-org--add-uid ()
+  "add ical uid to entry at point"
+  (interactive)
+  (let ((identifier (read (org-entry-get (point) "Identifier"))))
+    ;; (message (format "%s" identifier)))
+    
+    (exco-org--dl-write-uid identifier)
+    )
+  )
+
+
+;; (setq icalendar-import-format "%U")
+
+
+
+(exco-org--extract-uid-from-string xx)
+
+(exco-get-more-ids
+  `(ItemId (Id . "AAAWAGouYWVuZ2VuaGV5c3RlckB1dmEubmwARgAAAAAArimMe7pMzUqvUQ37mpRH5wcABiMBUm85r0Cl732oEQ7e5wAAAAABDQAAyHp62n+SaESahiQgaf09owADUmSYXgAA") (ChangeKey . "DwAAABYAAADIenraf5JoRJqGJCBp/T2jAANRZIvH")))
+
+;; 040000008200E00074C5B7101A82E0080000000090FD56F8C4EFDA01000000000000000
+;;  01000000019BFED4DCEA60F4998A42D20D3F1F8A7
+
+(exco-get-more-ids
+  `(ItemId (Id . "AAAWAGouYWVuZ2VuaGV5c3RlckB1dmEubmwARgAAAAAArimMe7pMzUqvUQ37mpRH5wcABiMBUm85r0Cl732oEQ7e5wAAAAABDQAAyHp62n+SaESahiQgaf09owADUmSYYAAA") (ChangeKey . "DwAAABYAAADIenraf5JoRJqGJCBp/T2jAANn51CY")))
+;; hmm this returns a much longer response -> extraction function probably needs adjustment 
+
+
+(exco-get-more-ids
+  `(ItemId (Id . "AAAWAGouYWVuZ2VuaGV5c3RlckB1dmEubmwARgAAAAAArimMe7pMzUqvUQ37mpRH5wcABiMBUm85r0Cl732oEQ7e5wAAAAABDQAAyHp62n+SaESahiQgaf09owADaPAo3QAA") (ChangeKey . "DwAAABYAAADIenraf5JoRJqGJCBp/T2jAANn50/v")))
+
+;; 040000008200E00074C5B7101A82E008000000002D5143FE8D0ADB01000000000000000
+ ;; 010000000095CF77E62913A4BABCB61F520698823
+
+
+
+
+  (defun exco-get-more-ids-old (item-identifier)
   ;; slightly modify from excorporate.el
   (let
     ((identifier (car exco--connection-identifiers)))
@@ -287,60 +384,3 @@ Debugger entered--Lisp error: (wrong-number-of-arguments (lambda (orig-fun a b) 
       ;; (lambda (x y) (message (format "%s%s" x y )))
       )
     ))
-
-(defun extract-uid-from-string (str)
-  "Extract the UID from the given iCalendar string STR using string parsing."
-  (let ((uid nil))
-    (when (string-match "UID:\\s-*\\(.*?\\)\\(?:\\n\\|$\\)" str)
-      (setq uid (match-string 1 str))
-      ;; Clean up the UID string by removing whitespace
-      (setq uid (replace-regexp-in-string "[[:space:]]+" "" uid)))
-    uid))
-
-
-
-
-(defun exco-org--get-uid (str)
-  "get the UID from a ical entry"
-  
-  (with-temp-buffer
-
-    (insert str)
-    (goto-char (point-min))
-    
-    ;; manual unfolding of ics fields
-    (while (re-search-forward "\r?\n[ \t]" nil t)
-      (replace-match "" nil nil))
-    ;; (goto-char (point-max))
-    
-    (extract-uid-from-string (buffer-string))))
-
-  
-
-
-(exco-org--get-uid xx)
-
-;; (setq icalendar-import-format "%U")
-
-
-
-(extract-uid-from-string xx)
-
-(exco-get-more-ids
-  `(ItemId (Id . "AAAWAGouYWVuZ2VuaGV5c3RlckB1dmEubmwARgAAAAAArimMe7pMzUqvUQ37mpRH5wcABiMBUm85r0Cl732oEQ7e5wAAAAABDQAAyHp62n+SaESahiQgaf09owADUmSYXgAA") (ChangeKey . "DwAAABYAAADIenraf5JoRJqGJCBp/T2jAANRZIvH")))
-
-;; 040000008200E00074C5B7101A82E0080000000090FD56F8C4EFDA01000000000000000
-;;  01000000019BFED4DCEA60F4998A42D20D3F1F8A7
-
-(exco-get-more-ids
-  `(ItemId (Id . "AAAWAGouYWVuZ2VuaGV5c3RlckB1dmEubmwARgAAAAAArimMe7pMzUqvUQ37mpRH5wcABiMBUm85r0Cl732oEQ7e5wAAAAABDQAAyHp62n+SaESahiQgaf09owADUmSYYAAA") (ChangeKey . "DwAAABYAAADIenraf5JoRJqGJCBp/T2jAANn51CY")))
-;; hmm this returns a much longer response -> extraction function probably needs adjustment 
-
-
-(exco-get-more-ids
-  `(ItemId (Id . "AAAWAGouYWVuZ2VuaGV5c3RlckB1dmEubmwARgAAAAAArimMe7pMzUqvUQ37mpRH5wcABiMBUm85r0Cl732oEQ7e5wAAAAABDQAAyHp62n+SaESahiQgaf09owADaPAo3QAA") (ChangeKey . "DwAAABYAAADIenraf5JoRJqGJCBp/T2jAANn50/v")))
-
-;; 040000008200E00074C5B7101A82E008000000002D5143FE8D0ADB01000000000000000
- ;; 010000000095CF77E62913A4BABCB61F520698823
-
-

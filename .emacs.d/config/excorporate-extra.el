@@ -461,6 +461,50 @@ date-end: absolute day number"
 
 
 
+(defun exco-org--extract-uid-from-string (str)
+  "Extract the UID from the given iCalendar string STR using string parsing."
+  (let ((uid nil))
+    (when (string-match "UID:\\s-*\\(.*?\\)\\(?:\\n\\|$\\)" str)
+      (setq uid (match-string 1 str))
+      ;; Clean up the UID string by removing whitespace
+      (setq uid (replace-regexp-in-string "[[:space:]]+" "" uid)))
+    uid))
+
+
+(defun exco-org--get-uid (str)
+  "get the UID from a ical entry"
+  
+  (with-temp-buffer
+
+    (insert str)
+    (goto-char (point-min))
+    
+    ;; manual unfolding of ics fields
+    (while (re-search-forward "\r?\n[ \t]" nil t)
+      (replace-match "" nil nil))
+    ;; (goto-char (point-max))
+    
+    (exco-org--extract-uid-from-string (buffer-string))))
+
+;; (exco-org--get-uid xx)
+
+
+(defun exco-org--set-uid-property (org-id uid)
+  "go to the entry with the org-id, and set property"
+  (message "entered exco-org--set-uid-property")
+
+
+  (with-current-buffer (find-file-noselect "~/.emacs.d/config/excotests/testmeets.org")
+    (goto-char (cdr (org-id-find org-id)))
+    (org-set-property "UID" uid)
+    (save-buffer)
+    ))
+
+
+;; (exco-org--set-uid-property "b74db682-502f-4f78-a705-1a91b8eaed9f" "abcd")
+
+
+
 
 
 
