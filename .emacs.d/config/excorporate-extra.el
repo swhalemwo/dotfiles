@@ -214,8 +214,11 @@ arguments, IDENTIFIER and the server's response."
       (exco-org--get-meetings-for-year identifier
 	month day year
 	callback)) 
-    #'exco-org-insert-meetings
-    #'exco-org-finalize-buffer))
+    #'exco-org-insert-meetings-and-finalize
+    #'exco-org-finalize-buffer ;; this isn't really used, but just keep it here anyways
+    t))
+
+
 
 (defun exco-org--show-month (month day year)
   "Show meetings for the date specified by MONTH DAY YEAR."
@@ -226,15 +229,66 @@ arguments, IDENTIFIER and the server's response."
       (exco-org--get-meetings-for-month identifier
 	month day year
 	callback)) 
-    #'exco-org-insert-meetings
-    #'exco-org-finalize-buffer))
+    #'exco-org-insert-meetings-and-finalize
+    #'exco-org-finalize-buffer ;; this isn't really used, but just keep it here anyways
+    t))
 
+
+(defvar exco-org--timer-uid-checker nil
+  "Timer for waiting asynchronously for UID additions to finish.")
+
+(defun exco-org--check-uid-progress (counter-start)
+  "Check if all UIDs have been added asyncly. if they have, call `exco-org-finalize-buffer`."
+
+  
+  (if (= counter-start exco-org--counter-finished)
+    (progn
+      (message "All UIDs added -> finalize.")
+      ;; Stop the timer
+      (when exco-org--timer-uid-checker
+        (cancel-timer exco-org--timer-uid-checker))
+      (exco-org-finalize-buffer)
+      )
+    (message (format "%s/%s have finished -> Still waiting." exco-org--counter-finished counter-start))))
+
+
+
+(defun exco-org-insert-meetings-and-finalize (identifier response callback)
+  "insert meetings, then add UIDs, and call finalize once all meetings are added."
+
+  (exco-org-insert-meetings identifier response) ;; main meetings
+
+  (let ((counter-start 0))
+
+    ;; start the setting of the UIDs
+    (with-current-buffer (exco-org--identifier-buffer identifier)
+      
+      (goto-char (point-min))
+      (org-mode)
+      (org-next-visible-heading 1) ;; go to first real meeting
+      
+      (setq exco-org--counter-finished 0)
+
+      (while (not (eobp))
+
+	(message (format "finalize loop point: %s" (point)))
+	(exco-org--add-uid)
+	
+	(org-next-visible-heading 1) 	;; go to next meeting
+	(setq counter-start (+ counter-start 1)))
+      
+      
+      ;; Start the timer to check every 0.1 seconds
+      (setq exco-org--timer-uid-checker (run-at-time 0.1 0.1 'exco-org--check-uid-progress counter-start))
+      )
+    )
+  )
 
 
 (defun exco-org--parse-buffer ()
   "general workhorse for parsing any buffer"
   (let ((meetings nil))
-  
+    
     (org-element-map (org-element-parse-buffer) 'headline
       (lambda (headline)
 	
@@ -273,13 +327,13 @@ arguments, IDENTIFIER and the server's response."
 (defun exco-org--parse-meeting-file ()
   "see which meetings are in the org-file via org-element-map in the background; returns a list of meetings
   with the following structure: (Identifier, Subject)"
-     
-    ;; org-element-map over excorporate-org-schedule-file and get the meetings
+  
+  ;; org-element-map over excorporate-org-schedule-file and get the meetings
   (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
 
     (exco-org--parse-buffer)))
-      
-      
+
+
 
 ;; (exco-org--parse-meeting-file)
 
@@ -322,6 +376,8 @@ arguments, IDENTIFIER and the server's response."
       ;; iterate over all meetings
       (while (not (eobp))
 
+	
+
 	(exco-org--dispatch-meeting-at-point existing-meetings ids-existing-meetings)
 
 	;; go to next meeting
@@ -349,7 +405,9 @@ arguments, IDENTIFIER and the server's response."
   (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
     (goto-char (point-max))
     (org-paste-subtree)
-    (org-id-get-create)))
+    (org-id-get-create)
+    
+    ))
 
 
 
@@ -371,13 +429,22 @@ arguments, IDENTIFIER and the server's response."
 
   ;; insert the meeting normally 
   (apply orig-fun args)
+  ;; (message (buffer-name))
 
+  ;; (goto-char (point-max)) ;; go to end of buffer before editing things? 
 
+  ;; now to the post-processing
   ;; get meeting value (4th argument) if it exists
   (let (
 	 (id-alist (read (org-entry-get (point) "Identifier")))
 	 (location (if (> (length args) 3) (nth 3 args) nil)))
+
+    ;; (message (format "meeting buffer: %s" (buffer-name)))
+
+    ;; (org-mode)
     
+    ;; (org-id-get-create)
+
     ;; set meeting Id and changekey as org-properties
     (org-set-property "MEETINGID" (assoc-default 'Id (cdr id-alist)))
     (org-set-property "ChangeKey" (assoc-default 'ChangeKey (cdr id-alist)))
@@ -385,6 +452,8 @@ arguments, IDENTIFIER and the server's response."
     ;; now set location also as property in drawer
     (when location
       (org-set-property "LOCATION" location))))
+
+
 
 (defun exco-org--lowercase-state (orig-fun &rest args)
   "lowercase the state of the meeting since I use lowercase todo state"
@@ -409,11 +478,12 @@ arguments, IDENTIFIER and the server's response."
 ;; (advice-remove 'exco-org-insert-meeting-heading #'exco-org--lowercase-state)
 
 
+
 ;; (exco-org--show-year 8 7 2024)
 ;; (exco-org--show-month 9 1 2024)
 ;; (exco-org--dispatch-meetings)
 
-(defun exco-org--value-between-p (value min max)
+(defun exco-org--value-between-p (value min max) 
   (and (> value min) (< value max)))
 
 
@@ -489,42 +559,51 @@ date-end: absolute day number"
 ;; (exco-org--get-uid xx)
 
 
-(defun exco-org--set-uid-property (org-id uid)
-  "go to the entry with the org-id, and set property"
-  (message "entered exco-org--set-uid-property")
+(defun exco-org--set-uid-property (identifier meeting-id uid)
+  "go to entry which has meeting-id, and set the ical uid property"
+
+  (with-current-buffer (exco-org--identifier-buffer identifier)
+    
+    (message (format "uid buffer: %s" (buffer-name)))
+    (message (format "uid cur-point: %s" (point)))
+    (message (format "uid max-point: %s" (point-max)))
+    (message (format "uid: %s" uid))
+
+    ;; (view-buffer-other-window (exco-org--identifier-buffer identifier)) ;; for debug
+
+    (goto-char (point-min))
+    
+    (goto-char (search-forward meeting-id))
+    (message (format "uid pos after move: %s" (point)))
 
 
-  (with-current-buffer (find-file-noselect "~/.emacs.d/config/excotests/testmeets.org")
-    (goto-char (cdr (org-id-find org-id)))
     (org-set-property "UID" uid)
-    (save-buffer)
-    ))
+
+    (setq exco-org--counter-finished (+ exco-org--counter-finished 1))
+
+    )
+  )
+
+
 
 
 (defun exco-org--add-uid ()
   "add ical uid to entry at point"
   (interactive)
-  (let ((identifier (read (org-entry-get (point) "Identifier"))))
+  (let ((item-identifier (read (org-entry-get (point) "Identifier")))
+	 (con-identifier (car exco--connection-identifiers)))
     ;; (message (format "%s" identifier)))
     
-    (exco-org--dl-write-uid identifier)
-    )
-  )
-
-(defun exco-org--dl-write-uid (item-identifier)
-  ;; slightly modify from excorporate.el
-  (let
-    ((identifier (car exco--connection-identifiers)))
-
-    (exco-operate identifier
+    
+    (exco-operate con-identifier
       "GetItem"
       `(((ItemShape
 	   (BaseShape . "IdOnly")
 	   (IncludeMimeContent . t))
 	  (ItemIds ,item-identifier))
 	 nil nil nil nil nil nil)
-      'exco-org--callback-uid
-      )))
+      'exco-org--callback-uid )))      
+
 
 (defun exco-org--callback-uid (_identifier response)
   ;; response is some encoded stuff, this seems all necessary to decode ?
@@ -544,14 +623,8 @@ date-end: absolute day number"
     ;; (funcall process-item
     ;; (printer
     (exco-org--set-uid-property
-      ;; org-id
-      (assoc-default 'org-id (assoc-default
-			       ;; get the ItemId
-			       (exco-extract-value '(ResponseMessages GetItemResponseMessage
-						      Items CalendarItem ItemId Id)
-				 response)
-			       ;; use the ItemId to get the corresponding org id
-			       exco-org--parsed-meets))
+      _identifier
+      (exco-extract-value '(ResponseMessages GetItemResponseMessage Items CalendarItem ItemId Id) response)
       (exco-org--get-uid
 	(decode-coding-string
 	  (base64-decode-string
@@ -560,7 +633,7 @@ date-end: absolute day number"
 	  coding-system)))))
 
 
-;; (exco-org--set-uid-property "b74db682-502f-4f78-a705-1a91b8eaed9f" "abcd")
+
 
 
 
