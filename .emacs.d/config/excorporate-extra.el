@@ -114,18 +114,29 @@
 (defun exco-org--add-identifiers-to-meeting-property (exco-upload-response)
   ;; navigate response down and add MEETINGID and ChangeKey to org-headline
   
-  ;; clumsy way of retrieving the meeting ID and Change key part of the response
-  (let ((response-class (assoc-default 'ResponseClass (cdr (cadaar exco-upload-response))))
-	 (identifier-cons (cadadr (nth 2 (cdr (cadaar exco-upload-response)))))
-	 (cur-buf (current-buffer)))
-
+  (let* (
+	  ;; extracting from already extracted response kills the reponse object
+	  ;; -> need to construct multiple mimepaths
+	  (mimepath-identifier-to-property '(ResponseMessages CreateItemResponseMessage Items CalendarItem))
+	  (mimepath-identifier-cons (append mimepath-identifier-to-property '(ItemId)))
+	  ;; then extract: one for easy access of fields, one for easy access as identifier
+	  (item-identifier-to-property (car
+					 (exco-extract-value mimepath-identifier-to-property exco-upload-response)))
+	  (item-identifier-cons (exco-extract-value mimepath-identifier-cons exco-upload-response)))
+    
+    
     ;; go to schedule buffer
     (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
       (goto-char (point-max)) ;; go to end (this is where capture should place the meeting)
       
-      ;; (org-set-property "Identifier" (format "%S" identifier-cons))
-      (org-set-property "MEETINGID" (assoc-default 'Id (cdr identifier-cons)))
-      (org-set-property "ChangeKey" (assoc-default 'ChangeKey (cdr identifier-cons)))
+      
+      (org-set-property "MEETINGID" (assoc-default 'Id item-identifier-cons))
+      (org-set-property "ChangeKey" (assoc-default 'ChangeKey item-identifier-cons))
+      (org-set-property "Identifier" (format "%S" item-identifier-to-property))
+
+
+      (setq exco-org--buffer-meetings-uid (find-file-noselect excorporate-org-schedule-file))
+      (exco-org--add-uid)
       )))
 
 
@@ -237,6 +248,9 @@ arguments, IDENTIFIER and the server's response."
 (defvar exco-org--timer-uid-checker nil
   "Timer for waiting asynchronously for UID additions to finish.")
 
+(defvar exco-org--buffer-meetings-uid nil
+  "buffer to write the UID to")
+
 (defun exco-org--check-uid-progress (counter-start)
   "Check if all UIDs have been added asyncly. if they have, call `exco-org-finalize-buffer`."
 
@@ -268,6 +282,7 @@ arguments, IDENTIFIER and the server's response."
       (org-next-visible-heading 1) ;; go to first real meeting
       
       (setq exco-org--counter-finished 0)
+      (setq exco-org--buffer-meetings-uid (exco-org--identifier-buffer identifier))
 
       (while (not (eobp))
 
@@ -294,16 +309,16 @@ arguments, IDENTIFIER and the server's response."
 	
 	;; extract basic information from org entry
 	(let* (
-		(MEETINGID (org-element-property :MEETINGID headline))
+		(UID (org-element-property :UID headline))
 		(ChangeKey (org-element-property :CHANGEKEY headline))
 		(subject (org-element-property :raw-value headline))
 		(scheduled (cdar (org-entry-properties headline "SCHEDULED")))
 		(location (org-element-property :LOCATION headline))
 		(org-id (org-element-property :ID headline))
-		(hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location))))
+		(hash-exco-org (secure-hash 'sha256 (format "%s%s%s%s" UID subject scheduled location))))
 
 	  
-	  (push `(,MEETINGID . 
+	  (push `(,UID . 
 		   ((subject . ,subject)
 		     (location . ,location)
 		     (org-id . ,org-id)
@@ -339,20 +354,20 @@ arguments, IDENTIFIER and the server's response."
 
 (defun exco-org--dispatch-meeting-at-point (existing-meetings ids-existing-meetings)
   "handle with meeting at point: copy if new, update if existing"
-  (let* ((MEETINGID (org-entry-get (point) "MEETINGID"))
+  (let* ((UID (org-entry-get (point) "UID"))
 	  (subject (org-entry-get (point) "ITEM"))
 	  (scheduled (org-entry-get (point) "SCHEDULED"))
 	  (location (org-entry-get (point) "LOCATION"))
-	  (hash-exco (secure-hash 'sha256 (format "%s%s%s%s" MEETINGID subject scheduled location)))
-	  (hash-exco-org (assoc-default 'hash-exco-org (assoc MEETINGID existing-meetings)))
+	  (hash-exco (secure-hash 'sha256 (format "%s%s%s%s" UID subject scheduled location)))
+	  (hash-exco-org (assoc-default 'hash-exco-org (assoc UID existing-meetings)))
 	  )
 
     ;; handle them on different cases
     ;; if not there at all: copy them over
     (cond
-      ((not (member MEETINGID ids-existing-meetings)) (exco-org--refile-new-meeting))
+      ((not (member UID ids-existing-meetings)) (exco-org--refile-new-meeting))
       ;; if already there, but changed: update them 
-      ((and (member MEETINGID ids-existing-meetings)
+      ((and (member UID ids-existing-meetings)
 	 (not (equal hash-exco hash-exco-org)))
 	(exco-org--update-changed-org-meeting subject scheduled location))
 
@@ -375,8 +390,6 @@ arguments, IDENTIFIER and the server's response."
 
       ;; iterate over all meetings
       (while (not (eobp))
-
-	
 
 	(exco-org--dispatch-meeting-at-point existing-meetings ids-existing-meetings)
 
@@ -562,7 +575,8 @@ date-end: absolute day number"
 (defun exco-org--set-uid-property (identifier meeting-id uid)
   "go to entry which has meeting-id, and set the ical uid property"
 
-  (with-current-buffer (exco-org--identifier-buffer identifier)
+  ;; (with-current-buffer (exco-org--identifier-buffer identifier)
+  (with-current-buffer exco-org--buffer-meetings-uid
     
     (message (format "uid buffer: %s" (buffer-name)))
     (message (format "uid cur-point: %s" (point)))
@@ -579,6 +593,10 @@ date-end: absolute day number"
 
     (org-set-property "UID" uid)
 
+    (org-delete-property "MEETINGID")
+    (org-delete-property "ChangeKey")
+    (org-delete-property "Identifier")
+
     (setq exco-org--counter-finished (+ exco-org--counter-finished 1))
 
     )
@@ -594,7 +612,6 @@ date-end: absolute day number"
 	 (con-identifier (car exco--connection-identifiers)))
     ;; (message (format "%s" identifier)))
     
-    
     (exco-operate con-identifier
       "GetItem"
       `(((ItemShape
@@ -602,7 +619,7 @@ date-end: absolute day number"
 	   (IncludeMimeContent . t))
 	  (ItemIds ,item-identifier))
 	 nil nil nil nil nil nil)
-      'exco-org--callback-uid )))      
+      'exco-org--callback-uid )))
 
 
 (defun exco-org--callback-uid (_identifier response)
@@ -631,11 +648,6 @@ date-end: absolute day number"
 	    (cdr (exco-extract-value
 		   mime-path response)))
 	  coding-system)))))
-
-
-
-
-
 
 
 
