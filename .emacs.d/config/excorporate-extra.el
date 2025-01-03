@@ -356,6 +356,7 @@ arguments, IDENTIFIER and the server's response."
   "handle with meeting at point: copy if new, update if existing"
   (let* ((UID (org-entry-get (point) "UID"))
 	  (subject (org-entry-get (point) "ITEM"))
+	  (midhash (org-entry-get (point) "MIDHASH"))
 	  (scheduled (org-entry-get (point) "SCHEDULED"))
 	  (location (org-entry-get (point) "LOCATION"))
 	  (hash-exco (secure-hash 'sha256 (format "%s%s%s%s" UID subject scheduled location)))
@@ -369,7 +370,9 @@ arguments, IDENTIFIER and the server's response."
       ;; if already there, but changed: update them 
       ((and (member UID ids-existing-meetings)
 	 (not (equal hash-exco hash-exco-org)))
-	(exco-org--update-changed-org-meeting subject scheduled location))
+	(exco-org--update-changed-org-meeting
+	  (assoc-default 'org-id (assoc-default UID existing-meetings)) ;; get org-id
+	  subject scheduled location midhash))
 
       )))
 
@@ -424,15 +427,20 @@ arguments, IDENTIFIER and the server's response."
 
 
 
-(defun exco-org--update-changed-org-meeting (subject scheduled location)
+(defun exco-org--update-changed-org-meeting (org-id subject scheduled location midhash)
   "update a meeting that has changed on the server"
   
   ;; go to the meeting in the excorporate-org-schedule-file via the identifier
   (with-current-buffer (find-file-noselect excorporate-org-schedule-file)
-
+    
+    (goto-char (cdr (org-id-find org-id)))
+    
     (org-schedule nil scheduled) ;; set new schedule
     (org-set-property "LOCATION" location) ;; set new location
+    (org-set-property "MIDHASH" midhash)
     (org-edit-headline subject)  ;; set new subject
+
+    (save-buffer)
     
     ))
 
@@ -592,6 +600,10 @@ date-end: absolute day number"
 
 
     (org-set-property "UID" uid)
+
+    ;; check if meeting-ids change when new meetings added (use hashes to avoid search-string collisions)
+    (org-set-property "MIDHASH" (secure-hash 'sha256 meeting-id)) 
+    
 
     (org-delete-property "MEETINGID")
     (org-delete-property "ChangeKey")
