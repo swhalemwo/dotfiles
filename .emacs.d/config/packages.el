@@ -153,12 +153,20 @@
 	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
 	      ))))
 
-       ("pt" "bachelor research project"
+       ("pb" "bachelor research project"
 	 ((alltodo ""
 	    ((org-agenda-files
 	       '("/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_brp.org"))
 	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
 	      ))))
+
+       ("pc" "book chapter"
+	 ((alltodo ""
+	    ((org-agenda-files
+	       '("/home/johannes/Dropbox/phd/papers/chapter_art_capitalism/tasks_chapter.org"))
+	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
+	      ))))
+
 
 
        ;; try org-agenda-skip-function: doesn't work
@@ -273,10 +281,11 @@
        "/home/johannes/Dropbox/sync/org/general.org"
        "/home/johannes/Dropbox/phd/papers/closing/tasks_closing.org"
        "/home/johannes/Dropbox/phd/papers/infl/tasks_infl.org"
+       "/home/johannes/Dropbox/phd/papers/chapter_art_capitalism/tasks_chapter.org"
        "/home/johannes/Dropbox/sync/org/phd_orga.org"
        "/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_brp.org"
        "/home/johannes/Dropbox/sync/org/schedule.org"
-       "/home/johannes/Dropbox/sync/org/schedule_uva.org"
+       "/home/johannes/Dropbox/sync/org/schedule_uva2.org"
        "/home/johannes/Dropbox/sync/org/yinan.org"
        ;; "/home/johannes/Dropbox/sync/org/general.org"
        "/home/johannes/Dropbox/sync/org/tec.org"
@@ -335,7 +344,7 @@
          #'org-calfw-new-date)
 
        ("e" "excorporate" entry 
-         (file "/home/johannes/Dropbox/sync/org/schedule_uva.org")
+         (file "/home/johannes/Dropbox/sync/org/schedule_uva2.org")
 	 #'exco-org--create-meeting-string)
        
        ("s" "study" entry
@@ -807,7 +816,8 @@
 	 ("" . ""))
        ("" . "")))
   
-  (setq excorporate-org-schedule-file "/home/johannes/Dropbox/sync/org/schedule_uva.org")
+  (setq excorporate-org-mschedule-file "/home/johannes/Dropbox/sync/org/schedule_uva.org")
+  (setq excorporate-org-schedule-file "/home/johannes/Dropbox/sync/org/schedule_uva2.org")
   (define-key cfw:org-custom-map (kbd "e") 'exco-org-create-meeting)
 
   )
