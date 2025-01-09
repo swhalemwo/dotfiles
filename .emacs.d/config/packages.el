@@ -90,6 +90,7 @@
 	  ("C-c r" . 'helm-org-rifle-current-buffer)
 	  ("C-c p" . 'open-pdf-of-notes-or-buffer)
           ("C-+" . 'open-org-brain-of-notes)
+	  ("C-c ]" . 'org-ref-insert-cite-link)
           )
 
 
