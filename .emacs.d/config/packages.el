@@ -921,7 +921,13 @@
     (let* ((file-path (buffer-file-name))
 	    (dir-path (when file-path (file-name-directory file-path))))
       (consult-ripgrep dir-path)))
-    
+
+  (defun consult-grep-curfile ()
+    (interactive)
+    (consult-grep (list (buffer-file-name))))
+
+
+  
 
   :config 
   (add-to-list 'embark-multitarget-actions #'my/consult-line-multi) ;; allow searching in buffer selection
