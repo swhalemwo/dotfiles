@@ -6,9 +6,13 @@
 (setq auto-window-vscroll nil) ;; better scrolling,
 ;; based on https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag
 
+(use-package org :load-path "~/.emacs.d/elpa/org-mode/lisp/")
+
 (defconst toc:xemacs-config-dir "/home/johannes/.emacs.d/config/" "")
 
 (setq custom-file (concat toc:xemacs-config-dir "custom-file.el"))
+
+
 (load custom-file)
 
 
