@@ -113,6 +113,29 @@
       ;; (concat sym "\n") t)
       (message "No valid R symbol at point"))))
 
+
+(defun r-print-length-at-point ()
+  (interactive)
+  (let ((sym (ess-symbol-at-point)))
+
+    (if sym
+      (ess-send-string
+	(get-process ess-current-process-name)
+	(concat "length(" (symbol-name sym) ")\n") t)
+      (message "no valid r symbol at point"))))
+
+(defun r-print-head-at-point ()
+  (interactive)
+  (let ((sym (ess-symbol-at-point)))
+
+    (if sym
+      (ess-send-string
+	(get-process ess-current-process-name)
+	(concat "head(" (symbol-name sym) ")\n") t)
+      (message "no valid r symbol at point"))))
+
+  
+
 (defun ess-print-docstring ()
   ;; show docstring (defined with docstring package) of function at point
   ;; docstring useful for functions that are being developed

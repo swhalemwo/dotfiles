@@ -145,6 +145,8 @@
 (define-key ess-mode-map (kbd "C-c p") 'ess-r-process-object)
 (define-key ess-mode-map (kbd "C-c s") 'r-str-at-point)
 (define-key ess-mode-map (kbd "C-c r") 'r-summary-at-point)
+(define-key ess-mode-map (kbd "C-c y") 'r-print-length-at-point)
+(define-key ess-mode-map (kbd "C-c ,") 'r-print-head-at-point)
 (define-key ess-mode-map (kbd "C-.") 'consult-ripgrep-curdir)
 (define-key ess-mode-map (kbd "C-#") 'consult-git-grep)
 
