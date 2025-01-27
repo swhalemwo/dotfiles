@@ -246,6 +246,7 @@ This holds the results of the last documentation request."
   (setopt ellama-keymap-prefix "C-c e")
   ;; language you want ellama to translate to
   (setopt ellama-language "English")
+  (setopt ellama-translate-italic nil)
   ;; could be llm-openai for example
   (require 'llm-ollama)
   (require 'llm-openai)
