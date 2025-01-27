@@ -158,7 +158,7 @@
        ("pb" "bachelor research project"
 	 ((alltodo ""
 	    ((org-agenda-files
-	       '("/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_brp.org"))
+	       '("/home/johannes/Dropbox/phd/teaching/brp/tasks_brp.org"))
 	      (org-agenda-skip-function '(org-agenda-skip-entry-if 'tags "postponed"))
 	      ))))
 
@@ -285,7 +285,7 @@
        "/home/johannes/Dropbox/phd/papers/infl/tasks_infl.org"
        "/home/johannes/Dropbox/phd/papers/chapter_art_capitalism/tasks_chapter.org"
        "/home/johannes/Dropbox/sync/org/phd_orga.org"
-       "/home/johannes/Dropbox/phd/teaching/ba_thesis/tasks_brp.org"
+       "/home/johannes/Dropbox/phd/teaching/brp/tasks_brp.org"
        "/home/johannes/Dropbox/sync/org/schedule.org"
        "/home/johannes/Dropbox/sync/org/schedule_uva2.org"
        "/home/johannes/Dropbox/sync/org/yinan.org"
