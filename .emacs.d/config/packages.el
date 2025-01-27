@@ -113,6 +113,7 @@
   (push '("\\.docx\\'" . "lowriter %s") org-file-apps)
   (push '("\\.pptx\\'" . "loimpress %s") org-file-apps)
   (push '("\\.xlsx\\'" . "localc %s") org-file-apps)
+  (push '("\\.xls\\'" . "localc %s") org-file-apps)
   (push '("\\.png\\'" . "feh %s") org-file-apps)
   
   
