@@ -650,7 +650,10 @@
 
 
 ;; ** magit
-(setq magit-diff-refine-hunk (quote all))
+;; (setq magit-diff-refine-hunk (quote all))
+;; (setq magit-buffer-diff-args "--stat")
+
+
 
 
 ;; ** sessions
