@@ -1095,8 +1095,9 @@
   (corfu-right-margin-width 0)
   ;; (corfu-
   ;; (corfu-
-  :init
-  (global-corfu-mode))
+  ;; :init
+  ;; (global-corfu-mode)
+  )
 
 
 (use-package cape
