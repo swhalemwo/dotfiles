@@ -174,7 +174,10 @@
 	  ("C-c C-u" . ess-eval-paragraph)
 	  ("C->" . 'then_R_operator)
 	  )
-  :hook (ess-mode . outshine-mode)
+  :hook
+  (ess-mode . outshine-mode)
+  
+  
   )
 
 (setq ess-indent-offset 2)
