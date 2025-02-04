@@ -943,7 +943,54 @@
      ;; ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
 
 
-     ))
+     )
+  )
+
+(add-to-list 'org-latex-classes
+
+'("beamer_presi2"
+     "\\documentclass[aspectratio=169, 14pt, t]{beamer}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{wrapfig}
+\\usepackage{rotating}
+\\usepackage[normalem]{ulem}
+\\usepackage{tikz}    
+\\usepackage{booktabs}
+\\usepackage{dcolumn}
+
+\\setbeamertemplate{itemize items}[circle]
+\\usepackage{bibentry}
+\\usepackage[style=apa, backend=biber]{biblatex}
+\\addbibresource{/home/johannes/Dropbox/references.bib}
+\\addbibresource{/home/johannes/Dropbox/references2.bib}
+\\setbeamercolor{section in head/foot}{fg=black,bg=white}
+\\beamertemplatenavigationsymbolsempty
+\\makeatletter
+\\setbeamertemplate{footline}{%
+  \\begin{beamercolorbox}[ht=2.25ex,dp=3.75ex]{section in head/foot}
+    \\insertnavigation{\\paperwidth}
+  \\end{beamercolorbox}%
+}%
+\\makeatother
+
+
+
+\\author{Johannes Aengenheyster}
+
+\\setcounter{tocdepth}{2}
+
+"
+
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\frame*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\subsubsubsection{%s}" . "\\paragraph*{%s}")
+     ;; ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+
+
+     )
+  )
 
 
 ;; ** elsevier article (added for poetics)

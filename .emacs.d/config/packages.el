@@ -455,10 +455,14 @@
        (makefile "make")
        (r "r")))
   (setq org-latex-pdf-process '("rm -f %b.aux %b.bbl %b.bcf %b.out %b.blg"
-				 "pdflatex -shell-escape %b"
+				 ;; "pdflatex --shell-escape %b"
+				 ;; "biber %b"
+				 ;; "pdflatex --shell-escape %b"
+				 ;; "pdflatex --shell-escape %b"))
+				 "pdflatex %b"
 				 "biber %b"
-				 "pdflatex -shell-escape %b"
-				 "pdflatex -shell-escape %b"))
+				 "pdflatex %b"
+				 "pdflatex %b"))
   (setq org-latex-prefer-user-labels t)
   (setq org-latex-text-markup-alist
     '((bold . "\\textbf{%s}")
