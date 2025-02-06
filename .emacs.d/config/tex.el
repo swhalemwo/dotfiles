@@ -1315,3 +1315,14 @@
   ;;      (?p . "\\parencite[]{%l}")
   ;;      (?o . "\\citepr[]{%l}")
   ;;      (?n . "\\nocite{%l}")))
+
+
+(setq org-latex-hyperref-template "\\hypersetup{
+ colorlinks=true,
+ pdfauthor={%a},
+ pdftitle={%t},
+ pdfkeywords={%k},
+ pdfsubject={%d},
+ pdfcreator={%c},
+ pdflang={%L}}"
+  )
