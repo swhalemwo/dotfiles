@@ -974,6 +974,12 @@
 }%
 \\makeatother
 
+\\usepackage[style=apa, backend=biber]{biblatex} 
+\\usepackage[english, american]{babel}
+\\DeclareLanguageMapping{american}{american-apa}
+\\DeclareFieldFormat{apacase}{#1}
+
+
 
 
 \\author{Johannes Aengenheyster}
