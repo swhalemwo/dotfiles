@@ -696,7 +696,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-hook 'org-mode-hook #'org-syntax-table-modify)
 
-(defun ess-reload-package (process signal)
+(defun ess-reload-package-programmatically (process signal)
   "detach package and reattach package"
   (let ((ess--inhibit-presend-hooks t)) ;; somehow needed to run ess-send-string when not focusing on ESS buffer
     
@@ -715,6 +715,24 @@ point reaches the beginning or end of the buffer, stop there."
 
       (shell-command-sentinel process signal)))
   )
+
+(defun ess-reload-package ()
+  (interactive)
+  "detach package and reattach package"
+  (let ((ess--inhibit-presend-hooks t)  ;; somehow needed to run ess-send-string when not focusing on ESS buffer
+	 (package-name (completing-read "package to update" '(pmdata jtls))))
+	 
+    ;; (message "Do something!")
+      
+      ;; (ess-send-string (get-process ess-current-process-name)
+      (ess-send-string (get-process ess-current-process-name)
+	(concat "detach(\"package:" package-name "\", unload = T)\n") t)
+
+      ;; (ess-send-string (get-process ess-current-process-name)
+      (ess-send-string (get-process ess-current-process-name)
+	(concat "library(" PKG-NAME ")\n") t)
+    ))
+  
 
 
 (defun ess-r-devtools-update-package ()
@@ -743,7 +761,7 @@ point reaches the beginning or end of the buffer, stop there."
     
     
     (if (process-live-p proc)
-      (set-process-sentinel proc #'ess-reload-package)
+      (set-process-sentinel proc #'ess-reload-package-programmatically)
       (message "No process running."))))
 
 
