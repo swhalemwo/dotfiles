@@ -948,3 +948,18 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
             xfileList))
 	((eq system-type 'berkeley-unix)
           (mapc (lambda (xfpath) (let ((process-connection-type nil)) (start-process "" nil "xdg-open" xfpath))) xfileList))))))
+
+
+(defun switch-to-dired-buffer ()
+  "Switch to an existing Dired buffer."
+  (interactive)
+  (let ((dired-buffers (cl-remove-if-not
+                        (lambda (buf)
+                          (with-current-buffer buf
+                            (derived-mode-p 'dired-mode)))
+                        (buffer-list))))
+    (if dired-buffers
+        (let ((buf-name (completing-read "Select Dired buffer: "
+                                           (mapcar 'buffer-name dired-buffers))))
+          (switch-to-buffer buf-name))
+      (message "No Dired buffers found."))))

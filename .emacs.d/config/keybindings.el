@@ -204,3 +204,4 @@
 
 (define-key dired-mode-map (kbd "J") 'xah-open-in-external-app)
 
+(global-set-key (kbd "C-x C-d") 'switch-to-dired-buffer)
