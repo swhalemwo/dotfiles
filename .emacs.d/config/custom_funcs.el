@@ -505,7 +505,9 @@ Optionally set `outline-level' to LEVEL-FN and
 (defun isbn-to-bibtex2 ()
   (interactive)
   (let ((bibkey (read-string "bibtex key: ")))
-    (isbn-to-bibtex bibkey "references2.bib")))
+    (isbn-to-bibtex-open-library bibkey "references2.bib")
+    ;; (isbn-to-bibtex bibkey "references2.bib")
+    ))
 
 
 ;; ** qr code creator
