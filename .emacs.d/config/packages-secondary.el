@@ -237,6 +237,13 @@
 (define-key ess-r-mode-map (kbd "C-c C-i") 'ess-interrupt)
 (define-key ess-r-mode-map (kbd "C-c M") 'ess-match-call)
 
+;; don't use M-F to finish debugging
+(use-package ess-tracebug
+  :after (ess)
+
+  :config
+  (unbind-key (kbd "M-F") ess-debug-minor-mode-map))
+
 
 (defun my-inferior-ess-init ()
     (setq-local ansi-color-for-comint-mode 'filter))
