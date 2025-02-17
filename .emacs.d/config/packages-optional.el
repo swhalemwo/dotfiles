@@ -365,5 +365,12 @@ wrds-pgdata.wharton.upenn.edu"
 ;;             (ejc-ac-setup)))
 
 
-;; ** dbd model
+;; ** dbd mode
 (load-file "~/Dropbox/technical_stuff_general/dotfiles/.emacs.d/dbd-mode/dbdiagram-mode.el")
+
+
+;; ** uiua
+
+(use-package uiua-ts-mode
+  :mode "\\.ua\\'"
+  :ensure t)

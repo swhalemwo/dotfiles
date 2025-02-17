@@ -319,6 +319,7 @@
        (shell . t)
        (sql . t)
        (mermaid . t)
+       (uiua . t)
        ;; (clickhouse . t) 
        (dot . t)
        (plantuml . t)
