@@ -292,7 +292,7 @@
        ;; "/home/johannes/Dropbox/sync/org/general.org"
        "/home/johannes/Dropbox/sync/org/tec.org"
        "/home/johannes/Dropbox/phd/csbs/csbs.org"
-       "/home/johannes/Dropbox/phd/teaching/stats24/stats24.org"
+       ;; "/home/johannes/Dropbox/phd/teaching/stats24/stats24.org"
        "/home/johannes/Dropbox/sync/org/phd.org"))
   (setq org-agenda-log-mode-items '(clock))
   (setq org-agenda-prefix-format
