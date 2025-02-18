@@ -841,7 +841,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (defun org-insert-custom-header ()
   (interactive)
-  (org-insert-heading)
+
+  (when (not (org-at-heading-p))
+    (org-insert-heading))
   (org-expiry-insert-created)
   (org-id-get-create)
   ;; (message "kappa")
