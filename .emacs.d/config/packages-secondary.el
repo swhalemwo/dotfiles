@@ -359,6 +359,11 @@
   "<st"
   "Insert a source block for a table generation (returns table, R-formatted)")
 
+(tempo-define-template "inline-latex-brackets"
+  '("\\( " p " \\)")
+  "<b"
+  "insert in-line latex brackets")
+
 
 
 
