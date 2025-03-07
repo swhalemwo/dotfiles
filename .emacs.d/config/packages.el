@@ -78,6 +78,8 @@
 (define-key global-map (kbd "C-c _") 'org-ref-cite-insert-helm)
 
 
+(use-package org-ref-isbn)
+
 
 ;; ** org
 
