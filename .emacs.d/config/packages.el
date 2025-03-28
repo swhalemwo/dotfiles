@@ -113,6 +113,7 @@
   ;; https://emacs.stackexchange.com/questions/54811/open-link-of-file-in-org-mode-with-its-
   ;; defalut-application-rather-than-within-sp
   (push '("\\.docx\\'" . "lowriter %s") org-file-apps)
+  (push '("\\.odt\\'" . "lowriter %s") org-file-apps)
   (push '("\\.pptx\\'" . "loimpress %s") org-file-apps)
   (push '("\\.xlsx\\'" . "localc %s") org-file-apps)
   (push '("\\.xls\\'" . "localc %s") org-file-apps)
