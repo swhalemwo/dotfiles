@@ -251,6 +251,9 @@ arguments, IDENTIFIER and the server's response."
 (defvar exco-org--buffer-meetings-uid nil
   "buffer to write the UID to")
 
+(defvar exco-org--counter-finished 0
+  "counter for finishing stuff")
+
 (defun exco-org--check-uid-progress (counter-start)
   "Check if all UIDs have been added asyncly. if they have, call `exco-org-finalize-buffer`."
 
