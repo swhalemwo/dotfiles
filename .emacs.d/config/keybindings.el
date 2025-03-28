@@ -105,6 +105,7 @@
 
 
 (global-set-key (kbd "C-x o") 'other-window)
+(global-set-key (kbd "M-i") 'other-window)
 
 (global-set-key (kbd "C-`") 'org-recoll-search)
 (global-set-key (kbd "M-g b") 'magit-blame)
