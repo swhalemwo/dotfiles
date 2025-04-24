@@ -374,3 +374,11 @@ wrds-pgdata.wharton.upenn.edu"
 (use-package uiua-ts-mode
   :mode "\\.ua\\'"
   :ensure t)
+
+(use-package markdown-mode
+  :bind (:map markdown-mode-map
+	  ("C-#" . consult-git-grep)))
+
+
+
+
