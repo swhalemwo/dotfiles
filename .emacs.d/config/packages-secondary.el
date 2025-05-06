@@ -679,8 +679,9 @@ If run interactively, get ENTRY from context."
 (use-package midnight
   :ensure nil
   :hook (after-init . midnight-mode)
-  ;; :custom
-  ;; (clean-buffer-list-delay-general 2) ;; default is 3
-  ;; (clean-buffer-list-delay-special 3600) ;; default is 3600
+  :custom
+  (clean-buffer-list-delay-general 5) ;; default is 3
+  (clean-buffer-list-delay-special 3600) ;; default is 3600
   ;; (clean-buffer-list-kill-regexps '("\\`\\*Man " "\\`\\*helpful"))
   )
+
