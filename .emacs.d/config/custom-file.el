@@ -10,7 +10,8 @@
  '(company-idle-delay 0.1)
  '(company-minimum-prefix-length 4)
  '(custom-safe-themes
-    '("0fffa9669425ff140ff2ae8568c7719705ef33b7a927a0ba7c5e2ffcfac09b75" default))
+    '("0fffa9669425ff140ff2ae8568c7719705ef33b7a927a0ba7c5e2ffcfac09b75"
+       default))
  '(default-input-method "pyim")
  '(eldoc-documentation-strategy 'eldoc-documentation-default)
  '(eldoc-echo-area-prefer-doc-buffer t)
@@ -20,11 +21,13 @@
  '(helm-type-file-actions
     '(("Find file" . helm-find-file-or-marked)
        ("Find file as root" . helm-find-file-as-root)
-       ("Open file with default tool" . helm-open-file-with-default-tool)
+       ("Open file with default tool"
+	 . helm-open-file-with-default-tool)
        ("Find file other window" . helm-find-files-other-window)
        ("Find file other frame" . find-file-other-frame)
        ("Open dired in file's directory" . helm-open-dired)
-       ("Attach file(s) to mail buffer `C-c C-a'" . helm-ff-mail-attach-files)
+       ("Attach file(s) to mail buffer `C-c C-a'"
+	 . helm-ff-mail-attach-files)
        ("Marked files in dired" . helm-marked-files-in-dired)
        ("Grep File(s) `C-u recurse'" . helm-find-files-grep)
        ("Zgrep File(s) `C-u Recurse'" . helm-ff-zgrep)
@@ -33,16 +36,19 @@
        ("Checksum File" . helm-ff-checksum)
        ("Ediff File" . helm-find-files-ediff-files)
        ("Ediff Merge File" . helm-find-files-ediff-merge-files)
-       ("View file" . view-file)
-       ("Insert file" . insert-file)
+       ("View file" . view-file) ("Insert file" . insert-file)
        ("Add marked files to file-cache" . helm-ff-cache-add-file)
        ("Delete file(s)" . helm-ff-delete-files)
        ("Copy file(s) `M-C, C-u to follow'" . helm-find-files-copy)
        ("Rename file(s) `M-R, C-u to follow'" . helm-find-files-rename)
-       ("Symlink files(s) `M-S, C-u to follow'" . helm-find-files-symlink)
-       ("Relsymlink file(s) `C-u to follow'" . helm-find-files-relsymlink)
-       ("Hardlink file(s) `M-H, C-u to follow'" . helm-find-files-hardlink)
-       ("Open file externally (C-u to choose)" . helm-open-file-externally)
+       ("Symlink files(s) `M-S, C-u to follow'"
+	 . helm-find-files-symlink)
+       ("Relsymlink file(s) `C-u to follow'"
+	 . helm-find-files-relsymlink)
+       ("Hardlink file(s) `M-H, C-u to follow'"
+	 . helm-find-files-hardlink)
+       ("Open file externally (C-u to choose)"
+	 . helm-open-file-externally)
        ("Find file in hex dump" . hexl-find-file)))
  '(mu4e-headers-results-limit 200)
  '(mu4e-search-results-limit 200)
@@ -50,11 +56,27 @@
  '(org-recoll-results-num 50)
  '(org-todo-keywords '((sequence "todo" "|" "done" "postponed")))
  '(package-selected-packages
-    '(quelpa wgrep mermaid-mode ob-mermaid websocket editorconfig all-the-icons which-key ledger-mode imenu-anywhere consult affe corfu embark marginalia tree-sitter markdown-mode eglot ado-mode orgit with-editor diff-hl dash gnuplot emacsql-sqlite emacsql-sqlite3 company-jedi sql-indent sqlup-mode sql-mode solarized-theme ob-sql-mode color-theme-buffer-local vterm sql-clickhouse sqlite sqlite3 cypher-mode org-ql elpy helm-org-rifle org-gcal calfw-gcal calfw-cal calfw-org cc-cedict calfw git-timemachine helm-descbinds debbugs company org-wc graphviz-dot-mode magit eval-in-repl free-keys ess ob-cypher use-package outshine youdao-dictionary org-drill unicode-fonts pyim-wbdict gif-screencast org-brain org-contrib auctex helm-recoll org-babel-eval-in-repl async mu4e-maildirs-extension flyspell-correct f s switch-window mu4e-alert csv-mode helm-bibtex embark-consult jedi))
+    '(quelpa wgrep mermaid-mode ob-mermaid websocket editorconfig
+       all-the-icons which-key ledger-mode imenu-anywhere consult affe
+       corfu embark marginalia tree-sitter markdown-mode eglot
+       ado-mode orgit with-editor diff-hl dash gnuplot emacsql-sqlite
+       emacsql-sqlite3 company-jedi sql-indent sqlup-mode sql-mode
+       solarized-theme ob-sql-mode color-theme-buffer-local vterm
+       sql-clickhouse sqlite sqlite3 cypher-mode org-ql elpy
+       helm-org-rifle org-gcal calfw-gcal calfw-cal calfw-org
+       cc-cedict calfw git-timemachine helm-descbinds debbugs company
+       org-wc graphviz-dot-mode magit eval-in-repl free-keys ess
+       ob-cypher use-package outshine youdao-dictionary org-drill
+       unicode-fonts pyim-wbdict gif-screencast org-brain org-contrib
+       auctex helm-recoll org-babel-eval-in-repl async
+       mu4e-maildirs-extension flyspell-correct f s switch-window
+       mu4e-alert csv-mode helm-bibtex embark-consult jedi))
  '(package-vc-selected-packages '((org-mode :url "https://code.tecosaur.net/tec/org-mode")))
  '(sql-clickhouse-login-params '(database))
  '(table-cell-horizontal-chars "-=")
- '(warning-suppress-types '((emacs))))
+  '(warning-suppress-types '((emacs))))
+
+;; '(text-mode-ispell-word-completion nil)
 
 
 ;; old packages deleted
