@@ -1136,6 +1136,22 @@
 
 
 
+;; ** ispell fix
+
+
+(defun my-dabbrev-in-text()
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
+
+(add-hook 'text-mode-hook #'my-dabbrev-in-text)
+
+;; (setq completion-at-point-functions
+;;   (list #'cape-dabbrev #'ispell-completion-at-point))
+
+
+(setq ispell-complete-word-dict nil)
+
+(setq text-mode-ispell-word-completion nil)
+
 
 
 
