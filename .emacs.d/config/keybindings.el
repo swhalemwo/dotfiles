@@ -165,8 +165,9 @@
 (define-key org-mode-map (kbd "C-c x") 'org-insert-custom-header)
 
 (define-key org-mode-map (kbd "C-c f") 'open-pdf-fig)
-
 (define-key org-mode-map (kbd "C-S-<return>") 'org-insert-todo-subheading)
+(define-key org-mode-map (kbd "C-M-j") 'org-shiftup)
+(define-key org-mode-map (kbd "C-M-k") 'org-shiftdown)
 
 (define-key minibuffer-mode-map (kbd "M-r") 'consult-history) ;; add consult-history for minibuffer
 (define-key ielm-map (kbd "M-r") 'consult-history) ;; add consult history for ielm history
