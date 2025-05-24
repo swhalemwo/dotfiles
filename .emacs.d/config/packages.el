@@ -282,7 +282,7 @@
        ("f" "influence2" alltodo ""
 	 ((org-agenda-files
 	    ;; '("/home/johannes/Dropbox/agenda/infl.org"))))
-	    '("/home/johannes/Dropbox/phd/papers/infl2/tasks_infl2.org"))))
+	    '("/home/johannes/Dropbox/phd/papers/foster/tasks_foster.org"))))
        
        ("r" "reading list" alltodo ""
 	 ((org-agenda-files
@@ -293,7 +293,7 @@
        "/home/johannes/Dropbox/sync/org/general.org"
        "/home/johannes/Dropbox/phd/papers/closing/tasks_closing.org"
        "/home/johannes/Dropbox/phd/papers/infl/tasks_infl.org"
-       "/home/johannes/Dropbox/phd/papers/infl2/tasks_infl2.org"
+       "/home/johannes/Dropbox/phd/papers/foster/tasks_foster.org"
        "/home/johannes/Dropbox/phd/papers/chapter_art_capitalism/tasks_chapter.org"
        "/home/johannes/Dropbox/sync/org/phd_orga.org"
        "/home/johannes/Dropbox/phd/teaching/brp/tasks_brp.org"
