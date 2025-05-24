@@ -278,6 +278,14 @@ This holds the results of the last documentation request."
   )
 
 
+;; ** gptel
+
+(use-package gptel
+  :config
+  (setq gptel-api-key (password-store-get "llm-openai-key"))
+  (setq gptel-track-media t))
+
+
 
 ;; ** langtool
 
