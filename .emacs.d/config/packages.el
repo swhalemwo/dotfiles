@@ -492,7 +492,10 @@
   (setq org-ref-cite-onclick-function 'org-ref-helm-cite-click)
   (setq org-ref-default-bibliography '("/home/johannes/Dropbox/references2.bib"
 					"/home/johannes/Dropbox/references.bib"))
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+  ;; (setq org-refile-targets '((org-agenda-files . ( :level . 1))))
+  ;; (setq org-refile-targets '((nil . (:level . 1))))
+  (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path 'file)
   (setq org-src-fontify-natively t)
   (setq org-src-lang-modes
