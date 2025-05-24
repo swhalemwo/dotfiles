@@ -666,6 +666,9 @@
 ;; (setq magit-diff-refine-hunk (quote all))
 ;; (setq magit-buffer-diff-args "--stat")
 
+;; (setq magit-buffer-diff-args "--submodule=diff")
+
+
 
 
 
