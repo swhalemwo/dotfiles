@@ -77,3 +77,17 @@
     ;; Amend this to the directory where you keep Combobulate's source
     ;; code.
     :load-path ("~/combobulate")))
+
+
+;; ** multi-magit: doesn't look so good
+
+;; (use-package multi-magit
+;;   :config
+;;   (setq magit-repository-directories '(("/home/johannes/Dropbox/phd/papers/foster/tasks/" . 0)
+;; 					("/home/johannes/Dropbox/phd/papers/foster/code/" . 0)))
+;;   (setq magit-repository-directories nil)
+
+;;   (setq multi-magit-selected-repositories '("/home/johannes/Dropbox/phd/papers/foster/code/"
+;; 					     "/home/johannes/Dropbox/phd/papers/foster/tasks/"))
+  
+;;   )
