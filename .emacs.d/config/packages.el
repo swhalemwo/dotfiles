@@ -1088,6 +1088,7 @@
   (setq vterm-timer-delay 0.01)
   :bind (:map vterm-mode-map
 	  ("C-l" . recenter-top-bottom)
+	  ("M-i" . other-window)
 	  :map global-map 
 	  ("C-c v" . vterm-curdir)))
 	  
