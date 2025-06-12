@@ -133,6 +133,7 @@
 (define-key org-mode-map (kbd "C-,")  'consult-line)
 (define-key org-mode-map (kbd "C-#")  'consult-git-grep)
 (define-key python-mode-map (kbd "C-#")  'consult-git-grep)
+(define-key sh-mode-map (kbd "C-#")  'consult-git-grep)
 
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-,")  'consult-line)
