@@ -6,6 +6,8 @@
 ln -s Dropbox/technical_stuff_general/dotfiles/e_dell/.emacs ~/.emacs
 ln -s Dropbox/technical_stuff_general/dotfiles/.emacs.d ~/.emacs.d
 
+ln -s Dropbox/technical_stuff_general/dotfiles/.xinitrc ~/.xinitrc
+
 
 ln -s Dropbox/technical_stuff_general/dotfiles/.Xmodmap2 ~/.Xmodmap2
 ln -s Dropbox/technical_stuff_general/dotfiles/scripts/xmod.sh ~/xmod.sh
