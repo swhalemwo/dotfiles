@@ -135,6 +135,10 @@
 (define-key python-mode-map (kbd "C-#")  'consult-git-grep)
 (define-key sh-mode-map (kbd "C-#")  'consult-git-grep)
 
+(global-set-key (kbd "C-M-'") 'consult-find)
+(global-set-key (kbd "C-M-#") 'consult-ripgrep)
+
+
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-,")  'consult-line)
 ;; (global-set-key (kbd "C-,")  'consult-line)

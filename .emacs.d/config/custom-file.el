@@ -17,7 +17,8 @@
  '(eldoc-echo-area-prefer-doc-buffer t)
  '(eldoc-print-after-edit nil)
  '(embark-mixed-indicator-delay 0)
- '(free-keys-modifiers '("" "C" "M" "C-M" "C-c"))
+  '(free-keys-modifiers '("" "C" "M" "C-M" "C-S"))
+  ;; '(free-keys-modifiers ("" "C" "M" "C-M"))
  '(helm-type-file-actions
     '(("Find file" . helm-find-file-or-marked)
        ("Find file as root" . helm-find-file-as-root)
