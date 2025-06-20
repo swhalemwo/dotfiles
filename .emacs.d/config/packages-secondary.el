@@ -170,15 +170,31 @@
   (setq ess-use-auto-complete t)
   (setq ess-use-company t)
 
-  :bind (("C-<" . 'ess-insert-assign)
+  :bind (:map ess-r-mode-map
+
+	  ("C-<" . 'ess-insert-assign)
 	  ("C-c C-u" . ess-eval-paragraph)
 	  ("C->" . 'then_R_operator)
+	  ("C-c o" . 'helm-imenu)
+	  ("C-c i" . 'ess-insert-aux-snippet)
+	  ("C-c C-k" . 'r-print-at-point)
+	  ("C-c j" . 'r-add-symbol-to-fstd)
+	  ("C-c k" . 'r-clear-fstd)        
+	  ( "C-c h" . 'r-list-fstd)
+	  ("C-c C-i" . 'ess-interrupt)
+	  ("C-c M" . 'ess-match-call)
+	  :map ess-roxy-mode-map
+	  ("C-a" . 'back-to-indentation)
+
 	  )
+	  
   :hook
   (ess-mode . outshine-mode)
   
   
   )
+
+
 
 (setq ess-indent-offset 2)
 
@@ -197,45 +213,25 @@
   ;; (reindent-then-newline-and-indent)
   )
 
-(defun R_assign_pipe ()
-  "R - %<>% operator"
-  (interactive)
-  (just-one-space 1)
-  (insert "%<>% ")
-  ;; (reindent-then-newline-and-indent)
-  )
+;; (defun R_assign_pipe ()
+;;   "R - %<>% operator"
+;;   (interactive)
+;;   (just-one-space 1)
+;;   (insert "%<>% ")
+;;   ;; (reindent-then-newline-and-indent)
+;;   )
 
-
-
-(require 'ess-r-mode)
 (require 'ess-stata-mode)
 
-(define-key ess-mode-map (kbd "C->") 'then_R_operator)
-(define-key inferior-ess-mode-map (kbd "C->") 'then_R_operator)
-(define-key ess-mode-map (kbd "C-&") 'R_assign_pipe)
-(define-key inferior-ess-mode-map (kbd "C-&") 'R_assign_pipe)
 
-(define-key ess-mode-map (kbd "C-c o") 'helm-imenu)
-;; (define-key ess-r-mode-map (kbd "C-c i") 'ess-insert-debug-snippet)
-;; (define-key ess-r-mode-map (kbd "C-c I") 'ess-insert-debug-numbers)
-(define-key ess-r-mode-map (kbd "C-c i") 'ess-insert-aux-snippet)
+;; (define-key ess-mode-map (kbd "C-&") 'R_assign_pipe)
+;; (define-key inferior-ess-mode-map (kbd "C-&") 'R_assign_pipe)
 
-(define-key ess-roxy-mode-map (kbd "C-a") 'back-to-indentation)
-;; (define-key visual-line-mode-map (kbd "C-a") 'back-to-indentation)
-
-(define-key ess-r-mode-map (kbd "C-c C-k") 'r-print-at-point)
-(define-key ess-r-mode-map (kbd "C-c C-u") 'ess-eval-paragraph)
-(define-key ess-r-mode-map (kbd "C-x C-e") 'ess-eval-paragraph)
-(define-key ess-r-mode-map (kbd "C-c j") 'r-add-symbol-to-fstd)
-(define-key ess-r-mode-map (kbd "C-c k") 'r-clear-fstd)
-(define-key ess-r-mode-map (kbd "C-c h") 'r-list-fstd)
 (define-key ess-doc-map (kbd "s") 'ess-print-docstring)
 
 ;; overwrite "C-c C-k" in source code blocks (previously org-edit-src-abort)
 (define-key org-src-mode-map (kbd "C-c C-k") 'r-print-at-point)
 
-(define-key ess-r-mode-map (kbd "C-c C-i") 'ess-interrupt)
-(define-key ess-r-mode-map (kbd "C-c M") 'ess-match-call)
 
 ;; don't use M-F to finish debugging
 (use-package ess-tracebug
