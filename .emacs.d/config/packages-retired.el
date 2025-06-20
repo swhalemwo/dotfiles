@@ -91,3 +91,17 @@
 ;; 					     "/home/johannes/Dropbox/phd/papers/foster/tasks/"))
   
 ;;   )
+
+;; ** ess old stuff
+
+;; (defun R_assign_pipe ()
+;;   "R - %<>% operator"
+;;   (interactive)
+;;   (just-one-space 1)
+;;   (insert "%<>% ")
+;;   ;; (reindent-then-newline-and-indent)
+;;   )
+
+;; (define-key ess-mode-map (kbd "C-&") 'R_assign_pipe)
+;; (define-key inferior-ess-mode-map (kbd "C-&") 'R_assign_pipe)
+

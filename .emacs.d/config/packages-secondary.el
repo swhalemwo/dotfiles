@@ -213,19 +213,9 @@
   ;; (reindent-then-newline-and-indent)
   )
 
-;; (defun R_assign_pipe ()
-;;   "R - %<>% operator"
-;;   (interactive)
-;;   (just-one-space 1)
-;;   (insert "%<>% ")
-;;   ;; (reindent-then-newline-and-indent)
-;;   )
 
 (require 'ess-stata-mode)
 
-
-;; (define-key ess-mode-map (kbd "C-&") 'R_assign_pipe)
-;; (define-key inferior-ess-mode-map (kbd "C-&") 'R_assign_pipe)
 
 (define-key ess-doc-map (kbd "s") 'ess-print-docstring)
 
