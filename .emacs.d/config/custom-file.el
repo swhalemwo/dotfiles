@@ -72,10 +72,12 @@
        auctex helm-recoll org-babel-eval-in-repl async
        mu4e-maildirs-extension flyspell-correct f s switch-window
        mu4e-alert csv-mode helm-bibtex embark-consult jedi))
- '(package-vc-selected-packages '((org-mode :url "https://code.tecosaur.net/tec/org-mode")))
+ '(package-vc-selected-packages
+    '((org-mode :url "https://code.tecosaur.net/tec/org-mode" :branch
+	"dev")))
  '(sql-clickhouse-login-params '(database))
  '(table-cell-horizontal-chars "-=")
-  '(warning-suppress-types '((emacs))))
+ '(warning-suppress-types '((emacs))))
 
 ;; '(text-mode-ispell-word-completion nil)
 

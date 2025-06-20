@@ -618,7 +618,7 @@
 
   (plist-put org-latex-preview-appearance-options :zoom 2)
 
-  
+  (setq org-latex-preview-cache 'temp)
 
   ;; Use dvisvgm to generate previews
   ;; You don't need this, it's the default:
