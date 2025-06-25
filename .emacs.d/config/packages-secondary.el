@@ -135,8 +135,9 @@
 
 ;; ** ess
 (use-package ess
+  :ensure t
+  :init (require 'ess-site)
   :config
-  
   (setq ess-R-font-lock-keywords
     '((ess-R-fl-keyword:modifiers . t)
        (ess-R-fl-keyword:fun-defs . t)
