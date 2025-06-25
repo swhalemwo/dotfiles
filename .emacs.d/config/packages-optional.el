@@ -379,9 +379,10 @@ wrds-pgdata.wharton.upenn.edu"
 
 ;; ** uiua
 
-(use-package uiua-ts-mode
-  :mode "\\.ua\\'"
-  :ensure t)
+;; (use-package uiua-ts-mode
+;;   :mode "\\.ua\\'"
+;;   :ensure t)
+
 
 (use-package markdown-mode
   :bind (:map markdown-mode-map
