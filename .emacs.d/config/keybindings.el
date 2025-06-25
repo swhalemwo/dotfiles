@@ -176,6 +176,7 @@
 (define-key org-mode-map (kbd "C-M-k") 'org-shiftdown)
 
 (define-key minibuffer-mode-map (kbd "M-r") 'consult-history) ;; add consult-history for minibuffer
+(define-key mu4e-minibuffer-search-query-map (kbd "M-r") 'consult-history)
 (define-key ielm-map (kbd "M-r") 'consult-history) ;; add consult history for ielm history
 
 (define-key minibuffer-mode-map (kbd "M-s") 'embark-select)
