@@ -10,6 +10,8 @@
 (global-set-key (kbd "M-g f") 'avy-goto-line)
 (global-set-key (kbd "M-g w") 'avy-goto-word-1)
 
+(define-key text-mode-map (kbd "C-#") 'consult-git-grep)
+
 (global-set-key (kbd "M-g g") 'consult-goto-line)
 
 (global-unset-key (kbd "C-."))
