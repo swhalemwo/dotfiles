@@ -134,6 +134,11 @@
 	    '("/home/johannes/Dropbox/sync/org/yinan.org"))))
 
 
+       ("j" "jobs" alltodo ""
+	 ((org-agenda-files
+	    '("/home/johannes/Dropbox/personal_stuff/jobs/jobs.org"))))
+
+
        ("g" "general" alltodo ""
 	 ((org-agenda-files
 	    '("/home/johannes/Dropbox/sync/org/general.org"))))
