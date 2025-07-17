@@ -432,7 +432,7 @@ wrds-pgdata.wharton.upenn.edu"
             (ejc-set-fetch-size 50)
             (ejc-set-max-rows 50)
             (ejc-set-show-too-many-rows-message t)
-            (ejc-set-column-width-limit 40)
+            (ejc-set-column-width-limit 80)
             (ejc-set-use-unicode t)))
 
 ;; don't think there's autocompletion for clickhouse
