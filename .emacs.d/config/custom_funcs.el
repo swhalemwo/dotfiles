@@ -509,6 +509,44 @@ Optionally set `outline-level' to LEVEL-FN and
     ;; (isbn-to-bibtex bibkey "references2.bib")
     ))
 
+;; (require 'json)
+;; (require 'url)
+
+
+(defun isbn-to-bibtex-paperpile ()
+  (interactive)
+  "Convert ISBN to BibTeX using the Paperpile API."
+  (let* (
+	  (isbn (read-string "ISBN: "))
+	  (url "https://api.paperpile.com/api/public/convert")
+         (request-data (json-encode `(("fromIds" . t)
+                                       ("input" . ,isbn)
+                                       ("targetFormat" . "Bibtex"))))
+         (url-request-method "POST")
+         (url-request-extra-headers
+          '(("Content-Type" . "application/json")
+            ("Accept" . "application/json")
+            ("Origin" . "https://www.bibtex.com")))
+         (url-request-data request-data))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (goto-char url-http-end-of-headers)
+      (let* ((response (json-read))
+             (output (cdr (assoc 'output response))))
+        (message "BibTeX Output: %s" output)
+
+	(with-current-buffer (find-file-noselect "~/Dropbox/sync/dabate/references2.bib")
+          
+          ;; Optionally, move to the end of the buffer
+          (goto-char (point-max))
+          
+          ;; Insert the output at the current position
+          (insert output)
+          
+	  )))))
+
+
+
+
 
 ;; ** qr code creator
 
