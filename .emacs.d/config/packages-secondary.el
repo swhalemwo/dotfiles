@@ -64,48 +64,48 @@
 
 ;; (use-package pyenv)
 
-(use-package elpy
-  ;; :defer t
-  :init
-  (elpy-enable) ;; maybe can be run as init? 
+;; (use-package elpy
+;;   ;; :defer t
+;;   :init
+;;   (elpy-enable) ;; maybe can be run as init? 
   
-  :config
-  (setq python-shell-interpreter "python3")
-  (setq elpy-rpc-python-command "python3")
-  (setq elpy-shell-echo-output nil)
-  (add-hook 'elpy-mode-hook 'outshine-mode)
-  (add-hook 'elpy-mode-hook (lambda ()(setq outline-heading-end-regexp "\n")))
+;;   :config
+;;   (setq python-shell-interpreter "python3")
+;;   (setq elpy-rpc-python-command "python3")
+;;   (setq elpy-shell-echo-output nil)
+;;   (add-hook 'elpy-mode-hook 'outshine-mode)
+;;   (add-hook 'elpy-mode-hook (lambda ()(setq outline-heading-end-regexp "\n")))
 
 
-  :bind (
-	  ;; ("C-c C-j" . 'elpy-shell-send-statement)
-	  ;; ("<C-return>" . 'elpy-shell-send-group) 
-	  ;; ("C-c C-o" . 'elpy-goto-definition)     
-	  ;; ("C-c C-j" . 'elpy-shell-send-statement)
-	  ;; ("C-c C-k" . 'elpy-summary-at-point)
-	  ("C-a" . 'back-to-indentation)
+;;   :bind (
+;; 	  ;; ("C-c C-j" . 'elpy-shell-send-statement)
+;; 	  ;; ("<C-return>" . 'elpy-shell-send-group) 
+;; 	  ;; ("C-c C-o" . 'elpy-goto-definition)     
+;; 	  ;; ("C-c C-j" . 'elpy-shell-send-statement)
+;; 	  ;; ("C-c C-k" . 'elpy-summary-at-point)
+;; 	  ("C-a" . 'back-to-indentation)
 
-	  )
-  ;; :hook outshine-mode
-  )
-
-
+;; 	  )
+;;   ;; :hook outshine-mode
+;;   )
 
 
-(define-key elpy-mode-map (kbd "<C-return>") 'elpy-shell-send-group)
-(define-key elpy-mode-map (kbd "C-c C-o") 'elpy-goto-definition)
-;; (define-key elpy-mode-map (kbd "C-c C-j") 'elpy-shell-send-statement)
-(define-key elpy-mode-map (kbd "C-c C-j") 'elpy-send-line)
-(define-key elpy-mode-map (kbd "C-c o") 'helm-imenu)
-(define-key elpy-mode-map (kbd "C-c C-k") 'elpy-summary-at-point)
-(define-key elpy-mode-map (kbd "C-M-'") 'elpy-pretty-summary-at-point)
-(define-key elpy-mode-map (kbd "C-c n") 'elpy-len-at-point)
-(define-key elpy-mode-map (kbd "C-c i") 'elpy-names-at-point)
 
-(define-key elpy-mode-map (kbd "C-c g") 'jpdb-send-group)
-;; (define-key elpy-mode-map (kbd "C-c j") 'jpdb-send-line)
-;; (define-key elpy-mode-map (kbd "C-c k") 'jpdb-summary-at-point)
-(define-key elpy-mode-map (kbd "C-c r") 'jpdb-send-selection)
+
+;; (define-key elpy-mode-map (kbd "<C-return>") 'elpy-shell-send-group)
+;; (define-key elpy-mode-map (kbd "C-c C-o") 'elpy-goto-definition)
+;; ;; (define-key elpy-mode-map (kbd "C-c C-j") 'elpy-shell-send-statement)
+;; (define-key elpy-mode-map (kbd "C-c C-j") 'elpy-send-line)
+;; (define-key elpy-mode-map (kbd "C-c o") 'helm-imenu)
+;; (define-key elpy-mode-map (kbd "C-c C-k") 'elpy-summary-at-point)
+;; (define-key elpy-mode-map (kbd "C-M-'") 'elpy-pretty-summary-at-point)
+;; (define-key elpy-mode-map (kbd "C-c n") 'elpy-len-at-point)
+;; (define-key elpy-mode-map (kbd "C-c i") 'elpy-names-at-point)
+
+;; (define-key elpy-mode-map (kbd "C-c g") 'jpdb-send-group)
+;; ;; (define-key elpy-mode-map (kbd "C-c j") 'jpdb-send-line)
+;; ;; (define-key elpy-mode-map (kbd "C-c k") 'jpdb-summary-at-point)
+;; (define-key elpy-mode-map (kbd "C-c r") 'jpdb-send-selection)
 (define-key inferior-python-mode-map (kbd "M-r") 'consult-history)
 
 

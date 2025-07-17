@@ -175,10 +175,77 @@
 
 ;; ** eglot
 
-;; (use-package eglot :defer t
-;;     :commands (eglot eglot-ensure)
-;;     ;; :hook ((ess-mode . eglot-ensure))
-;; )
+(use-package eglot
+  :ensure t
+  :defer t
+  ;; :commands (eglot eglot-ensure)
+  :hook (python-mode . eglot-ensure)
+  :config
+  (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+  ;; (setq eglot-ignored-server-capabilities '(
+  ;; 					     :colorPresentation 
+  ;; 					     :hoverProvider
+  ;; 					     :completionProvider
+  ;; 					     :signatureHelpProvider
+  ;; 					     :definitionProvider
+  ;; 					     :typeDefinitionProvider
+  ;; 					     :implementationProvider
+  ;; 					     :declarationProvider
+  ;; 					     :referencesProvider
+  ;; 					     :documentHighlightProvider
+  ;; 					     :documentSymbolProvider
+  ;; 					     :workspaceSymbolProvider
+  ;; 					     :codeActionProvider
+  ;; 					     :codeLensProvider
+  ;; 					     :documentFormattingProvider
+  ;; 					     :documentRangeFormattingProvider
+  ;; 					     :documentOnTypeFormattingProvider
+  ;; 					     :renameProvider
+  ;; 					     :documentLinkProvider
+  ;; 					     :colorProvider
+  ;; 					     :foldingRangeProvider
+  ;; 					     :executeCommandProvider
+  ;; 					     :inlayHintProvider
+  ;; 					     ))
+  ;; (setq eglot-ignored-server-capabilities '(:documentFormattingProvider :documentRangeFormattingProvider :documentOnTypeFormattingProvider :documentHighlightProvider :colorProvider :publishDiagnostics))
+
+  )
+
+
+(defun eglot-python-mode-initialize ()
+  (setq-local
+    eldoc-documentation-functions
+    (list
+      #'eglot-signature-eldoc-function
+      #'eglot-hover-eldoc-function
+      #'flymake-eldoc-function
+      )))
+
+(add-hook 'eglot-managed-mode-hook #'eglot-python-mode-initialize)
+(remove-hook 'eglot-managed-mode-hook #'eglot-python-mode-initialize)
+
+
+(setq eldoc-echo-area-prefer-doc-buffer t
+      eldoc-echo-area-use-multiline-p nil) 
+
+
+(use-package poetry
+  :ensure t
+  :defer t
+  :config
+  ;; Checks for the correct virtualenv. Better strategy IMO because the default
+  ;; one is quite slow.
+  (setq poetry-tracking-strategy 'switch-buffer)
+  :hook (python-mode . poetry-tracking-mode))
+
+  ;; :config   
+   ;; (add-to-list 'eglot-server-programs
+   ;;             `(python-mode
+   ;;               . ,(eglot-alternatives '(("pyright-langserver" "--stdio")
+   ;;                                        "jedi-language-server"
+   ;;                                        "pylsp"))))
+
+
 
 ;; (setq gc-cons-threshold 25600000)
   
@@ -196,14 +263,17 @@
 (setq read-process-output-max (* 1024 1024))
 
 (setq eldoc-idle-delay 0.1)
-;; (setq eglot-ignored-server-capabilities '(:colorProvider :colorPresentation :hoverProvider))
-;; (setq eglot-ignored-server-capabilities '(:documentFormattingProvider :documentRangeFormattingProvider :documentOnTypeFormattingProvider :documentHighlightProvider :colorProvider :publishDiagnostics))
+
 
 ;; (setq eglot-send-changes-idle-time 0.1)
 ;; (setq eglot-stay-out-of '(company ess))
+;; (remove-hook 'eldoc-display-functions 'eldoc-display-in-echo-area)
+;; (add-hook 'eldoc-display-functions 'eldoc-display-in-echo-area)
 
-;; (setq max-mini-window-height 3)
-(setq max-mini-window-height 0.25)		
+(setq eldoc-documentation-strategy 'eldoc-documentation-default)
+
+(setq max-mini-window-height 3)
+;; (setq max-mini-window-height 0.25)		
 
 
 (defun nice-persistent-docu ()

@@ -208,11 +208,11 @@
 (define-key emacs-lisp-mode-map (kbd "C-M-;") 'iedit-mode)
 (define-key org-mode-map (kbd "C-M-;") 'iedit-mode)
 (define-key ess-mode-map (kbd "C-M-;") 'iedit-mode)
-(define-key elpy-mode-map (kbd "C-M-;") 'iedit-mode)
+;; (define-key elpy-mode-map (kbd "C-M-;") 'iedit-mode)
 
 
-(define-key elpy-mode-map (kbd "M-n") 'other-window)
-(define-key elpy-mode-map (kbd "C-M-.") 'elpy-short-summary-at-point)
+;; (define-key elpy-mode-map (kbd "M-n") 'other-window)
+;; (define-key elpy-mode-map (kbd "C-M-.") 'elpy-short-summary-at-point)
 
 (define-key dired-mode-map (kbd "J") 'xah-open-in-external-app)
 
