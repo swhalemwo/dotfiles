@@ -453,10 +453,10 @@ wrds-pgdata.wharton.upenn.edu"
 ;;   :mode "\\.ua\\'"
 ;;   :ensure t)
 
+;; (use-package markdown-mode
+;;   :bind (:map markdown-mode-map
+;; 	  ("C-#" . consult-git-grep)))
 
-(use-package markdown-mode
-  :bind (:map markdown-mode-map
-	  ("C-#" . consult-git-grep)))
 
 
 
