@@ -186,7 +186,8 @@
 	  ("C-c M" . 'ess-match-call)
 	  :map ess-roxy-mode-map
 	  ("C-a" . 'back-to-indentation)
-
+	  :map inferior-ess-mode-map
+	  ("C->" . 'then_R_operator)
 	  )
 	  
   :hook
