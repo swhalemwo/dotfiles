@@ -11,6 +11,7 @@
 (global-set-key (kbd "M-g w") 'avy-goto-word-1)
 
 (define-key text-mode-map (kbd "C-#") 'consult-git-grep)
+(define-key sql-mode-map (kbd "C-#") 'consult-git-grep)
 
 (global-set-key (kbd "M-g g") 'consult-goto-line)
 
