@@ -1023,3 +1023,72 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
                                            (mapcar 'buffer-name dired-buffers))))
           (switch-to-buffer buf-name))
       (message "No Dired buffers found."))))
+
+
+;; ** interactive filtering
+
+
+## R function
+filter_dt <- function(df, query) {
+    
+    ## filter down rows of data table based on query match
+
+    dtx <- adt(df)
+    ## query <- "n"
+
+    dt_mask <- dtx %>% .[, map(.SD, ~grepl(query, .x, ignore.case = T))] %>% .[, any(.SD), .I]
+
+    dtx[dt_mask[, V1]] %>% print
+
+}
+
+
+;; elisp function
+(defun interactive-query-reader ()
+  "Interactively read a query from the user using the minibuffer."
+  (interactive)
+  (let* (
+	 (sym (ess-symbol-at-point))
+	 (current-query "")
+	 (proc-name ess-current-process-name)
+	 (r-process (get-process proc-name))
+	 (r-cmd "")
+	 )
+    
+    (minibuffer-with-setup-hook
+        (lambda ()
+          ;; (setq-local post-command-hook
+	  (setq-local post-self-insert-hook
+                      (lambda ()
+                        (let ((new-query (minibuffer-contents))) ;; Get the current contents of the minibuffer
+                          (unless (string-equal current-query new-query)
+                            (setq current-query new-query) ;; Update the query
+                            (message "Current query: %s" current-query)
+			    ;; (message "proc-name :%s" proc-name)
+			    (setq r-cmd (format "filter_dt(%s, \"%s\")\n" sym current-query))
+			    (message "r cmd: %s" r-cmd)
+			    ;; (ess--run-presend-hooks (get-process "R") "")
+
+			    ;; (ess-send-string
+			    ;;   ;; r-process
+			    ;;   (get-process "R:infl")
+			    ;;   r-cmd t)
+
+			    ;; somehow ess-send-string doesn't work, need to use more basic process-send-string
+			    (process-send-string proc-name r-cmd)
+
+			    
+			    )))))
+      (read-string "Type your query (Press C-g to quit): "))))
+
+
+;; (setq jtls-R-process (get-process "R"))
+
+;; (process-send-string "R" "asdf\n")
+
+
+;; (ess-send-string (get-process "R") "filter_dt(df, 'n')" t) ;; works but only from ESS frame
+
+;; (ess-send-string jtls-R-process "filter_dt(df, 'n')" t)
+
+
