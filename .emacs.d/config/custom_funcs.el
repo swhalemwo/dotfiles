@@ -1028,67 +1028,201 @@ Version: 2019-11-04 2023-04-05 2023-06-26"
 ;; ** interactive filtering
 
 
-## R function
-filter_dt <- function(df, query) {
-    
-    ## filter down rows of data table based on query match
+(defun xah-format-hash-table (HashTable)
+  "return a string of HashTable, each line has the form key → val.
 
-    dtx <- adt(df)
-    ## query <- "n"
+URL `http://xahlee.info/emacs/emacs/elisp_print_hash_table.html'
+Created: 2024-04-20
+Version: 2024-04-20"
+  (let (xlist)
+    (maphash
+     (lambda (k v)
+       (push (format "%s → %s" k v) xlist))
+     HashTable
+     )
+    (mapconcat 'identity xlist "\n")))
 
-    dt_mask <- dtx %>% .[, map(.SD, ~grepl(query, .x, ignore.case = T))] %>% .[, any(.SD), .I]
-
-    dtx[dt_mask[, V1]] %>% print
-
-}
 
 
-;; elisp function
+(defvar jtls-filter-r-state "state1" "Current state for filtering.")
+(defvar jtls-filter-r-sym "" "symbol to filter")
+(defvar jtls-filter-r-query "" "query to filter sym with")
+(defvar jtls-filter-r-proc "" "R process in which sym is filtered")
+(defvar jtls-filter-colnames "" "list of column names to display")
+
+(defun get-hashtable-keys-with-value-t (hash-table)
+  "Return a list of keys from HASH-TABLE that have the value t."
+  (let ((result))  ;; Initialize an empty list to store the keys
+    (maphash (lambda (key value)
+               (when (eq value t)  ;; Check if the value is t
+                 (push key result)))  ;; If true, add the key to the result list
+             hash-table)
+    (nreverse result)))  ;; Return the collected keys in their original order
+
+(defun get-hashtable-keys (hash-table)
+  (let ((result))  ;; Initialize an empty list to store the keys
+    (maphash (lambda (key value) (push key result)) hash-table)
+    (nreverse result)))
+
+;; (get-hashtable-keys jtls-column-selection)
+
+
+	       
+
+(defun jtls-r-create-filter-cmd ()
+  "generate command for jtls filtering"
+  (format "filter_dt(df = %s, query =  \"%s\",filter_state = \"%s\", l_cols = %s)\n"
+    jtls-filter-r-sym jtls-filter-r-query jtls-filter-r-state
+    (format "c(%s)"
+      (mapconcat (lambda (x) (format "\"%s\"" x)) (get-hashtable-keys-with-value-t jtls-column-selection) ","))))
+
+;; (jtls-r-create-filter-cmd)
+
+
+
+
+(defun jtls-toggle-filter-state ()
+  "Toggle the filter state and re-run filter_dt."
+  (interactive)
+  (setq jtls-filter-r-state
+        (cond
+         ((string-equal jtls-filter-r-state "state1") "state2")
+         ((string-equal jtls-filter-r-state "state2") "state3")
+         (t "state1")))  ; Loop back to state1
+  ;; Notify the user of the change
+  (message "Filter state changed to: %s" jtls-filter-r-state)
+  
+  (let ((r-cmd-updated (jtls-r-create-filter-cmd)))
+    ;; (message "r cmd after filter switch: %s" r-cmd-updated)
+    (process-send-string jtls-filter-r-proc r-cmd-updated)))
+
+
+(define-key minibuffer-mode-map (kbd "C-!") 'jtls-toggle-filter-state)
+(define-key minibuffer-mode-map (kbd "C-#") 'jtls-select-columns)
+
+  
+
 (defun interactive-query-reader ()
   "Interactively read a query from the user using the minibuffer."
   (interactive)
   (let* (
-	 (sym (ess-symbol-at-point))
-	 (current-query "")
-	 (proc-name ess-current-process-name)
-	 (r-process (get-process proc-name))
-	 (r-cmd "")
-	 )
+	  (sym (ess-symbol-at-point))
+	  (current-query "")
+	  (proc-name ess-current-process-name)
+	  (r-cmd "")
+	  )
+
+    (setq jtls-filter-r-sym sym)
+    (setq jtls-filter-r-proc proc-name)
+    (jtls-populate-column-selection (format "%s" sym))
     
     (minibuffer-with-setup-hook
-        (lambda ()
-          ;; (setq-local post-command-hook
-	  (setq-local post-self-insert-hook
-                      (lambda ()
-                        (let ((new-query (minibuffer-contents))) ;; Get the current contents of the minibuffer
-                          (unless (string-equal current-query new-query)
-                            (setq current-query new-query) ;; Update the query
-                            (message "Current query: %s" current-query)
-			    ;; (message "proc-name :%s" proc-name)
-			    (setq r-cmd (format "filter_dt(%s, \"%s\")\n" sym current-query))
-			    (message "r cmd: %s" r-cmd)
-			    ;; (ess--run-presend-hooks (get-process "R") "")
+      (lambda ()
+        (setq-local post-command-hook
+	  ;; (setq-local post-self-insert-hook
+          (lambda ()
+            (let ((new-query (minibuffer-contents))) ;; Get the current contents of the minibuffer
+              (unless (string-equal current-query new-query)
+                (setq current-query new-query) ;; Update the query
 
-			    ;; (ess-send-string
-			    ;;   ;; r-process
-			    ;;   (get-process "R:infl")
-			    ;;   r-cmd t)
+		(setq jtls-filter-r-query current-query)
+                (message "Current query: %s" current-query)
+		;; (message "proc-name :%s" proc-name)
+		(setq r-cmd (jtls-r-create-filter-cmd))
+		;; (setq r-cmd (format "filter_dt(%s, \"%s\", \"%s\")\n"
+		;; 		  sym current-query jtls-filter-r-state))
+		(message "r cmd: %s" r-cmd)
 
-			    ;; somehow ess-send-string doesn't work, need to use more basic process-send-string
-			    (process-send-string proc-name r-cmd)
-
-			    
-			    )))))
+		;; somehow ess-send-string doesn't work, need to use more basic process-send-string
+		(process-send-string proc-name r-cmd))))))
       (read-string "Type your query (Press C-g to quit): "))))
 
 
-;; (setq jtls-R-process (get-process "R"))
+;; column selection logic
+(defun jtls-populate-column-selection (sym)
+  "Populate the hash table with column names from SYM."
+  (clrhash jtls-column-selection)
+  
+  (let ((colnames (ess-object-names sym)))
+    ;; Initialize the hash table with column names as keys and their selection status as values
+    (dolist (col colnames)
+      (puthash col nil jtls-column-selection))))
 
-;; (process-send-string "R" "asdf\n")
+(defvar jtls-column-selection (make-hash-table :test 'equal)  "Hash table storing the selection status of columns.")
+;; (jtls-populate-column-selection "mtcars")
+
+;; (jtls-toggle-column-selection "disp")
+
+;; (xah-format-hash-table jtls-column-selection))
+
+(defun jtls-update-cols ()
+  (let ((cols-to-check (cdr (embark-selected-candidates))))
+    (message "%s" cols-to-check)
+    (mapc (lambda (col)
+	    
+	    ;; if longer than 3: check if they are active or not, process accordingly
+	    (if (> (length col) 3)
+	      (if (equal (substring col 0 3) "[X]")
+		(progn
+		  (message col)
+		  (puthash (substring col 4 (length col)) nil jtls-column-selection))
+		(progn 
+		  (message col)
+		  (puthash col t jtls-column-selection))  
+		  )
+	      ;; if 3 or shorter: always not selected -> make them active
+	      (progn
+		(message col)
+		(puthash col t jtls-column-selection))))
+      cols-to-check))
+
+  ;; run new command
+  (let ((r-cmd-updated (jtls-r-create-filter-cmd)))
+    ;; (message "r cmd after filter switch: %s" r-cmd-updated)
+    (process-send-string jtls-filter-r-proc r-cmd-updated))
+  )
+
+;; (equal (substring "[X] aff" 0 3) "[X]")
+;; (substring "[X] aff" 3 7)
+;; (length "asdfjjj")
+
+(defun jtls-select-columns ()
+  (interactive)
+  "Select columns interactively for the given symbol SYM."
+  ;; Build the list of items for completing-read with selection indicators
+  (let (
+        (sym-colnames (get-hashtable-keys jtls-column-selection))  ;; Get the keys from the hash table
+        (items '()))  ;; Initialize the list of display items
+    ;; Create a display list that indicates selected columns
+    (dolist (col sym-colnames)
+      (let ((status (if (gethash col jtls-column-selection) "[X] " "")))  ;; Check selection status
+        (push (format "%s%s" status col) items)))  ;; Prefix with selection status
+    (setq items (nreverse items))  ;; Reverse the list for correct order
+
+    ;; Allow the user to select items
+    ;; (advice-remove 'embark-select 'jtls-update-cols)  ;; remove advice
+    (advice-add 'embark-select :after 'jtls-update-cols)  ;; Add advice to update cols
+    (completing-read "Select column names: " items nil t nil nil nil)))
 
 
-;; (ess-send-string (get-process "R") "filter_dt(df, 'n')" t) ;; works but only from ESS frame
+;; (jtls-select-columns)
 
-;; (ess-send-string jtls-R-process "filter_dt(df, 'n')" t)
+
+
+
+
+
+
+
+
+;; Call the toggle function when an item is selected
+;; (jtls-toggle-column-selection (completing-read "Select column names: " items nil t))
+
+
+;; (jtls-select-columns "mtcars")
+
+;; (xah-format-hash-table jtls-column-selection))
+
+
 
 
