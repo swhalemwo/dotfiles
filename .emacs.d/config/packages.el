@@ -38,7 +38,7 @@
   :bind (:map bibtex-mode-map
 	  ("C-c r" . 'bibtex-reformat)    
 	  ("C-c C-d" . 'doi-insert-bibtex)
-	  ( "C-c i" . 'isbn-to-bibtex2)
+	  ( "C-c i" . 'isbn-to-bibtex-paperpile)
 	  ))
 
 (use-package bibtex-completion
