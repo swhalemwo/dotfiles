@@ -1102,14 +1102,16 @@ Version: 2024-04-20"
 
   
 
-(defun interactive-query-reader ()
+(defun r-filter-dt ()
   "Interactively read a query from the user using the minibuffer."
   (interactive)
   (let* (
-	  (sym (ess-symbol-at-point))
+	  ;; (sym  (ess-symbol-at-point))
 	  (current-query "")
 	  (proc-name ess-current-process-name)
 	  (r-cmd "")
+	  (sym (completing-read "dt to filter: "
+		 (-filter (lambda (x) (string-prefix-p "dt_" x)) (ess-get-object-list "R"))))
 	  )
 
     (setq jtls-filter-r-sym sym)
