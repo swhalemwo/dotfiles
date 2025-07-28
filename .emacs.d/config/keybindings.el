@@ -136,6 +136,7 @@
 (define-key org-mode-map (kbd "C-,")  'consult-line)
 (define-key org-mode-map (kbd "C-#")  'consult-git-grep)
 (define-key python-mode-map (kbd "C-#")  'consult-git-grep)
+(define-key python-ts-mode-map (kbd "C-#")  'consult-git-grep)
 (define-key sh-mode-map (kbd "C-#")  'consult-git-grep)
 
 (global-set-key (kbd "C-M-'") 'consult-find)
