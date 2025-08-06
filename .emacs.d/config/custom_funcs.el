@@ -1111,7 +1111,8 @@ Version: 2024-04-20"
 	  (proc-name ess-current-process-name)
 	  (r-cmd "")
 	  (sym (completing-read "dt to filter: "
-		 (-filter (lambda (x) (string-prefix-p "dt_" x)) (ess-get-object-list "R"))))
+		 (-filter (lambda (x) (string-prefix-p "dt_" x))
+		   (ess-get-object-list ess-current-process-name))))
 	  )
 
     (setq jtls-filter-r-sym sym)
