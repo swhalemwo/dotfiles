@@ -160,6 +160,7 @@
 (define-key ess-mode-map (kbd "C-c y") 'r-print-length-at-point)
 (define-key ess-mode-map (kbd "C-c ,") 'r-print-head-at-point)
 (define-key ess-mode-map (kbd "C-.") 'consult-ripgrep-curdir)
+(define-key ess-mode-map (kbd "C-c C-M-l") 'r-reload-funcfiles)
 (define-key ess-mode-map (kbd "C-#") 'consult-git-grep)
 
 

@@ -1208,7 +1208,17 @@ Version: 2024-04-20"
     (completing-read "Select column names: " items nil t nil nil nil)))
 
 
-;; (jtls-select-columns)
+(defun r-reload-funcfiles ()
+  "in an R project, eval the files containing data/figure/plot-generating functions"
+  "requires l_funcfiles to be set in main_proj.R"
+  (interactive)
+  
+  (ess-send-string
+	(get-process ess-current-process-name)
+
+    "invisible(lapply(l_funcfiles, source))"))
+
+
 
 
 
