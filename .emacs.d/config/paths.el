@@ -17,6 +17,9 @@
 
 (add-to-list 'load-path "/home/johannes/Dropbox/technical_stuff_general/dotfiles/.emacs.d/multi-magit")
 
+(add-to-list 'load-path "/home/johannes/tec/grid-table")
+(require 'grid-table)
+
 
 ;; (add-to-list 'load-path "/home/johannes/ESS/lisp/")
 

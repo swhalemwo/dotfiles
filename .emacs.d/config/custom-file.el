@@ -119,6 +119,7 @@
  '(eldoc-highlight-function-argument ((t (:inherit nil))))
  '(fold-this-overlay ((t (:inherit company-template-field))))
  '(font-lock-function-name-face ((t (:foreground "#882255" :weight bold))))
+ '(grid-table-highlight-face ((t (:background "gray82"))))
  '(highlight ((t (:background "cyan"))))
  '(markdown-pre-face ((t (:inherit (markdown-code-face font-lock-constant-face default)))))
  '(minimap-font-face ((t (:height 15 :family "DejaVu Sans Mono"))))
