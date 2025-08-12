@@ -113,6 +113,8 @@
  '(cypher-pattern-face ((t (:foreground "DeepPink" :weight bold))))
  '(cypher-symbol-face ((t (:inherit font-lock-variable-name-face))))
  '(cypher-variable-face ((t (:foreground "black"))))
+ '(diff-refine-added ((t (:inherit diff-refine-changed :background "spring green"))))
+ '(diff-refine-removed ((t (:inherit diff-refine-changed :background "coral2"))))
  '(eglot-highlight-symbol-face ((t nil)))
  '(eldoc-highlight-function-argument ((t (:inherit nil))))
  '(fold-this-overlay ((t (:inherit company-template-field))))
