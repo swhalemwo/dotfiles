@@ -189,6 +189,7 @@
 	  ("C-a" . 'back-to-indentation)
 	  :map inferior-ess-mode-map
 	  ("C->" . 'then_R_operator)
+	  ("C-<" . 'ess-insert-assign)
 	  )
 	  
   :hook
