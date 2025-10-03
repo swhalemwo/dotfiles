@@ -453,6 +453,12 @@ wrds-pgdata.wharton.upenn.edu"
 ;;   :mode "\\.ua\\'"
 ;;   :ensure t)
 
+(use-package bqn-mode
+  :ensure t
+  :bind (:map bqn-mode-map
+	  ("C-c C-j" . 'bqn-comint-send-dwim)
+	  ("C-c C-r" . 'bqn-comint-send-region)))
+
 ;; (use-package markdown-mode
 ;;   :bind (:map markdown-mode-map
 ;; 	  ("C-#" . consult-git-grep)))

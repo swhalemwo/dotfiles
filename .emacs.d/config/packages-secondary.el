@@ -349,10 +349,15 @@
   "<st"
   "Insert a source block for a table generation (returns table, R-formatted)")
 
-(tempo-define-template "inline-latex-brackets"
-  '("\\( " p " \\)")
-  "<b"
-  "insert in-line latex brackets")
+(tempo-define-template "src-block-apl"
+  '("#+begin_src jupyter-apl :session apl\n" p "\n#+end_src")
+  "<sl"
+  "insert block for apl")
+
+;; (tempo-define-template "inline-latex-brackets"
+;;   '("\\( " p " \\)")
+;;   "<lll"
+;;   "insert in-line latex brackets")
 
 
 

@@ -342,8 +342,11 @@
        (sqlite . t)
        ;; (neato . t)
        (java . t)
+    
        (gnuplot . t)
-       (cypher . t)))
+       (cypher . t)
+       (jupyter . t) ;; jupyter supposed to be last
+       ))
   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
   (setq org-brain-backlink "backlink: ")
   (setq org-brain-file-entries-use-title nil)
@@ -522,11 +525,12 @@
   (setq org-src-preserve-indentation t)
   (setq org-src-tab-acts-natively t)
   (setq org-startup-indented t)
-  (setq org-structure-template-alist
-    '(("s" . "src")
-       ("beqs" . "\\begin{equation*}
+  ;; (setq org-structure-template-alist 
+;;     '(("s" . "src")
+;;        ("x" . "asdf")
+;;        ("beqs" . "\\begin{equation*}
 
-\\end{equation*}")))
+;; \\end{equation*}")))
   (setq org-table-export-default-format "orgtbl-to-latex")
   (setq org-tags-column 0)
   (setq org-tags-exclude-from-inheritance '("drill"))
