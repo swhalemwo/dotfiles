@@ -1318,7 +1318,7 @@
 
 
 (setq org-latex-hyperref-template "\\hypersetup{
- colorlinks=true,
+ colorlinks=false,
  pdfauthor={%a},
  pdftitle={%t},
  pdfkeywords={%k},

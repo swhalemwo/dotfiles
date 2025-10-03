@@ -474,7 +474,7 @@
        (sqlite "sql")
        (makefile "make")
        (r "r")))
-  (setq org-latex-pdf-process '("rm -f %b.aux %b.bbl %b.bcf %b.out %b.blg"
+  (setq org-latex-pdf-process '(;; "rm -f %b.aux %b.bbl %b.bcf %b.out %b.blg"
 				 ;; "pdflatex --shell-escape %b"
 				 ;; "biber %b"
 				 ;; "pdflatex --shell-escape %b"
