@@ -776,7 +776,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 (defun ess-r-devtools-update-package ()
-  "updates the pmdata package"
+  "updates the pmdata/jtls package"
   (interactive)
   ;; set PROCESS-CURRENTLY-RUNNING-UPRADE to read it back in in ess-reload-package after compilation
   ;; (can't pass variables to set-process-sentinel)
@@ -857,7 +857,7 @@ point reaches the beginning or end of the buffer, stop there."
 	 (popup-cmd "") ;; overall command
 	 )	 
     
-
+    ;; FIXME: replace temp buffer with ess-object-names (ess-object-names "gc_plts()")
     ;; (message ess-current-process-name)
 
     ;; get the object names and write them to buffer

@@ -681,7 +681,8 @@ date-end: absolute day number"
 	  (current-year (nth 5 current-date))
 	  (current-month (nth 4 current-date))
 	  (current-day (nth 3 current-date))
-	  (exco-dispatch (if (equal (read-string "dispatch to file? ") "j") t nil)))
+	  (exco-dispatch ;; (if (equal (read-string "dispatch to file? ") "j") t nil)
+	    (y-or-n-p "dispatch to file?" )))
 
     ;; use advice to run dispatch after finalize because the iterate queries are (somewhat) async
     
