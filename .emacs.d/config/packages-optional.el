@@ -466,4 +466,34 @@ wrds-pgdata.wharton.upenn.edu"
 
 
 
+;; ** harper
 
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(org-mode . ("harper-ls" "--stdio"))))
+
+
+
+
+(setq-default eglot-workspace-configuration
+              '(:harper-ls (:userDictPath ""
+                            :workspaceDictPath ""
+                            :fileDictPath ""
+                            :linters (:SpellCheck t
+                                      :SpelledNumbers :json-false
+                                      :AnA t
+                                      :SentenceCapitalization t
+                                      :UnclosedQuotes t
+                                      :WrongQuotes :json-false
+                                      :LongSentences :json-false
+                                      :RepeatedWords t
+                                      :Spaces t
+                                      :Matcher t
+                                      :CorrectNumberSuffix t)
+                            :codeActions (:ForceStable :json-false)
+                            :markdown (:IgnoreLinkTitle :json-false)
+                            :diagnosticSeverity "hint"
+                            :isolateEnglish :json-false
+                            :dialect "American"
+                            :maxFileLength 120000)))
