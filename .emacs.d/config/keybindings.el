@@ -77,9 +77,9 @@
 (define-key org-mode-map (kbd "C-c ]") nil)
 
 
-(local-set-key (kbd "C-c ]") 'org-ref-citation-at-point)
-(define-key org-mode-map (kbd "C-c ]") 'org-ref-citation-at-point)
-(global-set-key (kbd "C-c ]") 'org-ref-citation-at-point)
+(local-set-key (kbd "C-c ]") 'org-ref-insert-cite-link)
+(define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-cite-link)
+(global-set-key (kbd "C-c ]") 'org-ref-insert-cite-link)
 
 (local-set-key (kbd "C-c R") 'org-ref)
 (define-key org-mode-map (kbd "C-c R") 'org-ref)
