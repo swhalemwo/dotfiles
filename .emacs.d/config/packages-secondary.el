@@ -57,7 +57,7 @@
 
 ;; ** org-drill
 
-(require 'org-drill)
+;; (require 'org-drill)
 
 
 ;; ** python

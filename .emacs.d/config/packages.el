@@ -489,8 +489,9 @@
        (verbatim . protectedtexttt)
        (org-clock-overlay . "\\sout{%s}")))
   (setq org-log-refile 'note)
-  (setq org-modules
-    '(ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-w3m))
+  (setq org-modules  '(ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-w3m))
+  ;; (setq org-modules nil)
+  ;; (setq org-element-use-cache nil)
   (setq org-plantuml-jar-path "/home/johannes/plantuml.jar")
   (setq org-priority-faces '((65 . "red") (66 . "darkgreen") (67 . "blue")))
   (setq org-ref-cite-onclick-function 'org-ref-helm-cite-click)
@@ -615,40 +616,40 @@
 
 ;; ** org-latex-preview
 
-(use-package org-latex-preview
-  :config
-  ;; Increase preview width
-  (plist-put org-latex-preview-appearance-options
-    :page-width 0.8)
+;; (use-package org-latex-preview
+;;   :config
+;;   ;; Increase preview width
+;;   (plist-put org-latex-preview-appearance-options
+;;     :page-width 0.8)
 
-  (plist-put org-latex-preview-appearance-options :zoom 2)
+;;   (plist-put org-latex-preview-appearance-options :zoom 2)
 
-  (setq org-latex-preview-cache 'temp)
+;;   (setq org-latex-preview-cache 'temp)
 
-  ;; Use dvisvgm to generate previews
-  ;; You don't need this, it's the default:
-  (setq org-latex-preview-process-default 'dvisvgm)
+;;   ;; Use dvisvgm to generate previews
+;;   ;; You don't need this, it's the default:
+;;   (setq org-latex-preview-process-default 'dvisvgm)
   
-  ;; Turn on auto-mode, it's built into Org and much faster/more featured than
-  ;; org-fragtog. (Remember to turn off/uninstall org-fragtog.)
-  ;; (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
-  (add-hook 'org-mode-hook 'org-latex-preview-mode)
+;;   ;; Turn on auto-mode, it's built into Org and much faster/more featured than
+;;   ;; org-fragtog. (Remember to turn off/uninstall org-fragtog.)
+;;   ;; (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
+;;   (add-hook 'org-mode-hook 'org-latex-preview-mode)
 
-  ;; Block C-n, C-p etc from opening up previews when using auto-mode
-  (setq org-latex-preview-auto-ignored-commands
-        '(next-line previous-line mwheel-scroll
-          scroll-up-command scroll-down-command))
+;;   ;; Block C-n, C-p etc from opening up previews when using auto-mode
+;;   (setq org-latex-preview-auto-ignored-commands
+;;         '(next-line previous-line mwheel-scroll
+;;           scroll-up-command scroll-down-command))
 
-  ;; Enable consistent equation numbering
-  (setq org-latex-preview-numbered t)
+;;   ;; Enable consistent equation numbering
+;;   (setq org-latex-preview-numbered t)
 
-  ;; Bonus: Turn on live previews.  This shows you a live preview of a LaTeX
-  ;; fragment and updates the preview in real-time as you edit it.
-  ;; To preview only environments, set it to '(block edit-special) instead
-  (setq org-latex-preview-live t)
+;;   ;; Bonus: Turn on live previews.  This shows you a live preview of a LaTeX
+;;   ;; fragment and updates the preview in real-time as you edit it.
+;;   ;; To preview only environments, set it to '(block edit-special) instead
+;;   (setq org-latex-preview-live t)
 
-  ;; More immediate live-previews -- the default delay is 1 second
-  (setq org-latex-preview-live-debounce 0.25))
+;;   ;; More immediate live-previews -- the default delay is 1 second
+;;   (setq org-latex-preview-live-debounce 0.25))
 
 
 
@@ -771,17 +772,17 @@
 ;; ** org-gcal
 
 
-(use-package org-gcal
-  :init 
+;; (use-package org-gcal
+;;   :init 
 
-  (setq org-gcal-client-id (password-store-get "org-gcal-client-id"))
-  (setq org-gcal-client-secret (password-store-get "org-gcal-client-secret"))
-  (setq org-gcal-fetch-file-alist `((,calfw-main-email .  "/home/johannes/Dropbox/sync/org/schedule.org")))
-  (setq org-gcal-auto-archive nil)
-    ;; try to get password caching to work: https://github.com/kidd/org-gcal.el/issues/217
-  (setq plstore-cache-passphrase-for-symmetric-encryption t)
-    ;; epg-pinentry-mode 'loopback
-    )
+;;   (setq org-gcal-client-id (password-store-get "org-gcal-client-id"))
+;;   (setq org-gcal-client-secret (password-store-get "org-gcal-client-secret"))
+;;   (setq org-gcal-fetch-file-alist `((,calfw-main-email .  "/home/johannes/Dropbox/sync/org/schedule.org")))
+;;   (setq org-gcal-auto-archive nil)
+;;     ;; try to get password caching to work: https://github.com/kidd/org-gcal.el/issues/217
+;;   (setq plstore-cache-passphrase-for-symmetric-encryption t)
+;;     ;; epg-pinentry-mode 'loopback
+;;     )
 
 
 ;; (org-gcal-reload-client-id-secret)
@@ -856,7 +857,7 @@
   
   (setq excorporate-org-mschedule-file "/home/johannes/Dropbox/sync/org/schedule_uva.org")
   (setq excorporate-org-schedule-file "/home/johannes/Dropbox/sync/org/schedule_uva2.org")
-  (define-key cfw:org-custom-map (kbd "e") 'exco-org-create-meeting)
+  ;; (define-key cfw:org-custom-map (kbd "e") 'exco-org-create-meeting)
 
   )
 
