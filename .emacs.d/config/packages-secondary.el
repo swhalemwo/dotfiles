@@ -328,7 +328,7 @@
 
 (tempo-define-template "clock-report"
   '("#+BEGIN: clocktable :scope agenda :maxlevel 5 :tstart \"<-12h>\" :fileskip0 t :match \"-nowork-tec\"" p "\n#+END" >)
-  "<c"
+  "<ct"
   "Insert a daily clocktable report")
 
 (tempo-define-template "src-block-data"
