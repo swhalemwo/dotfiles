@@ -497,3 +497,15 @@ wrds-pgdata.wharton.upenn.edu"
                             :isolateEnglish :json-false
                             :dialect "American"
                             :maxFileLength 120000)))
+;; ** apl
+
+
+
+(autoload 'dyalog-mode "/home/johannes/.emacs.d/elpa/dyalog-mode-20230214.1027/dyalog-mode.el" "Edit Dyalog APL" t)
+(autoload 'dyalog-editor-connect "/home/johannes/.emacs.d/elpa/dyalog-mode-20230214.1027/dyalog-mode.el"
+  "Connect Emacs to Dyalog" t)
+(add-to-list 'auto-mode-alist '("\\.apl\\'" . dyalog-mode))
+(add-to-list 'auto-mode-alist '("\\.dyalog$" . dyalog-mode))
+
+(use-package gnu-apl-mode)
+
