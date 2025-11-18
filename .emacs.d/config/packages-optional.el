@@ -509,3 +509,17 @@ wrds-pgdata.wharton.upenn.edu"
 
 (use-package gnu-apl-mode)
 
+
+;; ** grid-table
+
+(use-package grid-table
+  :load-path ("/home/johannes/tec/grid-table" "/home/johannes/tec/grid-table/plugins")
+  :config
+  (require 'grid-table)
+  (require 'grid-table-plugins)
+  (require 'grid-table-org)
+  
+
+  ;; Image display optimization
+  (setq grid-table-image-target-char-height 8)
+  (setq grid-table-image-max-width-ratio 0.9))

@@ -342,7 +342,7 @@
        (sqlite . t)
        ;; (neato . t)
        (java . t)
-    
+       ;; (grid-table . t)
        (gnuplot . t)
        (cypher . t)
        (jupyter . t) ;; jupyter supposed to be last
