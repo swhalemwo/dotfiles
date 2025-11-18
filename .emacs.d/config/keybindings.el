@@ -210,7 +210,7 @@
 
 (define-key emacs-lisp-mode-map (kbd "C-M-;") 'iedit-mode)
 (define-key org-mode-map (kbd "C-M-;") 'iedit-mode)
-(define-key ess-mode-map (kbd "C-M-;") 'iedit-mode)
+(define-key ess-mode-map (kbd "C-M-]") 'iedit-mode-toggle-on-function)
 ;; (define-key elpy-mode-map (kbd "C-M-;") 'iedit-mode)
 
 
