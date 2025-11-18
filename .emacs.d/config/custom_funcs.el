@@ -40,31 +40,6 @@
 	  (cmd (concat pdf-program file-dir pdf-name " &")))
     (call-process-shell-command cmd)))
 
-(defun open-org-brain-of-notes ()
-  ;; open the correspondign org-brain buffer from a nootes file
-  (interactive)
-  (let* ((buf-name (buffer-name))
-	  (org-brain-name (substring buf-name 0 (- (length buf-name) 4)))
-	  ;; (cmd (concat "zathura /home/johannes/Dropbox/readings/" pdf-name " &"))
-	  )
-    ;; (call-process-shell-command cmd)
-    (org-brain-visualize org-brain-name)
-
-    ))
-
-
-(defun my-org-brain-add-parents ()
-  (interactive)
-  (let* ((str-candidates (buffer-substring-no-properties 1 (point-max)))
-	  (l-candidates (split-string str-candidates "\n"))
-	  (l-additions (mapcar (lambda (x) (replace-regexp-in-string "[[:space:]]+" "" x)) l-candidates))
-	  (l-additions2 (-filter (lambda (x) (> (length x) 0)) l-additions)))
-
-    (org-brain-add-parent org-brain--vis-entry l-additions2)
-    (switch-to-buffer "*org-brain*")
-    (revert-buffer)
-    (delete-other-windows)
-    ))
 
 
 (defun insert-hat ()

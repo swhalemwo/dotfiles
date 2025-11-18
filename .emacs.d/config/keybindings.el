@@ -101,7 +101,7 @@
 (define-key org-mode-map (kbd "C-S-RET") 'org-insert-todo-subheading)
 
 
-(define-key org-brain-visualize-mode-map (kbd "H") 'helm-brain)
+
 
 
 (define-key emacs-lisp-mode-map (kbd "C-c C-l") 'load-current-file)
@@ -131,7 +131,7 @@
 ;; (global-set-key (kbd "C-c b") 'insert-bar)
 
 
-(define-key org-mode-map (kbd "C-c b") 'org-brain-visualize)
+
 (define-key org-mode-map (kbd "C-c o")  'consult-org-heading)
 (define-key org-mode-map (kbd "C-,")  'consult-line)
 (define-key org-mode-map (kbd "C-#")  'consult-git-grep)

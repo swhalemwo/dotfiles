@@ -8,6 +8,33 @@
 
 (setq org-brain-visualize-peers nil)
 
+(defun open-org-brain-of-notes ()
+  ;; open the correspondign org-brain buffer from a nootes file
+  (interactive)
+  (let* ((buf-name (buffer-name))
+	  (org-brain-name (substring buf-name 0 (- (length buf-name) 4)))
+	  ;; (cmd (concat "zathura /home/johannes/Dropbox/readings/" pdf-name " &"))
+	  )
+    ;; (call-process-shell-command cmd)
+    (org-brain-visualize org-brain-name)
+
+    ))
+
+
+(defun my-org-brain-add-parents ()
+  (interactive)
+  (let* ((str-candidates (buffer-substring-no-properties 1 (point-max)))
+	  (l-candidates (split-string str-candidates "\n"))
+	  (l-additions (mapcar (lambda (x) (replace-regexp-in-string "[[:space:]]+" "" x)) l-candidates))
+	  (l-additions2 (-filter (lambda (x) (> (length x) 0)) l-additions)))
+
+    (org-brain-add-parent org-brain--vis-entry l-additions2)
+    (switch-to-buffer "*org-brain*")
+    (revert-buffer)
+    (delete-other-windows)
+    ))
+
+
 (defun org-brain--toggle-visualize-peers ()
     (interactive)
     """peers: children of same parents"""
@@ -266,3 +293,16 @@ If run interactively, get ENTRY from context."
 ;; (run-with-timer 0 7200 'org-brain-save-cache)
 
 
+
+
+
+(define-key org-brain-visualize-mode-map (kbd "H") 'helm-brain)
+(define-key org-mode-map (kbd "C-c b") 'org-brain-visualize)
+
+
+  (setq org-brain-backlink "backlink: ")
+  (setq org-brain-file-entries-use-title nil)
+  (setq org-brain-path "/home/johannes/Dropbox/nootes/")
+
+
+          ;; ("C-+" . 'open-org-brain-of-notes)

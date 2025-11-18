@@ -92,7 +92,6 @@
   :bind (:map org-mode-map
 	  ("C-c r" . 'helm-org-rifle-current-buffer)
 	  ("C-c p" . 'open-pdf-of-notes-or-buffer)
-          ("C-+" . 'open-org-brain-of-notes)
 	  ("C-c ]" . 'org-ref-insert-cite-link)
           )
 
@@ -348,9 +347,6 @@
        (jupyter . t) ;; jupyter supposed to be last
        ))
   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
-  (setq org-brain-backlink "backlink: ")
-  (setq org-brain-file-entries-use-title nil)
-  (setq org-brain-path "/home/johannes/Dropbox/nootes/")
   (setq org-capture-templates
     '(("m" "mail" entry
 	(file "/home/johannes/Dropbox/mail.org")
