@@ -72,3 +72,4 @@
 
 
 
+(put 'list-threads 'disabled nil)
