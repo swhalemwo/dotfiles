@@ -491,7 +491,7 @@
   (setq org-log-refile 'note)
   (setq org-modules  '(ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-w3m))
   ;; (setq org-modules nil)
-  ;; (setq org-element-use-cache nil)
+  (setq org-element-use-cache nil)
   (setq org-plantuml-jar-path "/home/johannes/plantuml.jar")
   (setq org-priority-faces '((65 . "red") (66 . "darkgreen") (67 . "blue")))
   (setq org-ref-cite-onclick-function 'org-ref-helm-cite-click)
