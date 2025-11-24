@@ -73,3 +73,6 @@
 
 
 (put 'list-threads 'disabled nil)
+
+
+(setq org-element-cache-persistent nil)
