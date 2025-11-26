@@ -25,7 +25,9 @@
   (interactive)
   (if (get-buffer "*cfw-calendar*")
     (switch-to-buffer "*cfw-calendar*")
-    (cfw:open-org-calendar)))
+    ;; (cfw:open-org-calendar)
+    (calfw-org-open-calendar)
+    ))
   ;; (cfw:refresh-calendar-buffer nil)
 
 
