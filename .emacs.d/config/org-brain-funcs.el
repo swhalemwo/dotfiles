@@ -158,9 +158,7 @@ If run interactively, get ENTRY from context."
 
 
 
-(defun alist-keys (alist)
-  ;; gets the first entry of alist, which I guess is a list of lists
-    (mapcar 'car alist))
+
 
 
 

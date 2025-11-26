@@ -1,3 +1,7 @@
+(defun alist-keys (alist)
+  ;; gets the first entry of alist, which I guess is a list of lists
+    (mapcar 'car alist))
+
 (defun mrb/insert-created-timestamp()
   "Insert a CREATED property using org-expiry.el for TODO entries"
   (org-expiry-insert-created)
