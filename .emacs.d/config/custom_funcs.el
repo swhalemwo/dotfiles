@@ -1219,4 +1219,9 @@ Version: 2024-04-20"
 
 
 
-
+(setq jtls-distraction-counter 0)
+(defun jtls-increase-distraction-counter ()
+  (interactive)
+  (setq jtls-distraction-counter (+ 1 jtls-distraction-counter))
+  (message (format "distraction counter: %s" jtls-distraction-counter)))
+  
