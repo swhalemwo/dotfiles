@@ -405,7 +405,8 @@ This holds the results of the last documentation request."
 
 (ejc-create-connection
   "ch@180"
-  :dependencies [[com.clickhouse/clickhouse-jdbc "0.3.2"]]
+
+  :dependencies [[com.clickhouse/clickhouse-jdbc "0.8"]]
   :dbtype "clickhouse"
   :classname "com.clickhouse.jdbc.ClickHouseDriver"
   :separator "/"
