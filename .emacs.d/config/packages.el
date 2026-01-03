@@ -1095,6 +1095,8 @@
     (interactive)
     (let ((current-prefix-arg '(4))) (call-interactively 'vterm)))
 
+  (setq vterm-max-scrollback 10000)
+
   
   (setq vterm-timer-delay 0.01)
   :bind (:map vterm-mode-map
