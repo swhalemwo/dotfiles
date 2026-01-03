@@ -23,7 +23,7 @@
 (show-paren-mode t)
 
 (setq split-height-threshold 80)
-(setq split-width-threshold1 60)
+(setq split-width-threshold 60)
 
 (setq display-battery-mode t)
 (setq display-time-mail-face 'org-mode-line-clock-overrun)
