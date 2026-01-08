@@ -7,6 +7,7 @@
 (setq comp-deferred-compilation t)
 (setq server-mode t)
 (setq debug-on-error t)
+(setq debug-on-quit nil)
 
 (setq case-fold-search t) ;; searches ignore case
 (setq-default case-fold-search t) ;; searches ignore case
