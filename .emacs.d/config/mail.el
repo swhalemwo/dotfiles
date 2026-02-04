@@ -10,6 +10,8 @@
   mu4e-get-mail-command "mbsync -a -V -c /home/johannes/.mbsyncrc"
   mu4e-update-interval 800
 
+  mu4e-mu-binary "/usr/local/bin/mu"
+
   ;; smtp
   message-send-mail-function 'message-send-mail-with-sendmail
   sendmail-program "/usr/bin/msmtp"
