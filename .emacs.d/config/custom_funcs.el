@@ -31,19 +31,24 @@
   ;; (cfw:refresh-calendar-buffer nil)
 
 
-
-
 (defun open-pdf-of-notes-or-buffer ()
-  "open pdf of an org-file, if the org-file is in /nootes (i.e. is notes of a paper), open the corresponding reader, else (if the org-file is a paper I write) open the exported pdf of the file"
+  "Open pdf with zathura, qpdfview with C-u, or docx with lowriter with C-u C-u."
   (interactive)
-  (let* ((buf-name (file-name-nondirectory (buffer-file-name)))
-	  (pdf-name (concat (substring buf-name 0 (- (length buf-name) 4)) ".pdf"))
-	  ;; if pdf-file exists in current directory, open that, else open file in readings
-	  (file-dir (if (file-exists-p (concat (file-name-directory (buffer-file-name)) pdf-name))
-		      (file-name-directory (buffer-file-name))
-		      "/home/johannes/Dropbox/readings/"))
-	  (pdf-program (if current-prefix-arg "qpdfview " "zathura "))
-	  (cmd (concat pdf-program file-dir pdf-name " &")))
+  (let* ((base-name (file-name-sans-extension (buffer-file-name)))
+         (pdf-name (concat (file-name-nondirectory base-name) ".pdf"))
+         (docx-name (concat (file-name-nondirectory base-name) ".docx"))
+         ;; Determine directory: current dir if PDF exists, otherwise readings
+         (file-dir (if (file-exists-p (concat (file-name-directory (buffer-file-name)) pdf-name))
+                       (file-name-directory (buffer-file-name))
+                     "/home/johannes/Dropbox/readings/"))
+         ;; Select command based on the raw prefix argument
+         (cmd (cond
+               ((equal current-prefix-arg '(16))
+                (concat "lowriter " file-dir docx-name " &"))
+               ((equal current-prefix-arg '(4))
+                (concat "qpdfview " file-dir pdf-name " &"))
+               (t
+                (concat "zathura " file-dir pdf-name " &")))))
     (call-process-shell-command cmd)))
 
 
