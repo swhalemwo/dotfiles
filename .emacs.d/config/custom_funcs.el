@@ -698,7 +698,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 
-(defun open-pdf-fig ()
+
+
+
+(defun open-pdf-fig-or-table ()
   "get the a consult menu with all the pdfs linked (only pdfs so far)"
   "assumes there's a figures folder in current dir"
   (interactive)
@@ -706,12 +709,24 @@ point reaches the beginning or end of the buffer, stop there."
 	  (figs (re-seq "\[\[file:[a-z/_0-9\.]*.pdf]]" (buffer-string)))
 	  ;; remove the beginning/end parts 
 	  (figs2 (mapcar (lambda (x) (substring x 7 (- (length x) 2))) figs))
-	  (fig (consult--read figs2))
+	  ;; (figs3 (mapcar (lambda (x)
+	  ;; use reftbls for tables (not directly linked as files)
+	  (tables-raw (re-seq "\\(reftbl_[a-zA-Z0-9_]+\\)" (buffer-string)))
+	  (tables-proc (mapcar (lambda (x) (concat (substring x 7 (length x)) "_wcpF.pdf")) tables-raw))
+	  
+	  (fig-or-table (consult--read (-union figs2 tables-proc)))
 	  (dir (file-name-directory (buffer-file-name)))
 	  )
-    (org-open-file (concat dir fig))
+    ;; (org-open-file (concat dir fig))
+    (message fig-or-table)
 
+    (if (equal (substring fig-or-table 0 2) "t_")
+      (org-open-file (concat dir "../tables/" fig-or-table))
+      (org-open-file (concat dir fig-or-table)))
+		   
     ))
+
+
 
 ;; https://emacs.stackexchange.com/questions/50216/org-mode-code-block-parentheses-mismatch
 ;; stop using < and > as bracket delimiters
