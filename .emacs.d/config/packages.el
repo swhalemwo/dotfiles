@@ -983,7 +983,7 @@
   ;;      ;; consult--source-project-buffer-hidden
   ;;      consult--source-project-recent-file-hidden))
 
-  (setq consut-buffer-sources
+  (setq consult-buffer-sources
     '(consult-source-recent-file
        consult-source-buffer
        consult-source-hidden-buffer
