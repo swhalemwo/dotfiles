@@ -971,16 +971,30 @@
   :config 
   (add-to-list 'embark-multitarget-actions #'my/consult-line-multi) ;; allow searching in buffer selection
 
-  (setq consult-buffer-sources 
-    '(
-       consult--source-recent-file
-       consult--source-modified-buffer
-       consult--source-hidden-buffer
-       consult--source-buffer
-       consult--source-file-register
-       consult--source-bookmark
-       consult--source-project-buffer-hidden
-       consult--source-project-recent-file-hidden))
+  ;; (setq consult-buffer-sources 
+  ;;   '(
+  ;;      ;; consult--source-project-recent-file
+  ;;      ;; consult--source-modified-buffer
+  ;;      consult--source-hidden-buffer
+  ;;      consult--source-buffer
+  ;;      consult--source-file-register
+  ;;      consult--source-bookmark
+  ;;      consult--source-project-buffer-hidden
+  ;;      ;; consult--source-project-buffer-hidden
+  ;;      consult--source-project-recent-file-hidden))
+
+  (setq consut-buffer-sources
+    '(consult-source-recent-file
+       consult-source-buffer
+       consult-source-hidden-buffer
+       consult-source-modified-buffer
+       consult-source-other-buffer
+       consult-source-buffer-register
+       consult-source-file-register
+       consult-source-bookmark
+       consult-source-project-buffer-hidden
+       consult-source-project-recent-file-hidden
+       consult-source-project-root-hidden))
 
   (define-key embark-buffer-map (kbd "m") 'my/consult-line-multi)
 
