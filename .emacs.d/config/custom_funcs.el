@@ -38,7 +38,9 @@
          (pdf-name (concat (file-name-nondirectory base-name) ".pdf"))
          (docx-name (concat (file-name-nondirectory base-name) ".docx"))
          ;; Determine directory: current dir if PDF exists, otherwise readings
-         (file-dir (if (file-exists-p (concat (file-name-directory (buffer-file-name)) pdf-name))
+          (file-dir (if (or
+			  (file-exists-p (concat (file-name-directory (buffer-file-name)) pdf-name))
+			  (file-exists-p (concat (file-name-directory (buffer-file-name)) docx-name)))
                        (file-name-directory (buffer-file-name))
                      "/home/johannes/Dropbox/readings/"))
          ;; Select command based on the raw prefix argument
@@ -400,7 +402,9 @@
 
 	  ;; not sure why this is needed, but seems to be to have ignhead to work
 	  (add-to-list 'org-export-filter-headline-functions 'headline-numbering-filter)
-	  
+
+	  (message "hello there")
+
 	  (org-latex-export-to-latex)
 	  (setq cmd-pandoc-html (concat "pandoc -F pandoc-crossref -C "
 				  (mapconcat (lambda (x) (concat "--bibliography=" x)) helm-bibtex-bibliography " ")
@@ -413,6 +417,7 @@
 
 
       (org-latex-export-to-pdf t) ;; now exports async
+      ;; (org-latex-export-to-pdf)
 
       )
     )

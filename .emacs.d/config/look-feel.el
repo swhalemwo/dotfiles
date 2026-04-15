@@ -26,7 +26,7 @@
 (setq split-height-threshold 80)
 (setq split-width-threshold 160)
 
-(setq display-battery-mode t)
+(setq display-battery-mode nil)
 (setq display-time-mail-face 'org-mode-line-clock-overrun)
 (setq display-time-use-mail-icon t)
 (setq echo-keystrokes 0.01)
