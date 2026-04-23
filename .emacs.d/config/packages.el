@@ -1191,3 +1191,26 @@
 
 
 
+;; ** agent-shell
+
+(use-package agent-shell
+    :ensure t)
+
+
+(setq agent-shell-google-authentication
+      (agent-shell-google-make-authentication
+       :api-key (lambda () (auth-source-pass-get 'secret "gemini-api-key"))))
+
+
+(setq agent-shell-mcp-servers
+      '(((name . "mcptools-R")
+         (type . "stdio")
+         (command . "Rscript")
+          ;; (args . ("-e" "mcptools::mcp_server()"))
+	  (args . ("-e" "mcptools::mcp_server(tools = btw::btw_tools())"))
+         ;; Adding these prevents the 'received undefined' validation error
+         (headers . [])
+         (env . []))))
+
+
+
