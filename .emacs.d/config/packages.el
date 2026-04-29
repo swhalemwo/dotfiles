@@ -1207,7 +1207,7 @@
          (type . "stdio")
          (command . "Rscript")
           ;; (args . ("-e" "mcptools::mcp_server()"))
-	  (args . ("-e" "mcptools::mcp_server(tools = btw::btw_tools())"))
+	  (args . ("-e" "options(btw.run_r.enabled = TRUE);mcptools::mcp_server(tools = btw::btw_tools())"))
          ;; Adding these prevents the 'received undefined' validation error
          (headers . [])
          (env . []))))
