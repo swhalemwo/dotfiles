@@ -29,7 +29,7 @@
 (setq display-battery-mode nil)
 (setq display-time-mail-face 'org-mode-line-clock-overrun)
 (setq display-time-use-mail-icon t)
-(setq echo-keystrokes 0.01)
+(setq echo-keystrokes 0.1)
 
 (savehist-mode 1)
 (put 'upcase-region 'disabled nil)
@@ -52,6 +52,9 @@
 ;; (setq window-adjust-process-window-size-function 'ignore)
 
 (fringe-mode 0) ;; gets rid of pesky white bars on the sides
+;; (setq fringe-mode '(1 . 1) nil (fringe))
+
+(setq-default bidi-paragraph-direction 'left-to-right) ;; set text rendering order, maybe increases speed?
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -109,15 +112,17 @@
 
 ;; ** nicer checkboxes
 
-(defun nice-orgmode-checkboxes ()
-  "Beautify Org Checkbox Symbol"
-  (push '("[ ]" .  "囗") prettify-symbols-alist)
-  (push '("[X]" . "井" ) prettify-symbols-alist) ;; 囗田
-  (push '("[-]" . "龙" ) prettify-symbols-alist) ;; 井
-  (prettify-symbols-mode))
+;; (defun nice-orgmode-checkboxes ()
+;;   "Beautify Org Checkbox Symbol"
+;;   (push '("[ ]" .  "囗") prettify-symbols-alist)
+;;   (push '("[X]" . "井" ) prettify-symbols-alist) ;; 囗田
+;;   (push '("[-]" . "龙" ) prettify-symbols-alist) ;; 井
+;;   (prettify-symbols-mode))
 
-;; (remove-hook 'org-mode-hook 'nice-orgmode-checkboxes)
-(add-hook 'org-mode-hook 'nice-orgmode-checkboxes)
+;; ;; (remove-hook 'org-mode-hook 'nice-orgmode-checkboxes)
+;; (add-hook 'org-mode-hook 'nice-orgmode-checkboxes)
+
+
 
 ;; don't make stupid backup files
 (setq make-backup-files nil)

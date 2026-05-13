@@ -37,7 +37,7 @@
   "Garbage Collector Magic Hack."
   :group 'alloc)
 
-(defcustom gcmh-low-cons-threshold 800000
+(defcustom gcmh-low-cons-threshold 8000000
   "Low cons GC threshold.
 This is the GC threshold used while idling. Default value is the
 same of `gc-cons-threshold' default."

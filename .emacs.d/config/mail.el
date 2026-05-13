@@ -119,7 +119,7 @@
 
 
 (setq mu4e-compose-context-policy 'ask-if-none)
-(setq mu4e-display-update-status-in-modeline t)
+;; (setq mu4e-display-update-status-in-modeline t)
 
 (setq mu4e-headers-fields
       '((:human-date . 12)
