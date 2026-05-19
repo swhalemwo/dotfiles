@@ -124,3 +124,5 @@ Cancel the previous one if present."
 (provide 'gcmh)
 
 ;;; gcmh.el ends here
+
+(gcmh-mode 1)
