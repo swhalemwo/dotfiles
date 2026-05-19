@@ -381,6 +381,30 @@ This holds the results of the last documentation request."
 (setq gptel-confirm-tool-calls nil)
 
 
+
+;; ;;; Custom function to confirm 'rm' commands in gptel's Bash tool
+;; (defun gptel-confirm-rm-commands (callback command)
+;;   "Confirm a bash command if it contains 'rm'."
+;;   (declare (ignorable callback))
+;;   ;; Check if the command string contains 'rm' as a whole word
+;;   (string-match-p "\\brm\\b" command))
+
+;; ;;; Redefine the Bash tool to use the custom confirmation function
+;; ;;; This re-registers the Bash tool with the new :confirm setting
+;; (gptel-make-tool
+;;  'gptel-agent--execute-bash            ;; The underlying function for Bash tool
+;;  "Bash"                               ;; The tool's name
+;;  "Execute Bash commands.\\n\\nThis tool provides access to a Bash shell with GNU coreutils (or equivalents) available.\\nUse this to inspect system state, run builds, tests or other development or system administration tasks.\\n\\nDo NOT use this for file operations, finding, reading or editing files.\\nUse the provided file tools instead: `Read`, `Write`, `Edit`, `Glob`, `Grep`\\n\\n- Quote file paths with spaces using double quotes.\\n- Chain dependent commands with && (or ; if failures are OK)\\n- Use absolute paths instead of cd when possible\\n- For parallel commands, make multiple `Bash` calls in one message\\n- Run tests, check your work or otherwise close the loop to verify changes you make.\\n\\nEXAMPLES:\\n- List files with details: 'ls -lah /path/to/dir'\\n- Find recent errors: 'grep -i error /var/log/app.log | tail -20'\\n- Check file type: 'file document.pdf'\\n- Count lines: 'wc -l *.txt'\\n\\nThe command will be executed in the current working directory.  Output is\\nreturned as a string.  Long outputs should be filtered/limited using pipes."
+;;  '((:name "command" :type "string" :description "The Bash command to execute.  Can include pipes and standard shell operators.\\nExample: 'ls -la | head -20' or 'grep -i error app.log | tail -50'"))
+;;  t                                    ;; :no-auto-prompt (keep as original)
+;;  "gptel-agent"                        ;; :agent-type (keep as original)
+;;  'gptel-confirm-rm-commands           ;; <--- This is the change: use our custom function for confirmation
+;;  t)                                   ;; :allow-multiple (keep as original)
+
+;; ;; Ensure gptel-confirm-tool-calls is set to 'auto' for conditional confirmation
+;; ;; (setq gptel-confirm-tool-calls 'auto)
+
+
 ;; ** langtool
 
 (use-package langtool
