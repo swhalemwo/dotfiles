@@ -180,7 +180,7 @@
 	  ("C-c i" . 'ess-insert-aux-snippet)
 	  ("C-c C-k" . 'r-print-at-point)
 	  ("C-c f" . 'r-filter-dt)
-	  ("C-c j" . 'r-add-symbol-to-fstd)
+	  ;; ("C-c j" . 'r-add-symbol-to-fstd)
 	  ("C-c k" . 'r-clear-fstd)        
 	  ( "C-c h" . 'r-list-fstd)
 	  ("C-c C-i" . 'ess-interrupt)
