@@ -4,7 +4,8 @@
 
 ;; (remove-hook 'post-command-hook 'change-my-background-color)
 
-(add-hook 'change-major-mode-hook 'change-my-background-color)
+;; (add-hook 'change-major-mode-hook 'change-my-background-color)
+;; (remove-hook 'change-major-mode-hook 'change-my-background-color)
 
 ;; (add-hook 'window-configuration-change-hook 'change-my-background-color)
 
