@@ -416,8 +416,8 @@
 	  ))
 
 
-      (org-latex-export-to-pdf t) ;; now exports async
-      ;; (org-latex-export-to-pdf)
+      ;; (org-latex-export-to-pdf t) ;; now exports async
+      (org-latex-export-to-pdf)
 
       )
     )
