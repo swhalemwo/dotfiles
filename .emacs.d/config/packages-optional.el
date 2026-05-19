@@ -361,7 +361,7 @@ This holds the results of the last documentation request."
 )
 (require 'gptel-integrations)
 
-(use-package 'gptel-agent)
+;; (use-package 'gptel-agent)
 
 ;; (setq mcp-hub-servers
 ;;       '(("mcptools-R"
