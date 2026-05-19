@@ -353,8 +353,27 @@ This holds the results of the last documentation request."
 (use-package gptel
   :config
   (setq gptel-api-key (password-store-get "llm-openai-key"))
-  (setq gptel-track-media t))
+  (gptel-make-gemini "Gemini" :key (password-store-get "gemini-api-key") :stream t)
+  (setq gptel-track-media t)
+  (setq gptel-default-mode 'org-mode)
+)
+(require 'gptel-integrations)
 
+(use-package 'gptel-agent)
+
+;; (setq mcp-hub-servers
+;;       '(("mcptools-R"
+;;          . (:command "Rscript"
+;;              :args ("-e" "options(btw.run_r.enabled = TRUE);mcptools::mcp_server(tools = btw::btw_tools())")))))
+
+(setq mcp-hub-servers
+      '(("mcptools-R"
+         . (:command "Rscript"
+             :args ("--vanilla" "--quiet" "-e" "options(btw.run_r.enabled = TRUE); invisible(btw::btw_mcp_server())")))))
+
+;; (require 'gptel-mcp) ;; hallucinaed
+
+(setq gptel-confirm-tool-calls nil)
 
 
 ;; ** langtool
