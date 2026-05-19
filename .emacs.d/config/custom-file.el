@@ -76,7 +76,7 @@
 	"dev")))
  '(sql-clickhouse-login-params '(database))
  '(table-cell-horizontal-chars "-=")
- '(warning-suppress-types '((emacs))))
+ '(warning-suppress-types '((emacs) (org-element))))
 
 ;; '(text-mode-ispell-word-completion nil)
 

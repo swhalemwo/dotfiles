@@ -344,7 +344,7 @@
        ;; (grid-table . t)
        (gnuplot . t)
        (cypher . t)
-       (jupyter . t) ;; jupyter supposed to be last
+       ;; (jupyter . t) ;; jupyter supposed to be last
        ))
   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages)
   (setq org-capture-templates
