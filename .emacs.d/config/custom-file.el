@@ -153,42 +153,87 @@
 (add-to-list 'font-lock-extra-managed-props 'display)
 
 
-(setq org-macro-fontlock-keywords
-  '(("\\({{{[a-zA-Z#%_)(-+0-9]+}}}\\)" 0
-    `(face nil display
-           ,(format "%s"
-                    (let* ((input-str (match-string 0))
-                            (el (with-temp-buffer
-				  (org-mode)
-                                (insert input-str)
-                                (goto-char (point-min))
-                                (org-element-context)))
-                          (text (org-macro-expand el org-macro-templates)))
-                      (if text
-                          text
-                        input-str)))))))
+;; (setq org-macro-fontlock-keywords
+;;   '(("\\({{{[a-zA-Z#%_)(-+0-9]+}}}\\)" 0
+;;     `(face nil display
+;;            ,(format "%s"
+;;                     (let* ((input-str (match-string 0))
+;;                             (el (with-temp-buffer
+;; 				  (org-mode)
+;;                                 (insert input-str)
+;;                                 (goto-char (point-min))
+;;                                 (org-element-context)))
+;;                           (text (org-macro-expand el org-macro-templates)))
+;;                       (if text
+;;                           text
+;;                         input-str)))))))
  
 ;; (font-lock-add-keywords 'org-mode org-macro-fontlock-keywords)
 
 ;; (font-lock-remove-keywords 'org-mode org-macro-fontlock-keywords)
 
-(setq org-macro-fontlock t)
+;; (setq org-macro-fontlock t)
 
-(defun toggle-org-macro-fontlock ()
-  ;; if org-macro-fontlock is nil, add the fontlock keywords, remove otherwise
-  ;; org-mode-restart necessary for some reason 
-  (interactive)
-  (if (not org-macro-fontlock)
-    (progn
-      (font-lock-add-keywords 'org-mode org-macro-fontlock-keywords)
+;; (defun toggle-org-macro-fontlock ()
+;;   ;; if org-macro-fontlock is nil, add the fontlock keywords, remove otherwise
+;;   ;; org-mode-restart necessary for some reason 
+;;   (interactive)
+;;   (if (not org-macro-fontlock)
+;;     (progn
+;;       (font-lock-add-keywords 'org-mode org-macro-fontlock-keywords)
 
-      (org-mode-restart)
-      (setq org-macro-fontlock t))
+;;       (org-mode-restart)
+;;       (setq org-macro-fontlock t))
     
-    (progn
-      (message "time to yeet org-macro-fontlock-keywords")
-      (font-lock-remove-keywords 'org-mode org-macro-fontlock-keywords)
+;;     (progn
+;;       (message "time to yeet org-macro-fontlock-keywords")
+;;       (font-lock-remove-keywords 'org-mode org-macro-fontlock-keywords)
 
-      (org-mode-restart)
-      (setq org-macro-fontlock nil))))
+;;       (org-mode-restart)
+;;       (setq org-macro-fontlock nil))))
 
+
+
+
+(require 'org-macro)
+(require 'org-element)
+
+(defvar-local my/org-macro-cache nil
+  "Buffer-local cache for expanded org macros.")
+
+(defun my/org-macro-expand-fast (str templates)
+  "Fast expansion of STR using TEMPLATES and a local cache."
+  (unless my/org-macro-cache 
+    (setq my/org-macro-cache (make-hash-table :test 'equal)))
+  (or (gethash str my/org-macro-cache)
+      (let ((expanded (condition-case nil
+                          (if (string-match "{{{\\([a-zA-Z0-9_-]+\\)\\(?:(\\(\\(?:.\\|\n\\)*?\\))\\)?}}}" str)
+                              (let* ((name (match-string 1 str))
+                                     (args-str (match-string 2 str))
+                                     (args (if args-str (split-string args-str "," t) nil))
+                                     ;; Manually construct the macro element for speed
+                                     (macro-el (list 'macro (list :key name :args args :value str)))
+                                     (res (org-macro-expand macro-el templates)))
+                                (if (stringp res) res str))
+                            str)
+                        (error str))))
+        (puthash str expanded my/org-macro-cache))))
+
+(defvar my/org-macro-fontlock-keywords
+  '(("{{{\\([a-zA-Z0-9_-]+\\)\\(?:(\\(\\(?:.\\|\n\\)*?\\))\\)?}}}"
+     0 (list 'face nil 'display (my/org-macro-expand-fast (match-string 0) org-macro-templates))))
+  "Keywords to find and expand Org macros.")
+
+;;;###autoload
+(define-minor-mode my-org-macro-preview-mode
+  "Minor mode to preview expanded Org macros in-place."
+  :lighter " MacroPre"
+  (if my-org-macro-preview-mode
+      (progn
+        ;; Ensure templates are initialized if empty
+        (unless org-macro-templates (org-macro-initialize-templates))
+        (font-lock-add-keywords nil my/org-macro-fontlock-keywords t)
+        (font-lock-flush))
+    (font-lock-remove-keywords nil my/org-macro-fontlock-keywords)
+    (setq my/org-macro-cache nil)
+    (font-lock-flush)))
