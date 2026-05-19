@@ -358,6 +358,9 @@ This holds the results of the last documentation request."
   (gptel-make-gemini "Gemini" :key (password-store-get "gemini-api-key") :stream t)
   (setq gptel-track-media t)
   (setq gptel-default-mode 'org-mode)
+
+  :bind (:map global-map
+	  ("C-c j" . gptel-menu))
 )
 (require 'gptel-integrations)
 
