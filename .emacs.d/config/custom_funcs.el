@@ -1251,3 +1251,28 @@ Version: 2024-04-20"
   (setq jtls-distraction-counter (+ 1 jtls-distraction-counter))
   (message (format "distraction counter: %s" jtls-distraction-counter)))
   
+
+
+(defun profile-m-x-startup ()
+  "Start profiling, open M-x, wait briefly for rendering, close it, and report."
+  (interactive)
+  ;; 1. Start CPU profiler
+  ;; (profiler-start 'cpu)
+  (profiler-start 'cpu)
+  
+  
+  ;; 2. Schedule the 'close' action. 
+  ;; We use a small delay (0.5s) to ensure Vertico and Marginalia 
+  ;; actually finish the initial rendering and annotation of candidates.
+  (run-at-time 0.5 nil (lambda () (abort-recursive-edit)))
+  
+  ;; 3. Call M-x. 
+  ;; Wrap in condition-case because aborting the minibuffer throws a quit signal.
+  (condition-case nil
+      (call-interactively 'execute-extended-command)
+    (quit nil))
+  
+  ;; 4. Stop and Report
+  (profiler-stop)
+  (profiler-report))
+

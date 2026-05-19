@@ -907,6 +907,18 @@
   ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
 
+(with-eval-after-load 'marginalia
+  (defun marginalia--function-doc (sym)
+    "Documentation string of function SYM.
+Patch to use raw documentation (t) to avoid expensive `substitute-command-keys`
+which was causing `describe-map` lag in M-x."
+    (if-let* ((str (ignore-errors (documentation sym t))))
+        (save-match-data
+          (if (string-match marginalia--advice-regexp str)
+              (substring str (match-end 0))
+            str))
+      (marginalia--definition-prefix sym))))
+
 ;; ** embark
 (use-package embark
   :ensure t
