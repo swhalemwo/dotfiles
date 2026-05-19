@@ -6,7 +6,7 @@
 
 (add-hook 'change-major-mode-hook 'change-my-background-color)
 
-(add-hook 'window-configuration-change-hook 'change-my-background-color)
+;; (add-hook 'window-configuration-change-hook 'change-my-background-color)
 
 (defun change-my-background-color ()
   (cond
