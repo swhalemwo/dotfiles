@@ -407,6 +407,7 @@
 
 	  (org-latex-export-to-latex)
 	  (setq cmd-pandoc-html (concat "pandoc -F pandoc-crossref -C "
+				   ;; "--csl=plos-one.csl "
 				  (mapconcat (lambda (x) (concat "--bibliography=" x)) helm-bibtex-bibliography " ")
 				  " -o " html-file " " tex-file))
 	  (message cmd-pandoc-html)
