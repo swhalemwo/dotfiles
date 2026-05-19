@@ -4,7 +4,7 @@
 ;; (add-to-list 'load-path "/home/johannes/.emacs.d/extras/emacs-application-framework/")
 ;; (add-to-list 'load-path "/home/johannes/.emacs.d/extras/orgqda/")
 ;; (add-to-list 'load-path "/home/johannes/.emacs.d/extras/common")
-(add-to-list 'load-path "/home/johannes/xterm-color")
+;; (add-to-list 'load-path "/home/johannes/xterm-color")
 ;; (load "/home/johannes/lilypond/usr/share/emacs/site-lisp/lilypond-init.el")
 
 ;; (setq load-path (append (list (expand-file-name "/home/johannes/lilypond/usr/share/emacs/site-lisp/")) load-path))

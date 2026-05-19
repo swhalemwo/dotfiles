@@ -242,18 +242,18 @@
 
 ;; *** different terminal for ESS (i think)
 
-(use-package xterm-color
-  :load-path "/home/johannes/xterm-color/"
+;; (use-package xterm-color
+;;   ;; :load-path "/home/johannes/xterm-color/"
 
-  :init
-  (setq comint-output-filter-functions
-        (remove 'ansi-color-process-output comint-output-filter-functions))
+;;   :init
+;;   (setq comint-output-filter-functions
+;;         (remove 'ansi-color-process-output comint-output-filter-functions))
 
-  (add-hook 'inferior-ess-mode-hook
-            (lambda () (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter nil t)))
+;;   (add-hook 'inferior-ess-mode-hook
+;;             (lambda () (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter nil t)))
 
-  :config
-  (setq xterm-color-use-bold t))
+;;   :config
+;;   (setq xterm-color-use-bold t))
 
 (setq scroll-conservatively 99)
 
