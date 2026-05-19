@@ -1,6 +1,8 @@
 ;; ** some terminal shenanigans
 
-(add-hook 'post-command-hook 'change-my-background-color)
+;; (add-hook 'post-command-hook 'change-my-background-color)
+
+;; (remove-hook 'post-command-hook 'change-my-background-color)
 
 (add-hook 'change-major-mode-hook 'change-my-background-color)
 

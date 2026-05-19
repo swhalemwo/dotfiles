@@ -129,3 +129,6 @@
 
 
 (put 'list-timers 'disabled nil) ;; don't give list-timers warning
+
+
+(setq read-extended-command-predicate 'command-completion-default-include-p)
