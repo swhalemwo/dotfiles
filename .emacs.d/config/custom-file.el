@@ -15,7 +15,8 @@
  '(default-input-method "pyim")
  '(eldoc-documentation-strategy 'eldoc-documentation-default)
  '(eldoc-echo-area-prefer-doc-buffer t)
- '(eldoc-print-after-edit nil)
+ ;; '(eldoc-print-after-edit nil)
+ '(eldoc-print-after-edit t) 
  '(embark-mixed-indicator-delay 0)
  '(free-keys-modifiers '("" "C" "M" "C-M" "C-S"))
  '(helm-type-file-actions
