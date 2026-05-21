@@ -1264,7 +1264,7 @@ Version: 2024-04-20"
   ;; 2. Schedule the 'close' action. 
   ;; We use a small delay (0.5s) to ensure Vertico and Marginalia 
   ;; actually finish the initial rendering and annotation of candidates.
-  (run-at-time 0.5 nil (lambda () (abort-recursive-edit)))
+  (run-at-time 0.25 nil (lambda () (abort-recursive-edit)))
   
   ;; 3. Call M-x. 
   ;; Wrap in condition-case because aborting the minibuffer throws a quit signal.
