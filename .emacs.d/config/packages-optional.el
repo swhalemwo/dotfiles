@@ -367,15 +367,33 @@ This holds the results of the last documentation request."
 
 ;; (use-package 'gptel-agent)
 
-;; (setq mcp-hub-servers
-;;       '(("mcptools-R"
-;;          . (:command "Rscript"
-;;              :args ("-e" "options(btw.run_r.enabled = TRUE);mcptools::mcp_server(tools = btw::btw_tools())")))))
-
 (setq mcp-hub-servers
       '(("mcptools-R"
          . (:command "Rscript"
-             :args ("--vanilla" "--quiet" "-e" "options(btw.run_r.enabled = TRUE); invisible(btw::btw_mcp_server())")))))
+             :args ("--vanilla" "--quiet" "-e" "options(btw.run_r.enabled = TRUE);mcptools::mcp_server(tools = btw::btw_tools())")))))
+
+;; (setq mcp-hub-servers
+;;       '(("mcptools-R"
+;;          . (:command "Rscript"
+;;              :args ("--vanilla" "--quiet" "-e" "options(btw.run_r.enabled = TRUE); invisible(btw::btw_mcp_server())")))))
+
+;; (setq mcp-hub-servers
+;;       '(("mcptools-R"
+;;          . (:command "curl" 
+;;              ;; This is a simplified way to point to the HTTP server
+;;              :args ("-X" "POST" "-H" "Content-Type: application/json" "-d" "@-" "http://127.0.0.1:8080")))))
+
+;; (setq mcp-hub-servers
+;;          '(("mcptools-R"
+;;             . (:command "Rscript"
+;;                 :args ("-e" "mcptools::mcp_server(tools = NULL)"))))) 
+
+
+;; (setq mcp-hub-servers
+;;       '(("mcptools-R"
+;;          . (:command "nc" ;; 'nc' is netcat, it forwards stdin/stdout to the TCP port
+;;              :args ("127.0.0.1" "8080")))))
+
 
 ;; (require 'gptel-mcp) ;; hallucinaed
 
