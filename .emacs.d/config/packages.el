@@ -35,6 +35,17 @@
 ;; ** bibtex
 (use-package bibtex
   :ensure t
+  :config
+  (setq bibtex-autokey-names 3)                 ; Use up to 3 names
+  (setq bibtex-autokey-name-separator "_")      ; Separator between names
+  (setq bibtex-autokey-year-length 4)           ; Use 4-digit year
+  (setq bibtex-autokey-name-year-separator "_") ; Separator between name and year
+  (setq bibtex-autokey-year-title-separator "_") ; Separator between year and title
+  (setq bibtex-autokey-titlewords 1)            ; Use 1 word from title
+  (setq bibtex-autokey-titleword-separator "_")
+  (setq bibtex-autokey-name-case-convert-function 'identity)
+  (setq bibtex-autokey-titleword-length t)
+  
   :bind (:map bibtex-mode-map
 	  ("C-c r" . 'bibtex-reformat)    
 	  ("C-c C-d" . 'doi-insert-bibtex)

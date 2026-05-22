@@ -1276,3 +1276,32 @@ Version: 2024-04-20"
   (profiler-stop)
   (profiler-report))
 
+(defvar my-enable-manual-key-word t
+  "Toggle to enable manual title word input during bibtex key generation.")
+
+;; (defun my-bibtex-key-with-custom-title-word (key)
+;;   (if my-enable-manual-key-word
+;;       (let ((custom-word (read-string "Relevant title word for key: ")))
+;;         (replace-regexp-in-string "_[^_]+$" (concat "_" custom-word) key))
+;;     key))
+
+(defun my-bibtex-key-with-custom-title-word (key)
+  "Generate a bibtex key, but prompt for a relevant title word using the algorithm-generated word as default."
+  (let* (;; Extract the last part of the key as the default
+         (default-word (save-match-data
+                         (when (string-match "_\\([^ _]+\\)$" key)
+                           (match-string 1 key))))
+         (prompt (if default-word
+                     (format "Relevant title word for key [%s]: " default-word)
+                   "Relevant title word for key: "))
+         ;; Use default-word as the default value for read-string
+         (custom-word (read-string prompt nil nil default-word)))
+    
+    (if (and custom-word (not (string= custom-word "")))
+        ;; Replace the old title word with the chosen word
+        (replace-regexp-in-string "_[^_]+$" (concat "_" custom-word) key)
+      key)))
+
+
+
+(setq bibtex-autokey-before-presentation-function 'my-bibtex-key-with-custom-title-word)
