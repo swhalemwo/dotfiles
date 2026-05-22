@@ -1305,3 +1305,40 @@ Version: 2024-04-20"
 
 
 (setq bibtex-autokey-before-presentation-function 'my-bibtex-key-with-custom-title-word)
+
+
+
+;; custom doi download extension for scihub 
+;; has to be added manually to emacs.d/elpa/org-ref-XXX/doi-utils.el to work with async: 
+;; doi-utils-async-download-pdf asynchronsouly reloads doi-utils.el, so changes to main config get yeeted
+;; -> has to be placed there manually after doi-utils.el updates :(
+
+
+(defun scihub-pdf-url-final (*doi-utils-redirect*)
+  "Get PDF URL from Sci-Hub, intended for doi-utils-pdf-url-functions."
+  (let ((doi (when (string-match "10\\.[0-9]+/[^&/]+" *doi-utils-redirect*)
+               (match-string 0 *doi-utils-redirect*))))
+    (when doi
+      (let* ((base-url "https://sci-hub.box/")
+             (target-url (concat base-url doi))
+             (url-user-agent "Mozilla/5.0")
+             (buffer (url-retrieve-synchronously target-url)))
+        (when buffer
+          (unwind-protect
+              (with-current-buffer buffer
+                (goto-char (point-min))
+                (if (search-forward "citation_pdf_url" nil t)
+                    (if (search-forward "content=\"" nil t)
+                        (let ((start (point)))
+                          (when (search-forward "\"" nil t)
+                            (let ((path (buffer-substring start (1- (point)))))
+                              (if (string-prefix-p "/" path)
+                                  (concat base-url (string-remove-prefix "/" path))
+                                path))))
+                      nil)
+                  nil))
+            (kill-buffer buffer)))))))
+
+
+
+(add-to-list 'doi-utils-pdf-url-functions 'scihub-pdf-url-final t)
