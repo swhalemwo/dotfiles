@@ -318,7 +318,7 @@
 
 (tempo-define-template "star-equation"
   '("\\begin{equation*}\n" p "\n\\end{equation*}" >)
-  "<e"
+  "<se"
   "Insert a property tempate")
 
 (tempo-define-template "my-property"
