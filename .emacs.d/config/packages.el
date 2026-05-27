@@ -451,7 +451,7 @@
   (setq org-fontify-done-headline t)
   (setq org-fontify-whole-heading-line t)
   (setq org-format-latex-options
-    '(:foreground default :background default :scale 2 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+    '(:foreground default :background default :scale 1.4 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
        ("begin" "$1" "$" "$$" "\\(" "\\[")))
   (setq org-indent-indentation-per-level 1)
   (setq org-indent-mode-turns-on-hiding-stars nil)
